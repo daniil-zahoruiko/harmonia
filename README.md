@@ -4,7 +4,7 @@
 
 1) cd backend
 
-2) env/Sripts/activate  (starts virtual environment
+2) env/Sripts/activate  (starts virtual environment)( if u need to modify python files)
 
 3) pip install flask
 
