@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import '../styles/player.css';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsSkipEndCircleFill, BsFillSkipEndCircleFill} from 'react-icons/bs';
 
-export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurrentSong, songs})=> {
-    const [rangeProgress, setRangeProgress] = useState(0)
+export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurrentSong, songs, skipped, setSkipped})=> {
 
   const clickRef = useRef();
 
@@ -13,22 +12,8 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
 
   }
 
-
-  const checkWidth = (e)=>
-  {
-    let width = clickRef.current.clientWidth;
-    console.log(width)
-    const offset = e.nativeEvent.offsetX;
-    console.log(offset)
-
-    const divprogress = offset / width * 100;
-    console.log(divprogress)
-    audioElem.current.currentTime = divprogress / 100 * currentSong.length;
-    console.log(audioElem.current.currentTime)
-
-  }
   const changeRange = (e) =>{
-    console.log(e)
+    // console.log(e)
     audioElem.current.currentTime = e.target.value/100 * currentSong.length
   }
 
@@ -48,17 +33,16 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       setCurrentSong(songs[index - 1])
     }
     audioElem.current.currentTime = 0;
-    if(isplaying){
-        setisplaying(!isplaying)
-    }
+    setisplaying(true)
+    setSkipped(!skipped)
   }
 
 
   const skiptoNext = ()=>
   {
-    const index = songs.findIndex(x=>x.title == currentSong.title);
+    const index = songs.findIndex(x=>x.title === currentSong.title);
 
-    if (index == songs.length-1)
+    if (index === songs.length-1)
     {
       setCurrentSong(songs[0])
     }
@@ -67,14 +51,29 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       setCurrentSong(songs[index + 1])
     }
     audioElem.current.currentTime = 0;
-    if(isplaying){
-        setisplaying(!isplaying)
+    // console.log(audioElem.current.value)
+    setisplaying(true)
+    setSkipped(!skipped)
     }
-  }
+
+
+    useEffect(()=>{
+      if(audioElem.current){
+        if(audioElem.current.currentTime/currentSong.length*100 === 100){
+          // console.log(true)
+          skiptoNext()
+        }
+      }
+    })
+
+
 
   if(audioElem.current === null) return <h1>Loading</h1>
-  console.log(currentSong)
-  console.log(audioElem.current.currentTime/currentSong.length*100 + currentSong.title)
+  // console.log(currentSong)
+  // console.log(audioElem.current.currentTime/currentSong.length*100)
+
+
+
 
   return (
     <div className='player_container'>
@@ -82,9 +81,9 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
         <p>{currentSong.title}</p>
       </div>
       <div className="navigation">
-        <div className="navigation_wrapper" onClick={checkWidth} ref={clickRef}>
+        <div className="navigation_wrapper">
           {/* <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div> */}
-          {console.log(audioElem.current.currentTime, currentSong.length)}
+          {/* {console.log(audioElem.current.currentTime, currentSong.length)} */}
           <input
             type="range"
             className='seek_bar'
@@ -99,7 +98,7 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       <div className="controls">
         <BsFillSkipStartCircleFill className='btn_action' onClick={skipBack}/>
         {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={PlayPause}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={PlayPause}/>}
-        <BsFillSkipEndCircleFill className='btn_action' onClick={skiptoNext}/>        
+        <BsFillSkipEndCircleFill className='btn_action' onClick={skiptoNext}/>
       </div>
     </div>
   

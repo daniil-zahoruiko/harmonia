@@ -8,6 +8,7 @@ function App() {
     const [loading,setLoading] = useState(true)
     const [isplaying, setisplaying] = useState(false);
     const [currentSong, setCurrentSong] = useState();
+    const [skipped,setSkipped] = useState(false)
 
     const audioElem = useRef(null);
 
@@ -39,21 +40,29 @@ function App() {
         }
       }, [isplaying])
 
+    useEffect(()=>{
+        console.log(audioElem.current)
+        if(audioElem.current){
+            audioElem.current.play()
+        }
+      }, [skipped])
+
     if(loading) return <h1>Loading...</h1>
 
     const onPlaying = () => {
         const duration = audioElem.current.duration;
         const ct = audioElem.current.currentTime;
-    
+
         setCurrentSong({ ...currentSong, "progress": ct / duration * 100, "length": duration })
-    
+
       }
-      console.log(currentSong)
-      console.log(audioElem)
+    //   console.log(currentSong)
+    //   console.log(audioElem)
     return (
         <div className="App">
             <audio src={`/song/${currentSong.file}`} ref={audioElem} onTimeUpdate={onPlaying} />
-            <Player songs={songs} setSongs={setSongs} isplaying={isplaying} setisplaying={setisplaying} audioElem={audioElem} currentSong={currentSong} setCurrentSong={setCurrentSong} />
+            <Player songs={songs} setSongs={setSongs} isplaying={isplaying} setisplaying={setisplaying} audioElem={audioElem}
+             currentSong={currentSong} setCurrentSong={setCurrentSong} skipped={skipped} setSkipped={setSkipped}/>
         </div>
     );
 }
