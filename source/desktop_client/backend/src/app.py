@@ -24,6 +24,14 @@ data =[
 
 songs = [song["file"] for song in data]
 
+# Planned api routes: /api/artist/album/song/song.mp3
+# Planned api routes: /api/artist/info/.json
+# Planned api routes: /api/artist/album/info/.json
+# Planned api routes: /api/artist/album/song/info/.json
+# Planned api routes: /api/artist/album/song/song.mp3
+# Planned api routes: /api/users/user_id/info/.json (?security)
+
+
 # Route for seeing a data
 @app.route('/api')
 def get_time():

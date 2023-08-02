@@ -1,30 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
-import '../styles/player.css';
+import React, { useEffect } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsSkipEndCircleFill, BsFillSkipEndCircleFill} from 'react-icons/bs';
+import { Loader } from '../Loader';
+import '../../styles/player.css';
+
 
 export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurrentSong, songs, skipped, setSkipped})=> {
 
-  const clickRef = useRef();
-
+  // play/pause music
   const PlayPause = ()=>
   {
     setisplaying(!isplaying);
 
   }
 
+  // set current time while using range scroller
   const changeRange = (e) =>{
-    // console.log(e)
-    audioElem.current.currentTime = e.target.value/100 * currentSong.length
+    const value = e.target.value
+    audioElem.current.currentTime = value/100 * currentSong.length
   }
 
-//   useEffect(()=>{
-//     setRangeProgress(audioElem.current.currentTime/currentSong.length*100)
-//   },[audioElem.current.currentTime])
-
+  // skip to previous music
   const skipBack = ()=>
   {
-    const index = songs.findIndex(x=>x.title == currentSong.title);
-    if (index == 0)
+    const index = songs.findIndex(x=>x.title === currentSong.title);
+    if (index === 0)
     {
       setCurrentSong(songs[songs.length - 1])
     }
@@ -33,11 +32,10 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       setCurrentSong(songs[index - 1])
     }
     audioElem.current.currentTime = 0;
-    setisplaying(true)
-    setSkipped(!skipped)
+    setSkipped(skipped+1)
   }
 
-
+  // skip to next music
   const skiptoNext = ()=>
   {
     const index = songs.findIndex(x=>x.title === currentSong.title);
@@ -51,29 +49,21 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       setCurrentSong(songs[index + 1])
     }
     audioElem.current.currentTime = 0;
-    // console.log(audioElem.current.value)
-    setisplaying(true)
-    setSkipped(!skipped)
+    setSkipped(skipped+1)
     }
 
-
-    useEffect(()=>{
+  // Start next song after it ends
+  useEffect(()=>{
       if(audioElem.current){
         if(audioElem.current.currentTime/currentSong.length*100 === 100){
-          // console.log(true)
           skiptoNext()
         }
       }
-    })
+  })
 
 
-
-  if(audioElem.current === null) return <h1>Loading</h1>
-  // console.log(currentSong)
-  // console.log(audioElem.current.currentTime/currentSong.length*100)
-
-
-
+  // Load loader page until data is loaded
+  if(audioElem.current === null) return <Loader/>
 
   return (
     <div className='player_container'>
@@ -82,8 +72,6 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       </div>
       <div className="navigation">
         <div className="navigation_wrapper">
-          {/* <div className="seek_bar" style={{width: `${currentSong.progress+"%"}`}}></div> */}
-          {/* {console.log(audioElem.current.currentTime, currentSong.length)} */}
           <input
             type="range"
             className='seek_bar'
@@ -101,6 +89,6 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
         <BsFillSkipEndCircleFill className='btn_action' onClick={skiptoNext}/>
       </div>
     </div>
-  
+
   )
 }

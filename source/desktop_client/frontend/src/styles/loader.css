@@ -1,0 +1,15 @@
+.loader{
+    height:100vh;
+    width:100vw;
+    background-color: blue;
+    color:white;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}
+
+.loader_text{
+    margin: auto;
+    font-size: 6vw;
+}
+
