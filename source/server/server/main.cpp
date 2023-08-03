@@ -87,20 +87,25 @@ void populate(DBConnection &connection)
 		DataBuf databuf(buf, binary_size);
 		std::istream stream(&databuf);
 
-		connection.insert_song(stream, input);
+		int start_pos = input.find_last_of('\\') + 1;
+		std::string name = input.substr(start_pos, input.find_last_of('.') - start_pos);
+
+		std::cout << input.find_last_of('.') << ' ' << name << '\n';
+
+		connection.insert_song(stream, name);
 	}
 }
 
 int main()
 {
-	/*DBConnection db_connection = connect();
+	DBConnection db_connection = connect();
 
-	std::cout << "If you want to populate the database before starting the server, enter \"populate\", otherwise press enter: ";
+	std::cout << "If you want to populate the database before starting the server, enter \"populate\", otherwise enter \"skip\": ";
 	std::string command;
 	std::cin >> command;
 	
 	if (to_lowercase(command) == "populate")
-		populate(db_connection);*/
+		populate(db_connection);
 
 	SocketConnection socket_connection(HOST, PORT);
 
@@ -114,7 +119,16 @@ int main()
 	std::cout << "Received: " << buf << '\n';
 
 	socket_connection.sendMessage(buf, len);
- 
+
+	std::cout << "Sending a test song\n";
+
+	char *song_data = new char[1];
+	len = db_connection.read_song(song_data, "song");
+
+	std::cout << "Read " << len << " bytes from the db, sending them to client\n";
+
+	socket_connection.sendMessage(song_data, 100); // sending only 100, TODO: handle the whole file, maybe send by parts
+
 	socket_connection.shutdownClient();
 
 	return EXIT_SUCCESS;

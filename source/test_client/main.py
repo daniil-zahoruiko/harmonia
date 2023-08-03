@@ -8,7 +8,10 @@ def main():
         s.connect((HOST, PORT))
         s.sendall(b"Test message")
         data = s.recv(1024)
-    print("Received: ", data)
+        print("Received: ", data)
+        song_data = s.recv(4000000)
+        print(type(song_data))
+        print("Received: ", song_data)
 
 if(__name__ == "__main__"):
     main()
