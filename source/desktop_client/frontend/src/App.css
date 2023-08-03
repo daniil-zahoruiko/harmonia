@@ -1,4 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Istok+Web&display=swap');
+
+
 .App{
   text-align: center;
   margin: 0;
+  display: grid;
+  grid-template-columns: 20% auto;
+  grid-template-rows: 13% auto 15vh;
+  height:100vh;
+  background-color: black;
+  color:white;
+  font-family: 'Istok Web', sans-serif;
 }

@@ -57,7 +57,7 @@ export const Audio = (songs, setSongs) =>{
 
     return(
         <>
-            <audio src={`/song/${currentSong.file}`} ref={audioElem} onTimeUpdate={onPlaying} />
+            <audio src={`/api/song/${currentSong.file}`} ref={audioElem} onTimeUpdate={onPlaying} />
             <Player songs={songs.songs} setSongs={setSongs} isplaying={isplaying} setisplaying={setisplaying} audioElem={audioElem}
              currentSong={currentSong} setCurrentSong={setCurrentSong} skipped={skipped} setSkipped={setSkipped}/>
         </>
