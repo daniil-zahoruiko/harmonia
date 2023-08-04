@@ -22,8 +22,6 @@ function App() {
                 setSongs(data.user.songs)
                 setLoading(false)
                 setUserPlaylist(data.user.playlists)
-                console.log(userPlaylists)
-                console.log(data[1])
                 console.log(data)
             })
         );
@@ -36,12 +34,13 @@ function App() {
 
 
     return (
-        <div className="App">
-             <Nav/>
-             <LeftBar userPlaylists = {userPlaylists}/>
-             <MainWindow/>
-             {/* <Audio songs={songs} setSongs={setSongs}/> */}
-        </div>
+            <div className="App">
+                <Nav/>
+                <LeftBar userPlaylists = {userPlaylists}/>
+                <MainWindow songs = {songs}/>
+                <Audio songs={songs} setSongs={setSongs}/>
+            </div>
+
     );
 }
 
