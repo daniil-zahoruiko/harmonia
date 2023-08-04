@@ -1,3 +1,9 @@
 .main_window_wrapper{
     grid-area: 2 / 2 / 3 / auto;
+    /* position: fixed; */
+    /* height:67%;
+    width:80%;
+    left:20%;
+    top:13%; */
+    overflow-y: auto;
 }
