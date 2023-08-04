@@ -8,6 +8,8 @@
     height:100%;
     font-size: 1.9vw;
     padding:0 5%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .desktop_nav ul{
