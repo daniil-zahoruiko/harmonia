@@ -1,0 +1,25 @@
+
+.SongCard{
+    background: conic-gradient(#9696962f,#9696962f, #9696962f,#44499f3a,#44499f73, #44499fab,#44499f73,#44499f3a,#9696962f, #9696962f,#9696962f,#9696962f,#9696962f);
+    padding: 1%;
+    text-align: left;
+    width:13vw;
+    height:18vw;
+}
+
+.song_card_title{
+    background-color: transparent;
+    font-size: 1.5vw;
+    width:100%;
+    margin: 0;
+}
+
+.song_card_artist{
+    background-color: transparent;
+    font-size: 1vw;
+    margin: 2% 0;
+}
+
+.SongCard img{
+    width: 100%;
+}
