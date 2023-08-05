@@ -114,7 +114,7 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
             onChange={changeVolume}
             min="0"
             max="1"
-            step="0.1"
+            step="0.01"
           />
         </div>
         <div className="controls">

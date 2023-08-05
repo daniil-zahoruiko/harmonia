@@ -34,7 +34,7 @@
 }
 
 .playlist_volume_svg{
-    width:1.5vw;
+    width:2vw;
     height: auto;
 }
 
@@ -150,6 +150,7 @@
 
 .volume_bar{
     -webkit-appearance: none;
+    width:60%;
     overflow: hidden;
     border-radius: 16px;
     appearance: none;
