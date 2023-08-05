@@ -33,14 +33,13 @@ export const PlaylistLB = (userPlaylists) => {
                 <p>+</p>
                 <div onClick={togglePlaylist} className={`playlist_arrow ${style}`}></div>
             </div>
-            <div className="left_bar_playlists_list">
-                {(style === "closed"?"":
+            <div className={"left_bar_playlists_list list_"+style}>
+                {
                     userPlaylists.userPlaylists.map((value,key)=>{
                         return(
                             <p key={key}>{value}</p>
                         )
-                    })
-                )}
+                    })}
             </div>
         </div>
     )

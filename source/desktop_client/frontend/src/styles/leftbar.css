@@ -81,3 +81,15 @@
 .left_bar_playlists_list{
     font-size: 1vw;
 }
+
+
+.list_closed{
+    opacity: 0;
+    transform: translate(0,200%);
+    transition: 0.5s ease-in-out;
+}
+.list_opened{
+    opacity: 1;
+    transform: translate(0,0%);
+    transition: 0.5s ease-in-out;
+}
