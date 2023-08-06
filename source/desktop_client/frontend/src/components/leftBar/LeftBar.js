@@ -2,7 +2,6 @@ import "../../styles/leftbar.css"
 import { PlaylistLB } from "./PlaylistLB"
 import {IoChevronBackCircleSharp,IoChevronForwardCircleSharp} from "react-icons/io5"
 import { useState } from "react"
-import { MainWindow } from "../MainWindow"
 
 
 export const LeftBar = (userPlaylists) => {
