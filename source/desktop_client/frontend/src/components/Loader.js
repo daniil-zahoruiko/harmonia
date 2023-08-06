@@ -1,4 +1,5 @@
 import "../styles/loader.css"
+import HashLoader from "react-spinners/HashLoader"
 
 
 export const Loader = ()=>{
@@ -6,7 +7,7 @@ export const Loader = ()=>{
     return(
         <main className="loader-main">
             <div className="loader">
-                <p className="loader_text">Loading...</p>
+                <HashLoader size={150} color="#44489F" />
             </div>
         </main>
     )
