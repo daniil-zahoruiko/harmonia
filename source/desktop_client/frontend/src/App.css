@@ -4,7 +4,7 @@
 .App{
   text-align: center;
   display: grid;
-  grid-template-columns: 20% auto;
+  grid-template-columns: 5% 12% auto;
   grid-template-rows: 13% auto 14%;
   gap: 3%;
   color:white;

@@ -2,8 +2,8 @@ import { useState } from "react"
 import {MdOutlineLibraryMusic} from "react-icons/md"
 
 
-export const PlaylistLB = (userPlaylists) => {
-    console.log(userPlaylists.userPlaylists)
+export const PlaylistLB = ({lbState,userPlaylists}) => {
+    console.log(userPlaylists)
     const [style, setStyle] = useState("closed")
 
     const changePlaylistArrow = () =>{
@@ -26,18 +26,20 @@ export const PlaylistLB = (userPlaylists) => {
                     <div>
                         <MdOutlineLibraryMusic className="lb_svg"/>
                     </div>
-                    <div className="left_bar_topic_text">
+                    <div className={"left_bar_topic_text lb_"+lbState}>
                         <p className="left_bar_playlist_text">Playlist</p>
                     </div>
                 </div>
-                <p>+</p>
-                <div onClick={togglePlaylist} className={`playlist_arrow ${style}`}></div>
+                <div className={"lb_playlist_actions lb_"+lbState}>
+                    <p>+</p>
+                    <div onClick={togglePlaylist} className={`playlist_arrow ${style}`}></div>
+                </div>
             </div>
             <div className={"left_bar_playlists_list list_"+style}>
                 {
-                    userPlaylists.userPlaylists.map((value,key)=>{
+                    userPlaylists.map((value,key)=>{
                         return(
-                            <p key={key}>{value}</p>
+                            <p className={`lb_${lbState}`} key={key}>{value}</p>
                         )
                     })}
             </div>

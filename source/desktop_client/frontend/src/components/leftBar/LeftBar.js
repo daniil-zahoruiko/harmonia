@@ -1,10 +1,33 @@
 import "../../styles/leftbar.css"
 import { PlaylistLB } from "./PlaylistLB"
+import {IoChevronBackCircleSharp,IoChevronForwardCircleSharp} from "react-icons/io5"
+import { useState } from "react"
+import { MainWindow } from "../MainWindow"
 
 
 export const LeftBar = (userPlaylists) => {
+    const [lbState, setLbState] = useState("full")
+
+    const hideLb = () =>{
+        const mainWindowElement = document.getElementsByClassName("main_window_wrapper")
+        const mainWindowStyle = mainWindowElement[0].style
+        const leftBarElement = document.getElementsByClassName("left_bar_wrapper")
+        const leftBarStyle = leftBarElement[0].style
+        if(lbState === "hidden"){
+            setLbState("full")
+            mainWindowStyle.gridArea = "2 / 3 / 3 / -1"
+            leftBarStyle.gridArea = "2 / 1 / 3 / 3"
+        }else{
+            setLbState("hidden")
+            leftBarStyle.gridArea = "2 / 1 / 3 / 2"
+            mainWindowStyle.gridArea = "2 / 2 / 3 / -1"
+        }
+    }
+
     return(
         <div className="left_bar_wrapper">
+            {lbState === "full"?<IoChevronBackCircleSharp onClick={hideLb} className="lb_hider"/>
+            :<IoChevronForwardCircleSharp onClick={hideLb} className={`lb_hider hider_${lbState}`}/>}
             <div className="left_bar_topic_wrapper">
                 <div>
                     <svg className="lb_svg" xmlns="http://www.w3.org/2000/svg" width="29" height="29" viewBox="0 0 29 29" fill="none">
@@ -13,7 +36,7 @@ export const LeftBar = (userPlaylists) => {
                         <path d="M14.069 14.5V5.44827" stroke="white" stroke-width="3"/>
                     </svg>
                 </div>
-                <div className="left_bar_topic_text">
+                <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
                         Recently played
                     </p>
@@ -26,7 +49,7 @@ export const LeftBar = (userPlaylists) => {
                         <path d="M14.9143 23L25.2456 11.1544C27.2984 8.80066 26.9932 5.21445 24.572 3.24159V3.24159C23.5865 2.43853 22.3541 2 21.0828 2H20.6416C17.4785 2 14.9143 4.56419 14.9143 7.72727V7.72727" stroke="white" stroke-width="3"/>
                     </svg>
                 </div>
-                <div className="left_bar_topic_text">
+                <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
                         Liked songs
                     </p>
@@ -40,13 +63,13 @@ export const LeftBar = (userPlaylists) => {
                         <path d="M6.01113 30.3333V30.3333C5.4794 30.7797 5.82833 31.6944 6.51301 31.8092C7.58121 31.9882 8.20464 32.4344 6.93235 33.3956C6.18219 33.9623 5.3606 34.5585 4.56849 35.1213C2.36114 36.6895 -1.06878 38.891 1.01972 40.6143C1.08326 40.6667 1.15023 40.7196 1.22077 40.7729C1.27488 40.8138 1.32726 40.8534 1.37796 40.8918C2.55965 41.7871 1.33738 42.1607 0.115299 43V43" stroke="white" stroke-width="0.4"/>
                     </svg>
                 </div>
-                <div className="left_bar_topic_text">
+                <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
                         Favourite artists
                     </p>
                 </div>
             </div>
-            <PlaylistLB userPlaylists={userPlaylists.userPlaylists}/>
+            <PlaylistLB lbState={lbState} userPlaylists={userPlaylists.userPlaylists}/>
         </div>
     )
 }
