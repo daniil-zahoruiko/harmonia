@@ -25,7 +25,7 @@ void DBConnection::insert_song(std::istream& data, std::string &name)
 	delete prep_stmt;
 }
 
-int DBConnection::read_song(char buf[], std::string name)
+int DBConnection::read_song(char *&buf, std::string name)
 {
 	delete[] buf;
 	sql::PreparedStatement* prep_stmt;
@@ -41,8 +41,9 @@ int DBConnection::read_song(char buf[], std::string name)
 	int len = is->tellg();
 	is->seekg(0, std::ios_base::beg);
 
-	buf = new char[len + 200];
-	is->read(buf, len + 200);
+	std::cout << len << '\n';
+	buf = new char[len];
+	is->read(buf, len);
 
 	return len;
 }

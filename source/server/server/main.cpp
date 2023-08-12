@@ -122,13 +122,25 @@ int main()
 
 	std::cout << "Sending a test song\n";
 
-	char *song_data = new char[1];
+	char *song_data = new char[4096]; // for now, doesn't matter what size of the buffer is
 	len = db_connection.read_song(song_data, "song");
 
 	std::cout << "Read " << len << " bytes from the db, sending them to client\n";
 
-	socket_connection.sendMessage(song_data, 100); // sending only 100, TODO: handle the whole file, maybe send by parts
+	char* len_str = new char[20];
+	len_str = _itoa(len, len_str, 10);
 
+	socket_connection.sendMessage(len_str, strlen(len_str));
+
+	int curr = 0, step = 4096;
+	while (curr < len)
+	{
+		if (curr + step > len)
+			step = len - curr;
+		socket_connection.sendMessage(song_data + curr, step); 
+		curr += step;
+	}
+	
 	socket_connection.shutdownClient();
 
 	return EXIT_SUCCESS;
