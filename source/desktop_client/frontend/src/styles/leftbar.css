@@ -1,0 +1,119 @@
+.left_bar_wrapper{
+    grid-area: 2 / 1 / 3 / 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid;
+    border-image: linear-gradient(0deg, rgba(255, 255, 255, 0),white,white, rgba(255, 255, 255, 0)) 1;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    /* width:20%;
+    height:67%; */
+    /* top:13%; */
+}
+
+.left_bar_topic_wrapper p{
+    font-size: 1.5vw;
+    margin: auto;
+}
+
+.left_bar_topic_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.playlist_left_bar{
+    justify-content: space-between;
+}
+
+
+
+.playlist_arrow.closed::after{
+    content: " ";
+    border:white solid 2px;
+    border-bottom: none;
+    border-right: none;
+    display:block;
+    width:.8vw;
+    height:.8vw;
+    transform: translateY(70%) rotate(45deg);
+    transition: 0.3s;
+}
+
+
+.playlist_arrow.opened::after{
+    content: " ";
+    border:white solid 2px;
+    border-bottom: none;
+    border-right: none;
+    display:block;
+    width:.8vw;
+    height:.8vw;
+    transform:translateY(70%) rotate(225deg);
+    transition: 0.3s;
+}
+
+.left_bar_playlists_wrapper{
+    height:39vh;
+}
+
+.left_bar_playlists_text_header{
+    text-align: start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 39%;
+}
+
+.left_bar_topic_text{
+    margin-left: 5%;
+}
+
+.lb_svg{
+    width:2vw;
+    height: auto;
+}
+
+.left_bar_playlists_list{
+    font-size: 1vw;
+}
+
+
+.list_closed{
+    opacity: 0;
+    transform: translate(0,200%);
+    transition: 0.3s ease-in-out;
+}
+.list_opened{
+    opacity: 1;
+    transform: translate(0,0%);
+    transition: 0.3s ease-in-out;
+}
+
+.lb_playlist_actions{
+    display: flex;
+    flex-direction: row;
+    width:30%;
+}
+
+
+.lb_hider{
+    position: absolute;
+    left: 20%;
+    transform: translateX(-50%);
+    width:2vw;
+    height: auto;
+    z-index: 99;
+}
+.hider_hidden{
+    left:5%;
+}
+
+.lb_hidden{
+    display: none;
+    transition: 1s ease-in-out;
+}

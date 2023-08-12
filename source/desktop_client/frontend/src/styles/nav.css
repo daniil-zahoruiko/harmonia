@@ -1,0 +1,65 @@
+.desktop_nav{
+    background: linear-gradient(180deg, #44489F 0%,rgba(68, 72, 159, 0.00) 90%, rgba(68, 72, 159, 0.00) 100%);
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    grid-area: 1 / 1 / 2 / -1;
+    width:90%;
+    height:100%;
+    font-size: 1.9vw;
+    padding:0 5%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.desktop_nav ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0%;
+    width:100%;
+    height:90%;
+    margin-top:1%;
+    margin-bottom: 0%;
+}
+
+.desktop_nav li{
+    margin:auto 0;
+}
+
+.nav_logo{
+    width:20%;
+    text-align: left;
+}
+
+.nav_settings{
+    text-align: right;
+}
+
+.nav_outer{
+    width:20%;
+}
+
+.settings_svg{
+    width:2vw;
+    height:auto;
+}
+
+.user_logo{
+    width:4vw;
+}
+
+.nav_li{
+    width:15%;
+}
+
+.nav_left{
+    border-right: 1px solid;
+    border-image: linear-gradient(0deg, rgba(255, 255, 255, 0),white, rgba(255, 255, 255, 0)) 1;
+}
+
+.nav_right{
+    border-left: 1px solid;
+    border-image: linear-gradient(0deg, rgba(255, 255, 255, 0),white, rgba(255, 255, 255, 0)) 1;
+}

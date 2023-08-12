@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Audio } from "./components/songPlayer/Audio";
 import { Loader } from "./components/Loader";
+import { Nav } from "./components/Nav";
+import { LeftBar } from "./components/leftBar/LeftBar";
+import { MainWindow } from "./components/MainWindow";
 import "./App.css";
  
 function App() {
 
     const [songs, setSongs] = useState([])
     const [loading,setLoading] = useState(true)
+    const [userPlaylists, setUserPlaylist] = useState([])
 
     // // Using useEffect for single rendering
     useEffect(() => {
@@ -15,9 +19,9 @@ function App() {
         fetch("/api").then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
-                setSongs(data)
+                setSongs(data.user.songs)
                 setLoading(false)
-                console.log(data[1])
+                setUserPlaylist(data.user.playlists)
                 console.log(data)
             })
         );
@@ -30,9 +34,13 @@ function App() {
 
 
     return (
-        <div className="App">
-             <Audio songs={songs} setSongs={setSongs}/>
-        </div>
+            <div className="App">
+                <Nav/>
+                <LeftBar userPlaylists = {userPlaylists}/>
+                <MainWindow songs = {songs}/>
+                <Audio songs={songs} setSongs={setSongs}/>
+            </div>
+
     );
 }
 
