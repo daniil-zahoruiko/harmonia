@@ -1,4 +1,5 @@
 import socket
+import os
 
 HOST = "127.0.0.1"
 PORT = 6881
@@ -15,7 +16,7 @@ def main():
         print(f"Song data size is {song_data_len}")
         step = 4096
         curr = 0
-        with open("res_song.mp3", 'ab+') as f:
+        with open("./res_song.mp3", 'ab+') as f:
             while curr < song_data_len:
                 song_data = s.recv(step)
                 curr += step

@@ -1,4 +1,5 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "SocketConnection.h"
 #include <stdio.h>
@@ -89,6 +90,26 @@ void SocketConnection::sendMessage(char buf[], int len)
 		closesocket(ClientSocket);
 		WSACleanup();
 	}
+}
+
+void SocketConnection::sendInt(int n)
+{
+	char* n_str = new char[20];
+
+	n_str = _itoa(n, n_str, 10);
+	sendMessage(n_str, strlen(n_str));
+
+	delete[] n_str;
+}
+
+void SocketConnection::sendString(std::string s)
+{
+	char* str = new char[size(s) + 1];
+
+	strcpy(str, s.c_str());
+	sendMessage(str, strlen(str));
+
+	delete[] str;
 }
 
 void SocketConnection::shutdownClient()

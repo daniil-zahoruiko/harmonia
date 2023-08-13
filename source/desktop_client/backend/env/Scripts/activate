@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\avdie\Documents\GitHub\spotify_project\source\desktop_client\backend\env"
+VIRTUAL_ENV="C:\programming\spotify_project\source\desktop_client\backend\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

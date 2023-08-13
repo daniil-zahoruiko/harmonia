@@ -1,4 +1,5 @@
 #include <Winsock2.h>
+#include <string>
 
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -12,6 +13,8 @@ public:
 	int receiveMessage(char buf[], int len);
 
 	void sendMessage(char buf[], int len);
+	void sendInt(int n);
+	void sendString(std::string s);
 
 	void shutdownClient();
 

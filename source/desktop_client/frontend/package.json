@@ -16,7 +16,8 @@
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "use-sound": "^4.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yarn": "^1.22.19"
   },
   "main": "public/electron.js",
   "homepage": "./",

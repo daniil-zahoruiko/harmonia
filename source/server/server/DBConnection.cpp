@@ -25,13 +25,13 @@ void DBConnection::insert_song(std::istream& data, std::string &name)
 	delete prep_stmt;
 }
 
-int DBConnection::read_song(char *&buf, std::string name)
+int DBConnection::read_song(char *&buf, int id)
 {
 	delete[] buf;
 	sql::PreparedStatement* prep_stmt;
 	sql::ResultSet* res;
 
-	prep_stmt = con->prepareStatement("SELECT data FROM songs WHERE name = \"" + name + "\"");
+	prep_stmt = con->prepareStatement("SELECT data FROM songs WHERE id = \"" + std::to_string(id) + "\"");
 
 	res = prep_stmt->executeQuery();
 	res->next();
@@ -46,6 +46,18 @@ int DBConnection::read_song(char *&buf, std::string name)
 	is->read(buf, len);
 
 	return len;
+}
+
+std::string DBConnection::get_song_name(int id)
+{
+	sql::PreparedStatement* prep_stmt;
+	sql::ResultSet* res;
+	prep_stmt = con->prepareStatement("SELECT name FROM songs WHERE id = \"" + std::to_string(id) + "\"");
+
+	res = prep_stmt->executeQuery();
+	res->next();
+
+	return res->getString("name");
 }
 
 int DBConnection::get_table_length(std::string table_name)

@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <limits>
+#include <algorithm>
 
 #define HOST "127.0.0.1"
 #define PORT "6881"
@@ -109,17 +110,68 @@ int main()
 
 	SocketConnection socket_connection(HOST, PORT);
 
-	socket_connection.awaitClientConnection();
+	while (true)
+	{
+		socket_connection.awaitClientConnection();
 
-	// get and send back a test message to check connection
-	char buf[4096];
-	int len = 4096;
-	len = socket_connection.receiveMessage(buf, len);
+		// get and send back a test message to check connection
+		char buf[4096];
+		int len = 4096;
+		len = socket_connection.receiveMessage(buf, len);
 
-	std::cout << "Received: " << buf << '\n';
+		std::cout << "Received: " << buf << '\n';
 
-	socket_connection.sendMessage(buf, len);
+		socket_connection.sendMessage(buf, len);
+		
+		len = 4096;
+		len = socket_connection.receiveMessage(buf, len);
+		
 
+
+		std::cout << buf << '\n';
+
+		if (strcmp(buf, "getAll") == 0)
+		{
+			int table_len = db_connection.get_table_length("songs");
+			socket_connection.sendInt(table_len);
+
+			for (int i = 1; i <= table_len; i++)
+			{
+				std::string name = db_connection.get_song_name(i);
+				socket_connection.sendInt(i);
+				socket_connection.sendString(name);
+
+			}
+		}
+		else if (strcmp(buf, "getSong") == 0)
+		{
+			strcpy(buf, "Command processed");
+			socket_connection.sendMessage(buf, strlen(buf));
+			len = 4096;
+			len = socket_connection.receiveMessage(buf, len);
+			int id = atoi(buf);
+
+			char* song_data = new char[4096];
+			len = db_connection.read_song(song_data, id);
+
+			std::cout << "Read " << len << " bytes from the db, sending them to client\n";
+
+			socket_connection.sendInt(len);
+
+			int curr = 0, step = 4096;
+			while (curr < len)
+			{
+				step = std::min(step, len - curr);
+				socket_connection.sendMessage(song_data + curr, step);
+				curr += step;
+			}
+		}
+
+
+		socket_connection.shutdownClient();
+	}
+
+	/*
 	std::cout << "Sending a test song\n";
 
 	char *song_data = new char[4096]; // for now, doesn't matter what size of the buffer is
@@ -135,13 +187,13 @@ int main()
 	int curr = 0, step = 4096;
 	while (curr < len)
 	{
-		if (curr + step > len)
-			step = len - curr;
+		step = std::min(step, len - curr);
 		socket_connection.sendMessage(song_data + curr, step); 
 		curr += step;
 	}
 	
 	socket_connection.shutdownClient();
+	*/
 
 	return EXIT_SUCCESS;
 }
