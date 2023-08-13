@@ -3,6 +3,8 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
+#ifndef _SOCKET_CONNECTION_H_
+#define _SOCKET_CONNECTION_H_
 class SocketConnection
 {
 public:
@@ -27,3 +29,4 @@ public:
 	sockaddr_in ClientInfo;
 	SOCKET ListenSocket, ClientSocket;
 };
+#endif

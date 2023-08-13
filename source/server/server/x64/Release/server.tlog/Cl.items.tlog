@@ -3,3 +3,4 @@ C:\programming\spotify_project\source\server\server\DBConnection.cpp;C:\programm
 C:\programming\spotify_project\source\server\server\main.cpp;C:\programming\spotify_project\source\server\server\x64\Release\main.obj
 C:\programming\spotify_project\source\server\server\SocketConnection.cpp;C:\programming\spotify_project\source\server\server\x64\Release\SocketConnection.obj
 C:\programming\spotify_project\source\server\server\SocketConnection.h;C:\programming\spotify_project\source\server\server\x64\Release\SocketConnection.obj
+C:\programming\spotify_project\source\server\server\song.cpp;C:\programming\spotify_project\source\server\server\x64\Release\song.obj

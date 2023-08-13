@@ -5,6 +5,7 @@
 #include "DBConnection.h"
 #include "DataBuf.h"
 #include "SocketConnection.h"
+#include "song.h"
 
 #include <cerrno>
 #include <cstring>
@@ -48,8 +49,6 @@ DBConnection connect()
 
 void populate(DBConnection &connection)
 {
-	// TODO: implement song class
-
 	while (true)
 	{
 		std::cout << "Enter path to the song or enter \"exit\" to stop: ";
@@ -59,7 +58,6 @@ void populate(DBConnection &connection)
 		if (to_lowercase(input) == "exit")
 			return;
 
-		// move this all to the song class
 		std::ifstream file(input, std::ios::binary);
 		
 		if (!file)
@@ -91,9 +89,16 @@ void populate(DBConnection &connection)
 		int start_pos = input.find_last_of('\\') + 1;
 		std::string name = input.substr(start_pos, input.find_last_of('.') - start_pos);
 
-		std::cout << input.find_last_of('.') << ' ' << name << '\n';
+		// TEMPORARY PLACEHOLDERS
+		char* image = nullptr;
+		int artist_id = 1;
+		int album_id = 1;
 
-		connection.insert_song(stream, name);
+		Song song(connection.get_table_length("songs") + 1, name, image, artist_id, album_id);
+
+		connection.insert_song(stream, song);
+
+		delete[] buf;
 	}
 }
 
@@ -110,6 +115,7 @@ int main()
 
 	SocketConnection socket_connection(HOST, PORT);
 
+	// TODO: support multiple connections using multithreads
 	while (true)
 	{
 		socket_connection.awaitClientConnection();
@@ -125,8 +131,6 @@ int main()
 		
 		len = 4096;
 		len = socket_connection.receiveMessage(buf, len);
-		
-
 
 		std::cout << buf << '\n';
 
@@ -165,35 +169,13 @@ int main()
 				socket_connection.sendMessage(song_data + curr, step);
 				curr += step;
 			}
+
+			delete[] song_data;
 		}
 
 
 		socket_connection.shutdownClient();
 	}
-
-	/*
-	std::cout << "Sending a test song\n";
-
-	char *song_data = new char[4096]; // for now, doesn't matter what size of the buffer is
-	len = db_connection.read_song(song_data, "song");
-
-	std::cout << "Read " << len << " bytes from the db, sending them to client\n";
-
-	char* len_str = new char[20];
-	len_str = _itoa(len, len_str, 10);
-
-	socket_connection.sendMessage(len_str, strlen(len_str));
-
-	int curr = 0, step = 4096;
-	while (curr < len)
-	{
-		step = std::min(step, len - curr);
-		socket_connection.sendMessage(song_data + curr, step); 
-		curr += step;
-	}
-	
-	socket_connection.shutdownClient();
-	*/
 
 	return EXIT_SUCCESS;
 }

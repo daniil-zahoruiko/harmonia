@@ -9,16 +9,18 @@ DBConnection::DBConnection(std::string &dbName, std::string &hostName, std::stri
 	con->setSchema(dbName);
 }
 
-void DBConnection::insert_song(std::istream& data, std::string &name)
+void DBConnection::insert_song(std::istream& data, Song song)
 {
 	sql::PreparedStatement* prep_stmt;
 
-	prep_stmt = con->prepareStatement("INSERT INTO songs (id, name, data, duration) VALUES(?, ?, ?, ?)");
+	// TODO: Add images, also not forget to update the schema to not null for images
+	prep_stmt = con->prepareStatement("INSERT INTO songs(id, name, data, artistId, albumId) VALUES (?, ?, ?, ?, ?)");
 
-	prep_stmt->setInt(1, get_table_length("songs") + 1);
-	prep_stmt->setString(2, name);
+	prep_stmt->setInt(1, song.get_id());
+	prep_stmt->setString(2, song.get_name());
 	prep_stmt->setBlob(3, &data);
-	prep_stmt->setInt(4, 0); // TODO: get song duration
+	prep_stmt->setInt(4, song.get_artist_id());
+	prep_stmt->setInt(5, song.get_album_id());
 
 	prep_stmt->execute();
 

@@ -21,6 +21,9 @@
     <ClInclude Include="DataBuf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="song.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="SocketConnection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="song.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
