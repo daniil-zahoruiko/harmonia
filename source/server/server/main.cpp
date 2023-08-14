@@ -82,10 +82,11 @@ void populate(DBConnection &connection)
 
 		// TEMPORARY PLACEHOLDERS
 		char* image = nullptr;
+		int img_len = 0;
 		int artist_id = 1;
 		int album_id = 1;
 
-		Song song(connection.get_table_length("songs") + 1, name, image, artist_id, album_id);
+		Song song(connection.get_table_length("songs") + 1, name, image, img_len, artist_id, album_id);
 
 		connection.insert_song(stream, song);
 
@@ -132,9 +133,10 @@ int main()
 
 			for (int i = 1; i <= table_len; i++)
 			{
-				std::string name = db_connection.get_song_name(i);
+				Song song = db_connection.get_song(i);
 				socket_connection.sendInt(i);
-				socket_connection.sendString(name);
+				socket_connection.sendString(song.get_name());
+				socket_connection.sendString(db_connection.get_artist(song.get_artist_id()).get_name());
 
 			}
 		}
@@ -146,8 +148,8 @@ int main()
 			len = socket_connection.receiveMessage(buf, len);
 			int id = atoi(buf);
 
-			char* song_data = new char[4096];
-			len = db_connection.read_song(song_data, id);
+			char* song_data = nullptr;
+			len = db_connection.get_song_binary(song_data, id);
 
 			std::cout << "Read " << len << " bytes from the db, sending them to client\n";
 

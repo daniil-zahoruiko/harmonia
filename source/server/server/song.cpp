@@ -1,10 +1,11 @@
 #include "song.h"
 
-Song::Song(int id, std::string name, char* image, int artist_id, int album_id)
+Song::Song(int id, std::string name, char* image, int img_len, int artist_id, int album_id)
 {
 	this->id = id;
 	this->name = name;
 	this->image = image;
+	this->img_len = img_len;
 	this->artist_id = artist_id;
 	this->album_id = album_id;
 }

@@ -7,6 +7,12 @@ PORT = 6881
 def send_server_command(command, s):
     s.send(command)
 
+def receive_int(s, n):
+    return int(s.recv(n).decode('utf-8'))
+
+def receive_str(s, n):
+    return str(s.recv(n).decode('utf-8'))
+
 def get_all_songs():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
@@ -16,12 +22,13 @@ def get_all_songs():
     
         send_server_command(b"getAll", s)
 
-        num_of_songs = int(s.recv(20).decode('utf-8'))
+        num_of_songs = receive_int(s, 20)
         data = []
         for i in range(num_of_songs):
-            id = int(s.recv(20).decode('utf-8'))
-            name = str(s.recv(1024).decode('utf-8'))
-            data.append({"id":str(id), "title":name, "file":str(id) + ".mp3", "cover":"test1.webp", "artist":name + "_artist"})
+            id = receive_int(s, 20)
+            name = receive_str(s, 1024)
+            artist_name = receive_str(s, 1024)
+            data.append({"id":str(id), "title":name, "file":str(id) + ".mp3", "cover":"test1.webp", "artist":artist_name})
 
         return data
     
@@ -37,11 +44,11 @@ def get_song_data(id):
 
             send_server_command(b"getSong", s)
 
-            data = str(s.recv(128).decode('utf-8'))
+            data = receive_str(s, 128)
 
             s.send(str(id).encode())
 
-            song_data_len = int(s.recv(20).decode('utf-8'))
+            song_data_len = receive_int(s, 20)
 
             step = 4096
             curr = 0

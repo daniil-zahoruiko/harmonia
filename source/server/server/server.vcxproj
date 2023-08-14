@@ -130,11 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="artist.h" />
     <ClInclude Include="DataBuf.h" />
     <ClInclude Include="DBConnection.h" />
     <ClInclude Include="song.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="artist.cpp" />
     <ClCompile Include="DataBuf.cpp" />
     <ClCompile Include="DBConnection.cpp" />
     <ClCompile Include="main.cpp" />

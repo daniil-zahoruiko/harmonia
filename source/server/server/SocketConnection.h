@@ -22,7 +22,7 @@ public:
 
 	~SocketConnection();
 
-//private:
+private:
 	WSAData wsaData;
 	WORD DllVersion;
 	addrinfo* addr;

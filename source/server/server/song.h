@@ -5,7 +5,7 @@
 class Song
 {
 public:
-	Song(int id, std::string name, char* image, int artist_id, int album_id);
+	Song(int id, std::string name, char* image, int img_len, int artist_id, int album_id);
 
 	int get_id();
 	std::string get_name();
@@ -16,7 +16,9 @@ public:
 private:
 	int id;
 	std::string name;
+	
 	char* image;
+	int img_len;
 
 	int artist_id;
 

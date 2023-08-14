@@ -1,5 +1,20 @@
 #include "DBConnection.h"
 
+int istream_to_cstr(std::istream* is, char *&buf)
+{
+	if(buf != nullptr)
+		delete[] buf;
+
+	is->seekg(0, std::ios_base::end);
+	int len = is->tellg();
+	is->seekg(0, std::ios_base::beg);
+
+	buf = new char[len];
+	is->read(buf, len);
+
+	return len;
+}
+
 DBConnection::DBConnection(std::string &dbName, std::string &hostName, std::string &userName, std::string &password)
 {
 	driver = get_driver_instance();
@@ -27,9 +42,8 @@ void DBConnection::insert_song(std::istream& data, Song song)
 	delete prep_stmt;
 }
 
-int DBConnection::read_song(char *&buf, int id)
+int DBConnection::get_song_binary(char *&buf, int id)
 {
-	delete[] buf;
 	sql::PreparedStatement* prep_stmt;
 	sql::ResultSet* res;
 
@@ -39,27 +53,46 @@ int DBConnection::read_song(char *&buf, int id)
 	res->next();
 	std::istream* is = res->getBlob("data");
 
-	is->seekg(0, std::ios_base::end);
-	int len = is->tellg();
-	is->seekg(0, std::ios_base::beg);
+	delete res;
+	delete prep_stmt;
 
-	std::cout << len << '\n';
-	buf = new char[len];
-	is->read(buf, len);
-
-	return len;
+	return istream_to_cstr(is, buf);
 }
 
-std::string DBConnection::get_song_name(int id)
+Song DBConnection::get_song(int id)
 {
 	sql::PreparedStatement* prep_stmt;
 	sql::ResultSet* res;
-	prep_stmt = con->prepareStatement("SELECT name FROM songs WHERE id = \"" + std::to_string(id) + "\"");
+	prep_stmt = con->prepareStatement("SELECT * FROM songs WHERE id = \"" + std::to_string(id) + "\"");
 
 	res = prep_stmt->executeQuery();
 	res->next();
 
-	return res->getString("name");
+	char* image = nullptr;
+	int img_len = istream_to_cstr(res->getBlob("image"), image);
+	Song res_song(id, res->getString("name"), image, img_len, res->getInt("artistId"), res->getInt("albumId"));
+
+	delete res;
+	delete prep_stmt;
+
+	return res_song;
+}
+
+Artist DBConnection::get_artist(int id)
+{
+	sql::PreparedStatement* prep_stmt;
+	sql::ResultSet* res;
+	prep_stmt = con->prepareStatement("SELECT * FROM artists WHERE id = \"" + std::to_string(id) + "\"");
+
+	res = prep_stmt->executeQuery();
+	res->next();
+
+	Artist res_artist(id, res->getString("name"));
+
+	delete prep_stmt;
+	delete res;
+
+	return res_artist;
 }
 
 int DBConnection::get_table_length(std::string table_name)
@@ -78,6 +111,8 @@ int DBConnection::get_table_length(std::string table_name)
 
 	return length;
 }
+
+
 
 DBConnection::~DBConnection()
 {
