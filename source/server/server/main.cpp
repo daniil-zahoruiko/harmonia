@@ -19,6 +19,9 @@
 #define PORT "6881"
 
 const std::string DEFAULT_DB_HOST = "tcp://127.0.0.1:3306";
+const std::string DEFAULT_DB_USER = "root";
+const std::string DEFAULT_DB_PASSWORD = "1234";
+const std::string DEFAULT_DB_SCHEMA = "main";
 
 std::string to_lowercase(std::string s)
 {
@@ -30,19 +33,7 @@ std::string to_lowercase(std::string s)
 
 DBConnection connect()
 {
-	std::string user, password, db, host;
-	std::cout << "Enter your hostname or default to use default: ";
-	std::cin >> host;
-
-	if (to_lowercase(host) == "default")
-		host = DEFAULT_DB_HOST;
-
-	std::cout << "Enter your MySQL instance username: ";
-	std::cin >> user;
-	std::cout << "Password: ";
-	std::cin >> password;
-	std::cout << "Enter your schema name: ";
-	std::cin >> db;
+	std::string user = DEFAULT_DB_USER, password = DEFAULT_DB_PASSWORD, db = DEFAULT_DB_SCHEMA, host = DEFAULT_DB_HOST;
 
 	return DBConnection(db, host, user, password);
 }
