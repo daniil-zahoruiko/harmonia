@@ -44,7 +44,7 @@ void populate(DBConnection &connection)
 	{
 		std::cout << "Enter path to the song or enter \"exit\" to stop: ";
 		std::string input;
-		std::cin >> input;
+		getline(std::cin, input);
 
 		if (to_lowercase(input) == "exit")
 			return;
@@ -98,9 +98,9 @@ int main()
 {
 	DBConnection db_connection = connect();
 
-	std::cout << "If you want to populate the database before starting the server, enter \"populate\", otherwise enter \"skip\": ";
+	std::cout << "If you want to populate the database before starting the server, enter \"populate\", otherwise press enter: ";
 	std::string command;
-	std::cin >> command;
+	getline(std::cin, command);
 	
 	if (to_lowercase(command) == "populate")
 		populate(db_connection);
