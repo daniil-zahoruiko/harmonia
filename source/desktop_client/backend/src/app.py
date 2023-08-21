@@ -1,20 +1,23 @@
 # Import flask and datetime module for showing date and time
 from flask import Flask, jsonify, send_file
 import datetime
-import server_connection as srv
+import utils
 
 x = datetime.datetime.now()
+
+db_connection = utils.establish_db_connection()
 
 # Initializing flask app
 app = Flask(__name__)
 
-
 data ={
     "user":{
-        "songs":srv.get_all_songs(),
+        "songs":utils.get_all_songs(db_connection),
         "playlists":["Playlist 1", "Playlist 2", "Playlist 3"]
     }
 }
+
+print(data)
 
 songs_files = [song["file"] for song in data["user"]["songs"]]
 songs_ids = [song["id"] for song in data["user"]["songs"]]
@@ -41,18 +44,15 @@ def song(id):
     if id not in songs_ids:
         return "No such song"
     else:
-        srv.get_song_data(id)
-        return send_file("./songs/" + id + ".mp3")
+        return send_file(utils.get_song_file(db_connection, id))
 
 
-@app.route("/api/artist/<song>/cover/")
-def song_image(song):
-    if song not in songs_ids:
+@app.route("/api/artist/<id>/cover/")
+def song_image(id):
+    if id not in songs_ids:
         return "No such song"
     else:
-        for i in data["user"]["songs"]:
-            if i["id"] == song:
-                return send_file("./images/"+i["cover"])
+        return send_file(utils.get_image_file(db_connection, id))
 
 
 # Running app
