@@ -25,6 +25,11 @@ class DBConnection:
 
     def read_image_file(self, id):
         dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
+
+        if(not os.path.exists(dir)):
+            os.mkdir(dir, 0o666)
+
+
         dir = os.path.join(dir, id + ".webp")
 
         if(not os.path.isfile(dir)):
@@ -33,8 +38,6 @@ class DBConnection:
 
             query = f"SELECT image FROM main.songs WHERE id = {int(id)}"
 
-
-            print("------------"+query+"-----------------")
             cursor.execute(query)
 
             file = cursor.fetchone()[0]
@@ -47,6 +50,10 @@ class DBConnection:
 
     def read_song_file(self, id):
         dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "songs")
+
+        if(not os.path.exists(dir)):
+            os.mkdir(dir, 0o666)
+
         dir = os.path.join(dir, id + ".mp3")
 
         if(not os.path.isfile(dir)):
