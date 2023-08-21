@@ -3,11 +3,10 @@ import "../styles/mainWindow.css"
 
 
 
-export const MainWindow = (props) => {
-    console.log(props)
+export const MainWindow = ({songs,currentIndex,setCurrentIndex}) => {
     return(
         <div className="main_window_wrapper">
-            <Home songs = {props.songs}/>
+            <Home songs = {songs} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/>
         </div>
     )
 }

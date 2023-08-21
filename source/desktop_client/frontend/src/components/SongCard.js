@@ -1,14 +1,13 @@
 import "../styles/songcard.css"
 
 
-export const SongCard = (props) => {
-    console.log(props)
+export const SongCard = ({onClick, id, title, artist}) => {
 
     return(
-        <div className="SongCard">
-            <img alt={props.title} src={`api/artist/${props.id}/cover/`} />
-            <h1 className="song_card_title">{props.title}</h1>
-            <p className="song_card_artist">{props.artist}</p>
+        <div onClick={onClick} className="SongCard">
+            <img alt={title} src={`api/artist/${id}/cover/`} />
+            <h1 className="song_card_title">{title}</h1>
+            <p className="song_card_artist">{artist}</p>
         </div>
     )
 }

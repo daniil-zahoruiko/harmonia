@@ -4,7 +4,7 @@ import { Loader } from '../Loader';
 import '../../styles/player.css';
 
 
-export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurrentSong, songs, skipped, setSkipped})=> {
+export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurrentSong, songs,currentIndex})=> {
 
   const [volume, setVolume] = useState(1)
 
@@ -14,6 +14,10 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
     setisplaying(!isplaying);
 
   }
+
+  useEffect(()=>{
+    setCurrentSong(songs[currentIndex])
+  },[currentIndex,songs,setCurrentSong])
 
   // set current time while using range scroller
   const changeRange = (e) =>{
@@ -25,12 +29,14 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
     const value = e.target.value
     audioElem.current.volume = value
     setVolume(value)
-    console.log(audioElem.current.volume)
   }
 
   // skip to previous music
   const skipBack = ()=>
   {
+    if(!audioElem.current.currentTime){
+      return
+    }
     if(audioElem.current.currentTime>3){
       audioElem.current.currentTime = 0;
       return
@@ -45,12 +51,15 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       setCurrentSong(songs[index - 1])
     }
     audioElem.current.currentTime = 0;
-    setSkipped(skipped+1)
   }
 
   // skip to next music
-  const skiptoNext = ()=>
+  const skiptoNext =
+    ()=>
   {
+    if(!audioElem.current.currentTime){
+      return
+    }
     const index = songs.findIndex(x=>x.title === currentSong.title);
 
     if (index === songs.length-1)
@@ -62,7 +71,6 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
       setCurrentSong(songs[index + 1])
     }
     audioElem.current.currentTime = 0;
-    setSkipped(skipped+1)
     }
 
   // Start next song after it ends
@@ -100,7 +108,7 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
               step="0.01"
           />
           <p>{currentSong.length?
-          Math.round(currentSong.length%60)<10?`${Math.round(currentSong.length/60)}:0${Math.round(currentSong.length%60)}`:`${Math.round(currentSong.length/60)}:${Math.round(currentSong.length%60)}`
+          Math.round(currentSong.length%60)<10?`${Math.floor(currentSong.length/60)}:0${Math.floor(currentSong.length%60)}`:`${Math.floor(currentSong.length/60)}:${Math.floor(currentSong.length%60)}`
           :"-:--"}</p>
         </div>
         <div className='playlist_sound_wrapper'>

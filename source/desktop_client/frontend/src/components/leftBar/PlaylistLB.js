@@ -3,7 +3,6 @@ import {MdOutlineLibraryMusic} from "react-icons/md"
 
 
 export const PlaylistLB = ({lbState,userPlaylists}) => {
-    console.log(userPlaylists)
     const [style, setStyle] = useState("closed")
 
     const changePlaylistArrow = () =>{
