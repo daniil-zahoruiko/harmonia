@@ -41,7 +41,7 @@ def main():
             print("Invalid file")
 
         quit = input('To quit, enter "quit": ')
-        
+
 
 
 if __name__ == "__main__":

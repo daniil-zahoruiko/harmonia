@@ -6,18 +6,19 @@ PASSWORD = "1234"
 HOST = "127.0.0.1"
 DATABASE = "main"
 
-def establish_db_connection():
-    return DBConnection(USER, PASSWORD, HOST, DATABASE)
 
-def get_all_songs(db_connection):
-    songs = db_connection.get_all_songs_query()
+def establish_db_connection(app):
+    return DBConnection(app)
 
-    data =[{"id":str(song.get_id()), "title":song.get_name(), "file":f"{song.get_id()}.mp3", "cover":"test1.webp", "artist":db_connection.get_artist_by_id(song.get_artist_id()).get_name()} for song in songs]
+def get_all_songs(db):
+    songs = db.get_all_songs_query()
+
+    data =[{"id":str(song.get_id()), "title":song.get_name(), "file":f"{song.get_id()}.mp3", "cover":f"{song.get_id()}.webp", "artist":db.get_artist_by_id(song.get_artist_id()).get_name()} for song in songs]
 
     return data
 
-def get_song_file(db_connection, id):
-    return db_connection.read_song_file(id)
+def get_song_file(db, id):
+    return db.read_song_file(id)
 
-def get_image_file(db_connection, id):
-    return db_connection.read_image_file(id)
+def get_image_file(db, id):
+    return db.read_image_file(id)
