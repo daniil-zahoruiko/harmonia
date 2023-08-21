@@ -1,7 +1,0 @@
-C:\programming\spotify_project\source\server\server\artist.cpp;C:\programming\spotify_project\source\server\server\x64\Release\artist.obj
-C:\programming\spotify_project\source\server\server\DataBuf.cpp;C:\programming\spotify_project\source\server\server\x64\Release\DataBuf.obj
-C:\programming\spotify_project\source\server\server\DBConnection.cpp;C:\programming\spotify_project\source\server\server\x64\Release\DBConnection.obj
-C:\programming\spotify_project\source\server\server\main.cpp;C:\programming\spotify_project\source\server\server\x64\Release\main.obj
-C:\programming\spotify_project\source\server\server\SocketConnection.cpp;C:\programming\spotify_project\source\server\server\x64\Release\SocketConnection.obj
-C:\programming\spotify_project\source\server\server\SocketConnection.h;C:\programming\spotify_project\source\server\server\x64\Release\SocketConnection.obj
-C:\programming\spotify_project\source\server\server\song.cpp;C:\programming\spotify_project\source\server\server\x64\Release\song.obj
