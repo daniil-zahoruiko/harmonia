@@ -1,6 +1,10 @@
 from db_connection import DBConnection
 import helpers
 import os
+import random
+
+
+genres_samples = ["hip-hop","rock","rap","trap","classical","workout","jazz","indie","country"]
 
 def run(connection):
     main(connection)
@@ -13,10 +17,10 @@ def main(db_connection):
         if os.path.isfile(dir) and file[-3:] == "mp3":
             file_data = helpers.read_file(dir)
 
-            db_connection.write_song(file[:-4], "Hip-Hop", file_data, 1, 1)
+            db_connection.write_song(file[:-4], random.choice(genres_samples), file_data, 1, 1)
 
     path = input("Enter path to image files: ")
-    
+
     quit = ""
 
     while quit != "quit":
