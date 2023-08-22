@@ -16,6 +16,7 @@ connection = utils.establish_db_connection(app)
 @app.route('/populate')
 def populate():
     populate_db.run(connection)
+    return("Populated succesfully")
 
 # Route for seeing a data
 @app.route('/api')
