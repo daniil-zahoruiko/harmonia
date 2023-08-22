@@ -49,14 +49,14 @@ class DBConnection:
 
 
     def get_all_songs_query(self):
-        query = "SELECT id, name, artistId, albumId FROM songs"
+        query = "SELECT id, name, genre, artistId, albumId FROM songs"
 
         query_res = self.execute_query(query=query, fetch_func="fetchall")
 
         res = []
 
-        for (id, name, artist_id, album_id) in query_res:
-            res.append(Song(id, name, artist_id, album_id))
+        for (id, name, genre, artist_id, album_id) in query_res:
+            res.append(Song(id, name, genre, artist_id, album_id))
 
         return res
 
@@ -95,11 +95,11 @@ class DBConnection:
 
         return "./songs/" + id + ".mp3"
 
-    def write_song(self, name, data, artist_id, album_id):
+    def write_song(self, name, genre, data, artist_id, album_id):
         id = self.get_number_of_songs() + 1
-        query = f"INSERT INTO songs(id, name, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s)"
+        query = f"INSERT INTO songs(id, name, genre, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s, %s)"
 
-        args = (id, name, data, artist_id, album_id)
+        args = (id, name, genre, data, artist_id, album_id)
 
         self.execute_query(query=query, args=args, commit=True)
 

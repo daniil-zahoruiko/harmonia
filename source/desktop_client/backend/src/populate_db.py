@@ -1,5 +1,4 @@
 from db_connection import DBConnection
-from flask import Flask
 import helpers
 import os
 
@@ -14,7 +13,7 @@ def main(db_connection):
         if os.path.isfile(dir) and file[-3:] == "mp3":
             file_data = helpers.read_file(dir)
 
-            db_connection.write_song(file[:-4], file_data, 1, 1)
+            db_connection.write_song(file[:-4], "Hip-Hop", file_data, 1, 1)
 
     path = input("Enter path to image files: ")
     

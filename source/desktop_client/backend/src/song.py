@@ -1,7 +1,8 @@
 class Song:
-    def __init__(self, id, name, artist_id, album_id):
+    def __init__(self, id, name, genre, artist_id, album_id):
         self.id = id
         self.name = name
+        self.genre = genre
         self.artist_id = artist_id
         self.album_id = album_id
 
@@ -11,6 +12,9 @@ class Song:
     def get_id(self):
         return self.id
     
+    def get_genre(self):
+        return self.genre
+
     def get_artist_id(self):
         return self.artist_id
     
