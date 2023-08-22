@@ -3,4 +3,3 @@
 .vscode/c_cpp_properties.json
 .vscode/tasks.json
 .source/desktop_client/backend/env/
-.source/desktop_client/bakcend/src/__pycache__
