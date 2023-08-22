@@ -2,24 +2,62 @@ import os
 import helpers
 from song import Song
 from artist import Artist
-from flask_mysqldb import MySQL
+from flask_mysqldb import MySQL, MySQLdb
+from MySQLdb.cursors import CursorUseResultMixIn, CursorStoreResultMixIn
 
 
 class DBConnection:
     def __init__(self, app):
         self.mysql = MySQL(app)
-    def get_all_songs_query(self):
+
+    def execute_query(self, query, args=None, fetch_func=None, fetch_size=0, commit=False):
         cursor = self.mysql.connection.cursor()
+
+        try:
+            cursor.execute(query, args)
+        except MySQLdb.Error as e:
+            print(e)
+            cursor.close()
+            return None
+
+        if commit:
+            self.mysql.commit()
+
+        if fetch_func == None:
+            cursor.close()
+            return None
+
+        valid_fetch_func = ("fetchall", "fetchone", "fetchmany")
+
+        if fetch_func.lower() not in valid_fetch_func:
+            print("Invalid fetch function")
+            cursor.close()
+            return None
+
+        res = None
+        try:
+            if fetch_func == "fetchall":
+                res = cursor.fetchall()
+            elif fetch_func == "fetchone":
+                res = cursor.fetchone()
+            else:
+                res = cursor.fetchmany(fetch_size)
+        except MySQLdb.Error as e:
+            print(e)
+        finally:
+            cursor.close()
+            return res
+
+
+    def get_all_songs_query(self):
         query = "SELECT id, name, artistId, albumId FROM songs"
 
-        cursor.execute(query)
+        query_res = self.execute_query(query=query, fetch_func="fetchall")
 
         res = []
 
-        for (id, name, artist_id, album_id) in cursor:
+        for (id, name, artist_id, album_id) in query_res:
             res.append(Song(id, name, artist_id, album_id))
-
-        cursor.close()
 
         return res
 
@@ -29,22 +67,14 @@ class DBConnection:
         if(not os.path.exists(dir)):
             os.mkdir(dir, 0o666)
 
-
         dir = os.path.join(dir, id + ".webp")
 
         if(not os.path.isfile(dir)):
-            cursor = self.mysql.connection.cursor()
+            query = "SELECT image FROM main.songs WHERE id = %s"
 
-
-            query = f"SELECT image FROM main.songs WHERE id = {int(id)}"
-
-            cursor.execute(query)
-
-            file = cursor.fetchone()[0]
+            file = self.execute_query(query=query,args=(id, ), fetch_func="fetchone")[0]
 
             helpers.write_file(file, dir)
-
-            cursor.close()
 
         return "./images/" + id + ".webp"
 
@@ -57,64 +87,38 @@ class DBConnection:
         dir = os.path.join(dir, id + ".mp3")
 
         if(not os.path.isfile(dir)):
-            cursor = self.mysql.connection.cursor()
-            query = f"SELECT data FROM songs WHERE id = {id}"
+            query = "SELECT data FROM songs WHERE id = %s"
 
-            cursor.execute(query)
-
-            file = cursor.fetchone()[0]
+            file = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")[0]
 
             helpers.write_file(file, dir)
-
-            cursor.close()
 
 
         return "./songs/" + id + ".mp3"
 
     def write_song(self, name, data, artist_id, album_id):
-        cursor = self.mysql.connection.cursor()
         id = self.get_number_of_songs() + 1
         query = f"INSERT INTO songs(id, name, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s)"
 
         args = (id, name, data, artist_id, album_id)
 
-        cursor.execute(query, args)
-
-        cursor.close()
-        self.mysql.commit()
-
-
-
+        self.execute_query(query=query, args=args, commit=True)
 
     def add_image(self, id, data):
-        cursor = self.mysql.connection.cursor()
         query = "UPDATE songs SET image = %s WHERE id = %s"
 
-        args = (data, id)
-
-        cursor.execute(query, args)
-
-        cursor.close()
-        self.mysql.commit()
+        self.execute_query(query=query, args=(data, id), commit=True)
 
 
     def get_artist_by_id(self, id):
-        cursor = self.mysql.connection.cursor()
-        query = f"SELECT * FROM artists WHERE id = {id}"
+        query = "SELECT * FROM artists WHERE id = %s"
 
-        cursor.execute(query)
-        (id, name) = cursor.fetchone()
-
-        cursor.close()
+        (id, name) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
 
         return Artist(id, name)
 
     def get_number_of_songs(self):
-        cursor = self.mysql.connection.cursor()
-        cursor.execute("SELECT COUNT(*) FROM songs")
-        res = cursor.fetchone()[0]
-        cursor.close()
-        return res
+        return self.execute_query(query="SELECT COUNT(*) FROM songs", fetch_func="fetchone")[0]
 
     def __del__(self):
         self.mysql.connection.close()
