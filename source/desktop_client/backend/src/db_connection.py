@@ -3,7 +3,6 @@ import helpers
 from song import Song
 from artist import Artist
 from flask_mysqldb import MySQL, MySQLdb
-from MySQLdb.cursors import CursorUseResultMixIn, CursorStoreResultMixIn
 
 
 class DBConnection:
@@ -21,7 +20,7 @@ class DBConnection:
             return None
 
         if commit:
-            self.mysql.commit()
+            self.mysql.connection.commit()
 
         if fetch_func == None:
             cursor.close()

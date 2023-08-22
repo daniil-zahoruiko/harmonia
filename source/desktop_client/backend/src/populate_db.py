@@ -1,15 +1,12 @@
 from db_connection import DBConnection
+from flask import Flask
 import helpers
 import os
 
-USER = "root"
-PASSWORD = "1234"
-HOST = "127.0.0.1"
-DATABASE = "main"
+def run(connection):
+    main(connection)
 
-def main():
-    db_connection = DBConnection(USER, PASSWORD, HOST, DATABASE)
-
+def main(db_connection):
     path = input("Enter path to song files: ")
 
     for file in os.listdir(path):
@@ -41,8 +38,3 @@ def main():
             print("Invalid file")
 
         quit = input('To quit, enter "quit": ')
-
-
-
-if __name__ == "__main__":
-    main()

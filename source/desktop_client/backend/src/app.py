@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, send_file
 import utils
-from flask_mysqldb import MySQL
-
-
+import populate_db
 
 # Initializing flask app
 app = Flask(__name__)
@@ -14,6 +12,10 @@ app.config['MYSQL_DB'] = 'main'
 
 connection = utils.establish_db_connection(app)
 
+# populating data to the db
+@app.route('/populate')
+def populate():
+    populate_db.run(connection)
 
 # Route for seeing a data
 @app.route('/api')
