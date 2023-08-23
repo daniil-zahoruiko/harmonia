@@ -1,0 +1,42 @@
+.results_list{
+    display: flex;
+    flex-direction: column;
+    padding: 0 10%;
+    text-align: left;
+}
+.result_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1%;
+    border-bottom:1px solid #44489F;
+    align-items: center;
+}
+
+.result_data_wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.result_image{
+    width:5vw;
+    height: 5vw;
+}
+.result_data{
+    width:60%;
+}
+.result_artist{
+    margin-left: 5%;
+    font-size: 1vw;
+}
+.result_title{
+    font-size: 3vw;
+    margin: 0;
+}
+.result_album{
+    width:20%
+}
+.result_type{
+    font-size: 1vw;
+    color:grey
+}
