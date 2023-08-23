@@ -2,6 +2,7 @@ import os
 import helpers
 from song import Song
 from artist import Artist
+from album import Album
 from flask_mysqldb import MySQL, MySQLdb
 
 
@@ -115,6 +116,13 @@ class DBConnection:
         (id, name) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
 
         return Artist(id, name)
+
+    def get_album_by_id(self, id):
+        query = "SELECT * FROM albums WHERE id = %s"
+
+        (id, name, artist_id) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
+
+        return Album(id, name, artist_id)
 
     def get_number_of_songs(self):
         return self.execute_query(query="SELECT COUNT(*) FROM songs", fetch_func="fetchone")[0]
