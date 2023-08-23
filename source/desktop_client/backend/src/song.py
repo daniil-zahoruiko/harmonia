@@ -8,15 +8,15 @@ class Song:
 
     def get_name(self):
         return self.name
-    
+
     def get_id(self):
         return self.id
-    
+
     def get_genre(self):
         return self.genre
 
     def get_artist_id(self):
         return self.artist_id
-    
+
     def get_album_id(self):
         return self.album_id
