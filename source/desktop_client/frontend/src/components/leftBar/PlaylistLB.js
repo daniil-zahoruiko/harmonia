@@ -1,8 +1,10 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import {MdOutlineLibraryMusic} from "react-icons/md"
+import { SongsContext } from "../../SongsData";
 
 
-export const PlaylistLB = ({lbState,userPlaylists}) => {
+export const PlaylistLB = ({lbState}) => {
+    const {user:[userPlaylists]} = React.useContext(SongsContext)
     const [style, setStyle] = useState("closed")
 
     const changePlaylistArrow = () =>{

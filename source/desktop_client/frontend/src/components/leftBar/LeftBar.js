@@ -1,11 +1,13 @@
-import "../../styles/leftbar.css"
+import React,{ useState } from "react"
 import { PlaylistLB } from "./PlaylistLB"
+import { SongsContext } from "../../SongsData";
 import {IoChevronBackCircleSharp,IoChevronForwardCircleSharp} from "react-icons/io5"
-import { useState } from "react"
+import "../../styles/leftbar.css"
 
 
-export const LeftBar = (userPlaylists) => {
+export const LeftBar = () => {
     const [lbState, setLbState] = useState("full")
+    const {user:[userPlaylists]} = React.useContext(SongsContext)
 
     const hideLb = () =>{
         const mainWindowElement = document.getElementsByClassName("main_window_wrapper")

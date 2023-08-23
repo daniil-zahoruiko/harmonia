@@ -1,27 +1,41 @@
 import { useRef, useEffect,useState } from "react";
 import { Player } from "./Player";
+import { SongsContext } from "../../SongsData";
+import React from "react";
+import { Loader } from "../utils/Loader";
 
 
-export const Audio = ({songs,setCurrentIndex,currentIndex}) =>{
+export const Audio = () =>{
     const audioElem = useRef(null);
 
-    const [isplaying, setisplaying] = useState(false);
+    const {playing:[isPlaying,setIsPlaying]} = React.useContext(SongsContext)
+    const {songData:[currentSongData,setCurrentSongData]} = React.useContext(SongsContext)
     const [first,setFirst] = useState(1)
-    const [currentSong, setCurrentSong] = useState({...songs[0], "progress":0,"length":0 });
+    const [currentSong, setCurrentSong] = useState({...currentSongData, "progress":0,"length":0 });
+
+    console.log(currentSongData)
+
+    useEffect(() => {
+        console.log("changed")
+        setCurrentSong({...currentSongData, "progress":0,"length":0 })
+        console.log(currentSongData)
+        console.log(currentSong)
+      }, [currentSongData])
+
 
 
 
     // if play/pause button pressed play/pause music
     useEffect(() => {
         if(audioElem.current){
-            if (isplaying) {
+            if (isPlaying) {
                 audioElem.current.play();
                 }
             else {
                 audioElem.current.pause();
             }
         }
-      }, [isplaying])
+      }, [isPlaying])
 
     // play song by default after skip (exlcuding first load)
 
@@ -42,15 +56,16 @@ export const Audio = ({songs,setCurrentIndex,currentIndex}) =>{
       }
 
     useEffect(()=>{
+        console.log("I am gay")
         if(first){
             setFirst(0)
         }
         else{
-            if(isplaying === true){
+            if(isPlaying === true){
                 audioElem.current.play()
             }
             else{
-                setisplaying(true)
+                setIsPlaying(true)
             }
         }
 
@@ -58,14 +73,14 @@ export const Audio = ({songs,setCurrentIndex,currentIndex}) =>{
         if(audioElem.current.duration){
             setCurrentSong({...currentSong,"length":audioElem.current.duration})
         }
-    },[currentSong.file])
+    },[currentSongData])
 
 
     return(
         <>
-            <audio src={`/api/song/${currentSong.id}`} ref={audioElem} onTimeUpdate={onPlaying} />
-            <Player songs={songs} isplaying={isplaying} setisplaying={setisplaying} audioElem={audioElem}
-             currentSong={currentSong} setCurrentSong={setCurrentSong} currentIndex={currentIndex} setCurrentIndex={setCurrentIndex} />
+            <audio src={`/api/song/${currentSongData.id}`} ref={audioElem} onTimeUpdate={onPlaying} />
+            <Player audioElem={audioElem}
+             currentSong={currentSong} setCurrentSong={setCurrentSong} />
         </>
     )
 }

@@ -1,23 +1,31 @@
 import React, { useEffect,useState } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill,BsVolumeUp, BsVolumeMute,BsVolumeDown} from 'react-icons/bs';
-import { Loader } from '../Loader';
+import { Loader } from '../utils/Loader';
 import '../../styles/player.css';
+import { SongsContext } from "../../SongsData";
 
-
-export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurrentSong, songs,currentIndex})=> {
+export const Player = ({audioElem, currentSong, setCurrentSong,currentIndex})=> {
 
   const [volume, setVolume] = useState(1)
+  const {playlist:[currentPlaylist,setCurrentPlaylist]} = React.useContext(SongsContext)
+  const {playing:[isPlaying,setIsPlaying]} = React.useContext(SongsContext)
+  const {songData:[currentSongData,setCurrentSongData]} = React.useContext(SongsContext)
+
+  const songs = currentPlaylist.songs
+
+  // useEffect(()=>{
+  //   console.log(songs)
+  //   songs = currentPlaylist.songs
+  // },[currentPlaylist])
+
 
   // play/pause music
   const PlayPause = ()=>
   {
-    setisplaying(!isplaying);
+    setIsPlaying(!isPlaying);
 
   }
 
-  useEffect(()=>{
-    setCurrentSong(songs[currentIndex])
-  },[currentIndex,songs,setCurrentSong])
 
   // set current time while using range scroller
   const changeRange = (e) =>{
@@ -45,10 +53,12 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
     if (index === 0)
     {
       setCurrentSong(songs[songs.length - 1])
+      setCurrentSongData(songs[songs.length - 1])
     }
     else
     {
       setCurrentSong(songs[index - 1])
+      setCurrentSongData(songs[index - 1])
     }
     audioElem.current.currentTime = 0;
   }
@@ -65,10 +75,12 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
     if (index === songs.length-1)
     {
       setCurrentSong(songs[0])
+      setCurrentSongData(songs[0])
     }
     else
     {
       setCurrentSong(songs[index + 1])
+      setCurrentSongData(songs[index + 1])
     }
     audioElem.current.currentTime = 0;
     }
@@ -127,7 +139,7 @@ export const Player = ({audioElem, isplaying, setisplaying, currentSong, setCurr
         </div>
         <div className="controls">
           <BsFillSkipStartCircleFill className='btn_action' onClick={skipBack}/>
-          {isplaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={PlayPause}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={PlayPause}/>}
+          {isPlaying ? <BsFillPauseCircleFill className='btn_action pp' onClick={PlayPause}/> : <BsFillPlayCircleFill className='btn_action pp' onClick={PlayPause}/>}
           <BsFillSkipEndCircleFill className='btn_action' onClick={skiptoNext}/>
         </div>
       </div>
