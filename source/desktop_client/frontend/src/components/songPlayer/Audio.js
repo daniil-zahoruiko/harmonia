@@ -1,26 +1,38 @@
-import { useRef, useEffect,useState } from "react";
+import { useRef, useEffect,useState,useContext } from "react";
 import { Player } from "./Player";
 import { SongsContext } from "../../SongsData";
-import React from "react";
-import { Loader } from "../utils/Loader";
 
 
 export const Audio = () =>{
     const audioElem = useRef(null);
 
-    const {playing:[isPlaying,setIsPlaying]} = React.useContext(SongsContext)
-    const {songData:[currentSongData,setCurrentSongData]} = React.useContext(SongsContext)
+    const { playing:[isPlaying,setIsPlaying],
+            songData:[currentSongData,setCurrentSongData],
+            song:[songLoaded, setSongLoaded]} = useContext(SongsContext)
     const [first,setFirst] = useState(1)
-    const [currentSong, setCurrentSong] = useState({...currentSongData, "progress":0,"length":0 });
+    const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
 
-    console.log(currentSongData)
+    useEffect(()=>{
+        if(!audioElem.current.duration){
+            setSongLoaded(false)
+        }
+    },[currentSongData])
 
     useEffect(() => {
-        console.log("changed")
-        setCurrentSong({...currentSongData, "progress":0,"length":0 })
-        console.log(currentSongData)
-        console.log(currentSong)
+        setCurrentSong({"progress":0,"length":0 })
+        if(first){
+            setFirst(0)
+        }
+        else{
+            if(isPlaying){
+                audioElem.current.play()
+            }
+            else{
+                setIsPlaying(true)
+            }
+        }
       }, [currentSongData])
+
 
 
 
@@ -51,36 +63,21 @@ export const Audio = () =>{
         const duration = audioElem.current.duration;
         const ct = audioElem.current.currentTime;
 
-        setCurrentSong({ ...currentSong, "progress": ct / duration * 100,"length":duration})
+        setCurrentSong({ "progress": ct / duration * 100,"length":duration})
 
       }
 
-    useEffect(()=>{
-        console.log("I am gay")
-        if(first){
-            setFirst(0)
-        }
-        else{
-            if(isPlaying === true){
-                audioElem.current.play()
-            }
-            else{
-                setIsPlaying(true)
-            }
-        }
+      const onSongLoad = () =>{
+        setCurrentSong({...currentSong,"progress":0,"length":audioElem.current.duration})
+        setSongLoaded(true)
+      }
 
-
-        if(audioElem.current.duration){
-            setCurrentSong({...currentSong,"length":audioElem.current.duration})
-        }
-    },[currentSongData])
 
 
     return(
         <>
-            <audio src={`/api/song/${currentSongData.id}`} ref={audioElem} onTimeUpdate={onPlaying} />
-            <Player audioElem={audioElem}
-             currentSong={currentSong} setCurrentSong={setCurrentSong} />
+            <audio src={`/api/song/${currentSongData.id}`} onLoadedData={onSongLoad} ref={audioElem} onTimeUpdate={onPlaying} />
+            <Player audioElem={audioElem} currentSong={currentSong}/>
         </>
     )
 }
