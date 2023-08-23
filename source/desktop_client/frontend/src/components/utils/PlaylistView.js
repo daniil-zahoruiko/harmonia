@@ -1,18 +1,25 @@
 import { useContext } from 'react';
 import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
+import { LoadedImage } from './LoadedImage';
 import "../../styles/playlistview.css"
 
 
 
 export const PlaylistView = ({owner,type, name, description, image, songs,id}) =>{
-  const {playing:[isPlaying,setIsPlaying]} = useContext(SongsContext)
-  const {playlist:[currentPlaylist,setCurrentPlaylist]} = useContext(SongsContext)
-  const {songData:[currentSongData,setCurrentSongData]} = useContext(SongsContext)
+  const {   playing:[isPlaying,],
+            playlist:[currentPlaylist,setCurrentPlaylist],
+            songData:[currentSongData,setCurrentSongData],
+            song:[songLoaded, ],
+            toggles:[PlayPause] } = useContext(SongsContext)
+
 
   const toggle = (index) =>{
+    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name}
+    console.log(currentPlaylist.id !== id)
     if(currentPlaylist.id !== id){
-        setCurrentPlaylist({owner:owner,type:type,name:name,description:description,songs:songs,id:name})
+
+        setCurrentPlaylist(data)
         if(index === -1){
             setCurrentSongData(songs[0])
         }
@@ -22,13 +29,14 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
     }else if(index !== -1){
         setCurrentSongData(songs[index])
     }
-    setIsPlaying(!isPlaying)
+    PlayPause()
+
   }
 
     return(
         <div>
             <div className="playlist_header">
-                <img className="playlist_image" src={`/api/artist/${songs[0].id}/cover/`} />
+                <LoadedImage className="playlist_image" src={`/api/artist/${songs[0].id}/cover/`} />
                 <div className="playlist_data">
                     <p className='playlist_type'>{type} playlist</p>
                     <p className='playlist_name'>{name}</p>
@@ -84,7 +92,7 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
                                 </td>
                                 <td>
                                     <div className='song_row_data'>
-                                        <img className='song_row_image' src={`/api/artist/${song.id}/cover/`} />
+                                        <LoadedImage className='song_row_image' src={`/api/artist/${song.id}/cover/`} />
                                         <div className='song_row_text'>
                                             <p style={currentSongData.id === song.id?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
                                             <p className='song_row_data_artist'>{song.artist}</p>
