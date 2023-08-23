@@ -15,6 +15,13 @@ export default ({children}) =>{
     const [currentSongData,setCurrentSongData] = useState()
     const [currentPlaylist,setCurrentPlaylist] = useState({songs:[]})
     const [showedPlaylist,setShowedPlaylist] = useState({owner:"",type:"",name:"",description:"",songs:[],id:""})
+    const [songLoaded,setSongLoaded] = useState(false)
+
+    const PlayPause = ()=>
+    {
+        console.log("I am working dwa")
+      setIsPlaying(!isPlaying);
+    }
 
     useEffect(()=>{
         if(!currentSongData){
@@ -30,10 +37,12 @@ export default ({children}) =>{
         playing:[isPlaying,setIsPlaying],
         songData:[currentSongData,setCurrentSongData],
         page:[currentPage,setCurrentPage],
-        db:[songs,loading],
+        db:[songs],
         user:[userPlaylists],
         playlist:[currentPlaylist,setCurrentPlaylist],
-        playlistRender:[showedPlaylist,setShowedPlaylist]
+        playlistRender:[showedPlaylist,setShowedPlaylist],
+        song:[songLoaded,setSongLoaded],
+        toggles:[PlayPause]
     }
 
     return(
