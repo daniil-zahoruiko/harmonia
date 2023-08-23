@@ -63,3 +63,6 @@
     border-left: 1px solid;
     border-image: linear-gradient(0deg, rgba(255, 255, 255, 0),white, rgba(255, 255, 255, 0)) 1;
 }
+.desktop_nav p{
+    margin: 0;
+}

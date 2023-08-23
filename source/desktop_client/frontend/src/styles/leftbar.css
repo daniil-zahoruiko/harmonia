@@ -8,6 +8,7 @@
     border-image: linear-gradient(0deg, rgba(255, 255, 255, 0),white,white, rgba(255, 255, 255, 0)) 1;
     overflow-x: hidden;
     overflow-y: hidden;
+    margin-top: 5%;
     /* width:20%;
     height:67%; */
     /* top:13%; */
