@@ -1,0 +1,22 @@
+.genres_cards_wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:3%;
+}
+.category_card{
+    background: linear-gradient(180deg, #44489F 0%,rgba(68, 72, 159, 0.00) 90%, rgba(68, 72, 159, 0.00) 100%);
+    border-radius: 16px;
+    padding: 1%;
+    text-align: left;
+    width:13vw;
+    height:13vw;
+    margin-bottom: 3%;
+    transition: all ease-in-out 0.2s;
+}
+.category_card:hover{
+    background-color: #44489F;
+}
+.category_header{
+    font-size: 2vw;
+}
