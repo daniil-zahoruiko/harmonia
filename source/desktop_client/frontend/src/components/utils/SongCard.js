@@ -1,4 +1,4 @@
-import "../styles/songcard.css"
+import "../../styles/songcard.css"
 
 
 export const SongCard = ({onClick, id, title, artist}) => {

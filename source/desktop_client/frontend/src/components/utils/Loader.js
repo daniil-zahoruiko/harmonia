@@ -1,4 +1,4 @@
-import "../styles/loader.css"
+import "../../styles/loader.css"
 import HashLoader from "react-spinners/HashLoader"
 
 
