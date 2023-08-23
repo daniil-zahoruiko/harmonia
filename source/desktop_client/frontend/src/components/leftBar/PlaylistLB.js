@@ -1,22 +1,19 @@
-import React, { useState } from "react"
+import { useState, useContext } from "react"
 import {MdOutlineLibraryMusic} from "react-icons/md"
 import { SongsContext } from "../../SongsData";
 
 
 export const PlaylistLB = ({lbState}) => {
-    const {user:[userPlaylists]} = React.useContext(SongsContext)
+    const {user:[userPlaylists]} = useContext(SongsContext)
     const [style, setStyle] = useState("closed")
 
-    const changePlaylistArrow = () =>{
+
+    const togglePlaylist = () => {
         if(style === "closed"){
             setStyle("opened")
         }else{
             setStyle("closed")
         }
-    }
-
-    const togglePlaylist = () => {
-        changePlaylistArrow()
     }
 
 

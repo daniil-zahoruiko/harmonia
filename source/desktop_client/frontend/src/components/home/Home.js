@@ -7,15 +7,18 @@ import { SongsContext } from "../../SongsData";
 
 export const Home = () => {
 
-    const {db:[songs,loading]} = useContext(SongsContext)
-    const {songData:[currentSongData,setCurrentSongData]} = useContext(SongsContext)
-    const {playlist:[currentPlaylist,setCurrentPlaylist]} = useContext(SongsContext)
+    const { db:[songs],
+            songData:[currentSongData,setCurrentSongData],
+            playlist:[currentPlaylist,setCurrentPlaylist],
+            song:[songLoaded, ] } = useContext(SongsContext)
+
 
     const handleClick = (index) =>{
-        console.log(index)
+        if(!songLoaded){
+            return
+        }
         setCurrentPlaylist({...currentPlaylist,songs:songs})
         setCurrentSongData(songs.filter((song)=>song.id === index)[0])
-        console.log(songs.filter((song)=>song.id === index)[0],currentSongData)
     }
 
     return(

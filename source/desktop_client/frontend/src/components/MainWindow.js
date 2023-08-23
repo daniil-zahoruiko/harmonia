@@ -9,8 +9,8 @@ import { PlaylistView } from "./utils/PlaylistView"
 
 
 export const MainWindow = () => {
-    const {page:[currentPage,setCurrentPage]} = useContext(SongsContext)
-    const {playlistRender:[showedPlaylist,setShowedPlaylist]} = React.useContext(SongsContext)
+    const { page:[currentPage,],
+            playlistRender:[showedPlaylist,]} = useContext(SongsContext)
 
     if(currentPage==="home"){
         return(
