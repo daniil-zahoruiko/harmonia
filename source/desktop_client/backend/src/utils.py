@@ -13,7 +13,13 @@ def establish_db_connection(app):
 def get_all_songs(db):
     songs = db.get_all_songs_query()
 
-    data =[{"id":str(song.get_id()), "title":song.get_name(), "genre": song.get_genre(), "file":f"{song.get_id()}.mp3", "cover":f"{song.get_id()}.webp", "artist":db.get_artist_by_id(song.get_artist_id()).get_name()} for song in songs]
+    data =[{"id":str(song.get_id()),
+            "title":song.get_name(),
+            "genre": song.get_genre(),
+            "file":f"{song.get_id()}.mp3",
+            "cover":f"{song.get_id()}.webp",
+            "artist":db.get_artist_by_id(song.get_artist_id()).get_name(),
+            "album":db.get_album_by_id(song.get_album_id()).get_name()} for song in songs]
 
     return data
 
