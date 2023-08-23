@@ -19,6 +19,10 @@
     font-size: 1vw;
     margin: 2% 0;
 }
+.songcard_img{
+    height:13vw;
+    width:13vw
+}
 
 .SongCard img{
     width: 100%;
