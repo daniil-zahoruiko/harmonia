@@ -10,6 +10,14 @@ DATABASE = "main"
 def establish_db_connection(app):
     return DBConnection(app)
 
+def user_exists(db, username):
+    return db.get_user_id_by_username(username)
+
+def verify_user(db, user_id, input_password):
+    user = db.get_user_by_id(user_id)
+
+    return user if user.verify_password(input_password) else None
+
 def get_all_songs(db):
     songs = db.get_all_songs_query()
 

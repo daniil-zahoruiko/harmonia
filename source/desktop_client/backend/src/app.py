@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, jsonify, send_file, request
+from flask_jwt_extended import JWTManager, create_access_token
 import utils
 import populate_db
 
@@ -11,6 +12,18 @@ app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'main'
 
 connection = utils.establish_db_connection(app)
+
+app.config['JWT_SECRET_KEY'] = "some-secret key" # remember to change the key
+jwt = JWTManager(app)
+
+@app.route('/token', methods=['POST'])
+def create_token():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    user_id = utils.try_get_user(connection, username)
+    if user_id is None:
+        return jsonify({"msg": "Invalid username"}), 401
 
 # populating data to the db
 @app.route('/populate')
