@@ -16,7 +16,7 @@ def user_exists(db, username):
 def verify_user(db, user_id, input_password):
     user = db.get_user_by_id(user_id)
 
-    return user if user.verify_password(input_password) else None
+    return user.get_user_data() if user.verify_password(input_password) else None
 
 def get_all_songs(db):
     songs = db.get_all_songs_query()

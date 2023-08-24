@@ -24,6 +24,15 @@ def create_token():
     user_id = utils.try_get_user(connection, username)
     if user_id is None:
         return jsonify({"msg": "Invalid username"}), 401
+    
+    user_data = utils.verify_user(connection, user_id, password)
+    if(user_data is None):
+        return jsonify({"msg": "Invalid password"}), 401
+    
+    access_token = create_access_token(identity=user_id)
+
+    return jsonify({"user_data": user_data, "token":access_token})
+
 
 # populating data to the db
 @app.route('/populate')

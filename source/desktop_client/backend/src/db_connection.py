@@ -137,7 +137,7 @@ class DBConnection:
 
         (id, username, password, full_name, display_name, email) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
 
-        return User(id, username, password,full_name, display_name, email)
+        return User(id, username, password, full_name, display_name, email)
 
     def get_number_of_songs(self):
         return self.execute_query(query="SELECT COUNT(*) FROM songs", fetch_func="fetchone")[0]
