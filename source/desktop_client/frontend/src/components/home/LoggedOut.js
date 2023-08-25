@@ -12,11 +12,11 @@ export const LoggedOut = ({token, setToken}) =>
         {
             case "LogIn":
                 return (
-                    <LogIn/>
+                    <LogIn selectedAction={selectedAction} setSelectedAction={setSelectedAction}/>
                 );
             case "SignUp":
                 return (
-                    <SignUp/>
+                    <SignUp selectedAction={selectedAction} setSelectedAction={setSelectedAction}/>
                 );
             default:
                 return (
