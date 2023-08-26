@@ -1,7 +1,7 @@
 import { useEffect, useState,useRef } from "react"
 
 
-export const FetchSongs = () =>{
+const FetchSongs = () =>{
     const [songs, setSongs] = useState([])
     const [loading,setLoading] = useState(true)
     const [userPlaylists, setUserPlaylist] = useState([])
@@ -27,3 +27,43 @@ export const FetchSongs = () =>{
 
     return {songs,loading,userPlaylists}
 }
+
+const LogMeIn = ({token, setToken, username, password}) => 
+{
+    // TODO: obtain all user data
+    fetch('/token', {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "username": username,
+            "password": password
+        })
+        }).then((response) => {
+        if(!response.ok)
+            throw new Error(response.status)
+        else
+            return response.json();
+    }).then((data) => {
+        setToken(data.token);
+    });
+}
+
+const SignMeUp = ({username, password}) =>
+{
+    fetch("/signup", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "username": username,
+            "password": password
+        })
+    }).then((response) => {
+        if(!response.ok) throw new Error(response.status);
+    })
+}
+
+export { FetchSongs, LogMeIn, SignMeUp };

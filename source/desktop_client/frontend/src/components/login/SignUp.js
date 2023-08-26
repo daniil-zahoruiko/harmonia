@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { LoggedOut } from "../home/LoggedOut";
+import { SignMeUp, LogMeIn } from "../../api";
 
-export const SignUp = ({selectedAction, setSelectedAction}) =>
+export const SignUp = ({token, setToken, selectedAction, setSelectedAction}) =>
 {
     const [signUpForm, setSignUpForm] = useState({
         "username": "",
         "password": "",
+        "confirm_password": "",
         "email": "",
         "full_name": "",
         "display_name": ""
@@ -21,6 +22,10 @@ export const SignUp = ({selectedAction, setSelectedAction}) =>
 
     function handleSubmit()
     {
+        SignMeUp({username: signUpForm.username, password: signUpForm.password});
+
+        LogMeIn({token: token, setToken: setToken, username: signUpForm.username, password: signUpForm.password});
+
         setSelectedAction("Main");
     }
 
@@ -36,6 +41,11 @@ export const SignUp = ({selectedAction, setSelectedAction}) =>
                 <label>
                     Password: 
                     <input name="password" onChange={handleChange} placeholder="Password" value={signUpForm.password} />
+                </label>
+                <br />
+                <label>
+                    Confirm password: 
+                    <input name="confirm_password" onChange={handleChange} placeholder="Confirm password" value={signUpForm.confirm_password} />
                 </label>
                 <br />
                 <label>

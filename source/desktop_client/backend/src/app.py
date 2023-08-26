@@ -18,8 +18,11 @@ jwt = JWTManager(app)
 
 @app.route('/token', methods=['POST'])
 def create_token():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
+    print("aaa")
+    username = request.json["username"]
+    password = request.json["password"]
+
+    print(username, password)
 
     user_id = utils.try_get_user(connection, username)
     if user_id is None:
@@ -31,7 +34,23 @@ def create_token():
     
     access_token = create_access_token(identity=user_id)
 
+    print("aaa")
+
     return jsonify({"user_data": user_data, "token":access_token})
+
+@app.route('/signup', methods=['POST'])
+def sign_up():
+    username = request.json["username"]
+    password = request.json["password"]
+
+    print(username, password)
+
+    if(utils.try_get_user(connection, username) is not None):
+        return jsonify({"msg": "User already exists"}), 401
+    
+    utils.create_user(connection, username, password)
+
+    return "Success", 200
 
 
 # populating data to the db

@@ -1,5 +1,6 @@
 import os
 import helpers
+import bcrypt
 from song import Song
 from artist import Artist
 from album import Album
@@ -98,8 +99,8 @@ class DBConnection:
         return "./songs/" + id + ".mp3"
 
     def write_song(self, name, genre, data, artist_id, album_id):
-        id = self.get_number_of_songs() + 1
-        query = f"INSERT INTO songs(id, name, genre, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s, %s)"
+        id = self.get_table_length("songs") + 1
+        query = "INSERT INTO songs(id, name, genre, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s, %s)"
 
         args = (id, name, genre, data, artist_id, album_id)
 
@@ -139,8 +140,17 @@ class DBConnection:
 
         return User(id, username, password, full_name, display_name, email)
 
-    def get_number_of_songs(self):
-        return self.execute_query(query="SELECT COUNT(*) FROM songs", fetch_func="fetchone")[0]
+    def create_user(self, username, password):
+        query = "INSERT INTO users(id, username, password, displayName) VALUES (%s, %s, %s, %s)"
+
+        salt = bcrypt.gensalt()
+
+        args = (self.get_table_length("users") + 1, username, bcrypt.hashpw(password.encode('utf-8'), salt), "user_display_name")
+
+        self.execute_query(query=query, args=args, commit=True)
+
+    def get_table_length(self, table):
+        return self.execute_query(query=f"SELECT COUNT(*) FROM {table}", fetch_func="fetchone")[0]
 
     def __del__(self):
         self.mysql.connection.close()

@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { LogMeIn } from "../../api";
 
 export const LogIn = ({token, setToken, selectedAction, setSelectedAction}) =>
 {
@@ -9,6 +10,8 @@ export const LogIn = ({token, setToken, selectedAction, setSelectedAction}) =>
 
     function handleSubmit()
     {
+        LogMeIn({token: token, setToken: setToken, username: logInForm.username, password:logInForm.password});
+
         setSelectedAction("Main");
     }
 
