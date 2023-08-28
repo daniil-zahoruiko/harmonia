@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, send_file, request
-from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 import utils
 import populate_db
 
@@ -61,6 +61,7 @@ def populate():
 
 # Route for seeing a data
 @app.route('/api')
+@jwt_required()
 def data():
     data = utils.get_all_songs(connection)
 
@@ -73,12 +74,14 @@ def data():
     return jsonify(res)
 
 @app.route('/api/song/<id>')
+#@jwt_required()
 def song(id):
     file = utils.get_song_file(connection, id)
     return send_file(file)
 
 
 @app.route("/api/artist/<id>/cover/")
+#@jwt_required()
 def song_image(id):
     file = utils.get_image_file(connection, id)
     return send_file(file)

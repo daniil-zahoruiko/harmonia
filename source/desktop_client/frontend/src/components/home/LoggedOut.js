@@ -2,7 +2,7 @@ import { useState } from "react"
 import { LogIn } from "../login/LogIn";
 import { SignUp } from "../login/SignUp";
 
-export const LoggedOut = ({token, setToken}) =>
+export const LoggedOut = () =>
 {
     const [selectedAction, setSelectedAction] = useState("None");
 
@@ -12,11 +12,11 @@ export const LoggedOut = ({token, setToken}) =>
         {
             case "LogIn":
                 return (
-                    <LogIn token={token} setToken={setToken} selectedAction={selectedAction} setSelectedAction={setSelectedAction}/>
+                    <LogIn selectedAction={selectedAction} setSelectedAction={setSelectedAction}/>
                 );
             case "SignUp":
                 return (
-                    <SignUp token={token} setToken={setToken} selectedAction={selectedAction} setSelectedAction={setSelectedAction}/>
+                    <SignUp selectedAction={selectedAction} setSelectedAction={setSelectedAction}/>
                 );
             default:
                 return (

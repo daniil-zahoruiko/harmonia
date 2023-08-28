@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useToken } from "./components/utils/useToken";
 import { Audio } from "./components/songPlayer/Audio";
 import { Nav } from "./components/Nav";
@@ -7,22 +7,26 @@ import { MainWindow } from "./components/MainWindow";
 import { LoggedOut } from "./components/home/LoggedOut";
 import "./App.css";
 import SongsData from "./SongsData";
+import { UserContext, GetUserValue } from "./UserContext";
 
 
 function App() {
-    const {setToken, token, removeToken} = useToken();
+    const user = GetUserValue();
+    const {access_token: [token, ,]} = user;
 
     return (
-        token == "" || token == null
-        ? <LoggedOut token={token} setToken={setToken}/>
-        : (<SongsData>
-            <div className="App">
-                <Nav/>
-                <LeftBar/>
-                <MainWindow/>
-                <Audio/>
-            </div>
-        </SongsData>)
+        <UserContext.Provider value={user}>
+            {token == "" || token == null
+            ? <LoggedOut/>
+            : (<SongsData>
+                <div className="App">
+                    <Nav/>
+                    <LeftBar/>
+                    <MainWindow/>
+                    <Audio/>
+                </div>
+            </SongsData>)}
+        </UserContext.Provider>
 
     );
 }

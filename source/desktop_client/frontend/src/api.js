@@ -1,14 +1,19 @@
 import { useEffect, useState,useRef } from "react"
 
 
-const FetchSongs = () =>{
+const FetchSongs = ({token}) =>{
     const [songs, setSongs] = useState([])
     const [loading,setLoading] = useState(true)
     const [userPlaylists, setUserPlaylist] = useState([])
     const dataFetchedRef = useRef(false);
 
     const fetchData = () =>{
-        fetch("/api").then((res) =>
+        fetch("/api",{
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            }
+        }).then((res) =>
             res.json().then((data) => {
                 // Setting a data from api
                 setSongs(data.user.songs)

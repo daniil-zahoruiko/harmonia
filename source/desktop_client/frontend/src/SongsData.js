@@ -1,6 +1,7 @@
-import React, { createContext,useState,useEffect } from "react";
+import React, { createContext,useState,useEffect, useContext } from "react";
 import { Loader } from "./components/utils/Loader";
 import { FetchSongs } from "./api";
+import { UserContext } from "./UserContext";
 
 
 
@@ -8,7 +9,9 @@ export const SongsContext = createContext(null)
 
 
 export default ({children}) =>{
-    const {songs,loading,userPlaylists} = FetchSongs()
+    const {access_token: [token,,]} = useContext(UserContext);
+
+    const {songs,loading,userPlaylists} = FetchSongs({token: token});
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentPage,setCurrentPage] = useState("home")

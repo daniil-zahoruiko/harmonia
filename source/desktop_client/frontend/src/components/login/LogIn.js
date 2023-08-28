@@ -1,8 +1,13 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { LogMeIn } from "../../api";
+import { UserContext } from "../../UserContext";
 
-export const LogIn = ({token, setToken, selectedAction, setSelectedAction}) =>
+export const LogIn = ({selectedAction, setSelectedAction}) =>
 {
+    const {
+        access_token: [token, setToken,]
+    } = useContext(UserContext)
+
     const [logInForm, setLogInForm] = useState({
         "username": "",
         "password": ""
@@ -29,12 +34,16 @@ export const LogIn = ({token, setToken, selectedAction, setSelectedAction}) =>
             <form onSubmit={handleSubmit}>
                 <label>
                     Username:
-                    <input name="username" placeholder="Username" value={logInForm.username} onChange={handleChange}/>
+                    <div>
+                        <input name="username" placeholder="Username" value={logInForm.username} onChange={handleChange}/>
+                    </div>
                 </label>
                 <br/>
                 <label>
                     Password:
-                    <input name = "password" placeholder="Password" value={logInForm.password} onChange={handleChange}/>
+                    <div>
+                        <input name = "password" placeholder="Password" value={logInForm.password} onChange={handleChange}/>
+                    </div>
                 </label>
                 <br/>
                 <input type="submit" onSubmit={handleSubmit}/>
