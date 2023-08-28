@@ -11,15 +11,42 @@ export const Audio = () =>{
             song:[songLoaded, setSongLoaded]} = useContext(SongsContext)
     const [first,setFirst] = useState(1)
     const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
+    const [songUrl, setSongUrl] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(()=>{
+        
         if(!audioElem.current.duration){
             setSongLoaded(false)
         }
     },[currentSongData])
 
     useEffect(() => {
-        setCurrentSong({"progress":0,"length":0 })
+        if(audioElem.current){
+            if (isPlaying && !loading) {
+                audioElem.current.play();
+                }
+            else {
+                audioElem.current.pause();
+            }
+        }
+      }, [isPlaying, loading])
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(`/api/song/${currentSongData.id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'blob',
+            }
+        }).then((res) => res.blob())
+        .then((data) => {
+            setSongUrl(URL.createObjectURL(data));
+            setLoading(false);
+            audioElem.current.currentTime = 0;
+            
+        })
+
         if(first){
             setFirst(0)
         }
@@ -33,21 +60,12 @@ export const Audio = () =>{
         }
       }, [currentSongData])
 
-
+      
 
 
 
     // if play/pause button pressed play/pause music
-    useEffect(() => {
-        if(audioElem.current){
-            if (isPlaying) {
-                audioElem.current.play();
-                }
-            else {
-                audioElem.current.pause();
-            }
-        }
-      }, [isPlaying])
+    
 
     // play song by default after skip (exlcuding first load)
 
@@ -76,7 +94,7 @@ export const Audio = () =>{
 
     return(
         <>
-            <audio src={`/api/song/${currentSongData.id}`} onLoadedData={onSongLoad} ref={audioElem} onTimeUpdate={onPlaying} />
+            <audio src={songUrl} onLoadedData={onSongLoad} ref={audioElem} onTimeUpdate={onPlaying} />
             <Player audioElem={audioElem} currentSong={currentSong}/>
         </>
     )

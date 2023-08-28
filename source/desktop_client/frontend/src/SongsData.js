@@ -23,7 +23,7 @@ export default ({children}) =>{
     const PlayPause = ()=>
     {
         console.log("I am working dwa")
-      setIsPlaying(!isPlaying);
+        setIsPlaying(!isPlaying);
     }
 
     useEffect(()=>{

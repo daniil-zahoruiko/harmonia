@@ -88,15 +88,16 @@ class DBConnection:
 
         dir = os.path.join(dir, id + ".mp3")
 
-        if(not os.path.isfile(dir)):
-            query = "SELECT data FROM songs WHERE id = %s"
+        #if(not os.path.isfile(dir)):
+        query = "SELECT data FROM songs WHERE id = %s"
 
-            file = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")[0]
+        file = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")[0]
 
-            helpers.write_file(file, dir)
+            #helpers.write_file(file, dir)
 
 
-        return "./songs/" + id + ".mp3"
+        #return "./songs/" + id + ".mp3"
+        return file
 
     def write_song(self, name, genre, data, artist_id, album_id):
         id = self.get_table_length("songs") + 1

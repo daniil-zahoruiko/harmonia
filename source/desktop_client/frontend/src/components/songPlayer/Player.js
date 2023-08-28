@@ -7,9 +7,9 @@ import '../../styles/player.css';
 export const Player = ({audioElem, currentSong})=> {
 
   const { playlist:[currentPlaylist,],
-          playing:[isPlaying,],
+          playing:[isPlaying, setIsPlaying],
           songData:[currentSongData,setCurrentSongData],
-          song:[songLoaded, ],
+          song:[songLoaded, setSongLoaded],
           toggles:[PlayPause] } = useContext(SongsContext)
 
   const [volume, setVolume] = useState(1)
@@ -36,10 +36,12 @@ export const Player = ({audioElem, currentSong})=> {
   // skip to previous music
   const skipBack = ()=>{
     if(!songLoaded) return
+
     if(audioElem.current.currentTime>3){
       audioElem.current.currentTime = 0;
       return
     }
+
     const index = songs.findIndex(x=>x.title === currentSongData.title);
     if (index === 0)
     {
@@ -66,7 +68,7 @@ export const Player = ({audioElem, currentSong})=> {
     {
       setCurrentSongData(songs[index + 1])
     }
-    audioElem.current.currentTime = 0;
+    //audioElem.current.currentTime = 0;
   }
 
   const toggle = (e) =>{

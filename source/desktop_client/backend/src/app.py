@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, send_file, request
+from flask import Flask, jsonify, send_file, request, Response
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from werkzeug.wsgi import FileWrapper
 import utils
 import populate_db
 
@@ -77,7 +78,7 @@ def data():
 #@jwt_required()
 def song(id):
     file = utils.get_song_file(connection, id)
-    return send_file(file)
+    return file#Response(FileWrapper(file), mimetype="audio/mpeg")
 
 
 @app.route("/api/artist/<id>/cover/")
