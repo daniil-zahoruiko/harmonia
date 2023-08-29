@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, send_file, request, Response
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt, get_jwt_identity, unset_jwt_cookies
 from werkzeug.wsgi import FileWrapper
 from datetime import datetime, timedelta, timezone
 import json
@@ -17,7 +17,7 @@ app.config['MYSQL_DB'] = 'main'
 connection = utils.establish_db_connection(app)
 
 app.config['JWT_SECRET_KEY'] = "some-secret key" # remember to change the key
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 @app.route('/token', methods=['POST'])
@@ -61,7 +61,7 @@ def refresh_expiring_jwts(response):
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.now(timezone.utc)
-        target_timestamp = datetime.timestamp(now + timedelta(days=29))
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(identity=get_jwt_identity())
             data = response.get_json()
@@ -71,6 +71,12 @@ def refresh_expiring_jwts(response):
         return response
     except (RuntimeError, KeyError):
         return response
+
+@app.route('/logout', methods=['POST'])
+def log_out():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 # populating data to the db
 @app.route('/populate')

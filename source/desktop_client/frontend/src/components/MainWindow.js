@@ -4,9 +4,7 @@ import { Discover } from "./home/Discover"
 import React, {useContext} from "react"
 import { SongsContext } from "../SongsData"
 import { PlaylistView } from "./utils/PlaylistView"
-
-
-
+import Profile from "./home/Profile"
 
 export const MainWindow = () => {
     const { page:[currentPage,],
@@ -18,6 +16,12 @@ export const MainWindow = () => {
                 <Home/>
             </div>
         )
+    }else if(currentPage === "user_account"){
+        return(
+            <div className="main_window_wrapper">
+                <Profile/>
+            </div>
+        );
     }else if(currentPage === "discover"){
         return(
             <div className="main_window_wrapper">

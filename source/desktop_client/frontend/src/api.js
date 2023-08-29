@@ -71,4 +71,14 @@ const SignMeUp = ({username, password}) =>
     })
 }
 
-export { FetchSongs, LogMeIn, SignMeUp };
+const LogMeOut = () =>
+{
+    fetch('/logout', {
+        method: "POST"
+    })
+    .then((response) => {
+        if(!response.ok) throw new Error(response.status);
+    });
+}
+
+export { FetchSongs, LogMeIn, SignMeUp, LogMeOut };
