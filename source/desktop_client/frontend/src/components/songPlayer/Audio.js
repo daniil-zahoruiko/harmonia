@@ -12,7 +12,7 @@ export const Audio = () =>{
     const [first,setFirst] = useState(1)
     const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
     const [songUrl, setSongUrl] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [songLoading, setSongLoading] = useState(true);
 
     useEffect(()=>{
         
@@ -23,17 +23,18 @@ export const Audio = () =>{
 
     useEffect(() => {
         if(audioElem.current){
-            if (isPlaying && !loading) {
+            if (isPlaying && !songLoading) {
                 audioElem.current.play();
                 }
             else {
                 audioElem.current.pause();
             }
         }
-      }, [isPlaying, loading])
+      }, [isPlaying, songLoading])
 
     useEffect(() => {
-        setLoading(true);
+        setSongLoading(true);
+        setCurrentSong({"progress":0,"length":0 })
         fetch(`/api/song/${currentSongData.id}`, {
             method: "GET",
             headers: {
@@ -42,11 +43,8 @@ export const Audio = () =>{
         }).then((res) => res.blob())
         .then((data) => {
             setSongUrl(URL.createObjectURL(data));
-            setLoading(false);
-            audioElem.current.currentTime = 0;
-            
+            setSongLoading(false);
         })
-
         if(first){
             setFirst(0)
         }
@@ -82,7 +80,6 @@ export const Audio = () =>{
         const ct = audioElem.current.currentTime;
 
         setCurrentSong({ "progress": ct / duration * 100,"length":duration})
-
       }
 
       const onSongLoad = () =>{

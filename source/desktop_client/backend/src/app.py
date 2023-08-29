@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, send_file, request, Response
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt, get_jwt_identity
 from werkzeug.wsgi import FileWrapper
+from datetime import datetime, timedelta, timezone
+import json
 import utils
 import populate_db
 
@@ -15,6 +17,7 @@ app.config['MYSQL_DB'] = 'main'
 connection = utils.establish_db_connection(app)
 
 app.config['JWT_SECRET_KEY'] = "some-secret key" # remember to change the key
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
 jwt = JWTManager(app)
 
 @app.route('/token', methods=['POST'])
@@ -53,6 +56,21 @@ def sign_up():
 
     return "Success", 200
 
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(days=29))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        return response
 
 # populating data to the db
 @app.route('/populate')

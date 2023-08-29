@@ -42,33 +42,28 @@ export const Player = ({audioElem, currentSong})=> {
       return
     }
 
-    const index = songs.findIndex(x=>x.title === currentSongData.title);
+    var index = songs.findIndex(x=>x.id === currentSongData.id);
+
     if (index === 0)
     {
-      setCurrentSongData(songs[songs.length - 1])
+      index = songs.length;
     }
-    else
-    {
-      setCurrentSongData(songs[index - 1])
-    }
-    audioElem.current.currentTime = 0;
+
+    setCurrentSongData(songs[index - 1]);
   }
 
   // skip to next music
   const skiptoNext =()=>{
     if(!songLoaded) return
 
-    const index = songs.findIndex(x=>x.title === currentSongData.title);
+    var index = songs.findIndex(x=>x.id === currentSongData.id) + 1;
 
-    if (index === songs.length-1)
+    if (index === songs.length)
     {
-      setCurrentSongData(songs[0])
+      index = 0;
     }
-    else
-    {
-      setCurrentSongData(songs[index + 1])
-    }
-    //audioElem.current.currentTime = 0;
+
+    setCurrentSongData(songs[index]);
   }
 
   const toggle = (e) =>{
