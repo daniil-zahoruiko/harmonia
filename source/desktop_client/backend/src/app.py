@@ -93,10 +93,10 @@ def data():
     return jsonify(res)
 
 @app.route('/api/song/<id>')
-#@jwt_required()
+@jwt_required()
 def song(id):
     file = utils.get_song_file(connection, id)
-    return file#Response(FileWrapper(file), mimetype="audio/mpeg")
+    return file
 
 
 @app.route("/api/artist/<id>/cover/")

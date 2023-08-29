@@ -1,6 +1,7 @@
 import { useRef, useEffect,useState,useContext } from "react";
 import { Player } from "./Player";
 import { SongsContext } from "../../SongsData";
+import { UserContext } from "../../UserContext";
 
 
 export const Audio = () =>{
@@ -8,7 +9,10 @@ export const Audio = () =>{
 
     const { playing:[isPlaying,setIsPlaying],
             songData:[currentSongData,setCurrentSongData],
-            song:[songLoaded, setSongLoaded]} = useContext(SongsContext)
+            song:[songLoaded, setSongLoaded]} = useContext(SongsContext);
+    
+    const {access_token:[token,,]} = useContext(UserContext);
+    
     const [first,setFirst] = useState(1)
     const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
     const [songUrl, setSongUrl] = useState("");
@@ -39,6 +43,7 @@ export const Audio = () =>{
             method: "GET",
             headers: {
                 'Content-Type': 'blob',
+                'Authorization': 'Bearer ' + token,
             }
         }).then((res) => res.blob())
         .then((data) => {
