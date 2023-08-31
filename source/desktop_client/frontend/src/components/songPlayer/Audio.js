@@ -16,28 +16,24 @@ export const Audio = () =>{
     const [first,setFirst] = useState(1)
     const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
     const [songUrl, setSongUrl] = useState("");
-    const [songLoading, setSongLoading] = useState(true);
 
-    useEffect(()=>{
-        
-        if(!audioElem.current.duration){
-            setSongLoaded(false)
-        }
-    },[currentSongData])
+    // useEffect(()=>{
+    //     setSongLoaded(false)
+    // },[currentSongData])
 
     useEffect(() => {
-        if(audioElem.current){
-            if (isPlaying && !songLoading) {
+        if(audioElem.current && !first){
+            if (isPlaying && songLoaded) {
                 audioElem.current.play();
                 }
             else {
                 audioElem.current.pause();
             }
         }
-      }, [isPlaying, songLoading])
+      }, [isPlaying])
 
     useEffect(() => {
-        setSongLoading(true);
+        setSongLoaded(false)
         setCurrentSong({"progress":0,"length":0 })
         fetch(`/api/song/${currentSongData.id}`, {
             method: "GET",
@@ -48,12 +44,17 @@ export const Audio = () =>{
         }).then((res) => res.blob())
         .then((data) => {
             setSongUrl(URL.createObjectURL(data));
-            setSongLoading(false);
+            console.log("url loaded",songLoaded)
         })
+      }, [currentSongData])
+
+      useEffect(()=>{
         if(first){
+            console.log("changed 1")
             setFirst(0)
         }
-        else{
+        else if(songLoaded){
+            console.log("changed end")
             if(isPlaying){
                 audioElem.current.play()
             }
@@ -61,23 +62,7 @@ export const Audio = () =>{
                 setIsPlaying(true)
             }
         }
-      }, [currentSongData])
-
-      
-
-
-
-    // if play/pause button pressed play/pause music
-    
-
-    // play song by default after skip (exlcuding first load)
-
-    // fill in current song length after it is loaded
-    // useEffect(()=>{
-    //     if(audioElem.current.duration){
-    //         setCurrentSong({...currentSong,"length":audioElem.current.duration})
-    //     }
-    // },[audioElem.current])
+      },[songLoaded])
 
     // on time update after using range scroll
     const onPlaying = () => {
@@ -89,6 +74,7 @@ export const Audio = () =>{
 
       const onSongLoad = () =>{
         setCurrentSong({...currentSong,"progress":0,"length":audioElem.current.duration})
+        console.log("song loaded in")
         setSongLoaded(true)
       }
 

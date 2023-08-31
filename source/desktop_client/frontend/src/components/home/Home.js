@@ -10,7 +10,7 @@ export const Home = () => {
     const { db:[songs],
             songData:[currentSongData,setCurrentSongData],
             playlist:[currentPlaylist,setCurrentPlaylist],
-            song:[songLoaded, ] } = useContext(SongsContext)
+            song:[songLoaded, setSongLoaded] } = useContext(SongsContext)
 
 
     const handleClick = (index) =>{
@@ -18,6 +18,7 @@ export const Home = () => {
             return
         }
         setCurrentPlaylist({...currentPlaylist,songs:songs})
+        setSongLoaded(false)
         setCurrentSongData(songs.filter((song)=>song.id === index)[0])
     }
 

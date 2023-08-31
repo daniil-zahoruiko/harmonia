@@ -75,6 +75,7 @@ export const Player = ({audioElem, currentSong})=> {
   useEffect(()=>{
     if(audioElem.current){
       if(audioElem.current.currentTime/currentSong.length*100 === 100){
+        setSongLoaded(false)
         skiptoNext()
       }
     }
@@ -103,7 +104,7 @@ export const Player = ({audioElem, currentSong})=> {
         --------------------------SONG RANGE SLIDER BAR-------------------
         -------------------------------------------------------------*/}
         <div className='playlist_timer_wrapper'>
-          <p>{!currentSong.progress?"0:00":Math.floor(slider/100 * currentSong.length%60)<10
+          <p>{!songLoaded?"0:00":Math.floor(slider/100 * currentSong.length%60)<10
           ?`${Math.floor(slider/100 * currentSong.length/60)}:0${Math.floor(slider/100 * currentSong.length%60)}`
           :`${Math.floor(slider/100 * currentSong.length/60)}:${Math.floor(slider/100 * currentSong.length%60)}`}</p>
           <input
@@ -116,7 +117,7 @@ export const Player = ({audioElem, currentSong})=> {
               step="0.01"
               onClickCapture={changeRange}
           />
-          <p>{currentSong.length?
+          <p>{songLoaded?
           Math.floor(currentSong.length%60)<10?`${Math.floor(currentSong.length/60)}:0${Math.floor(currentSong.length%60)}`:`${Math.floor(currentSong.length/60)}:${Math.floor(currentSong.length%60)}`
           :"-:--"}</p>
         </div>

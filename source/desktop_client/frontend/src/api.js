@@ -33,10 +33,10 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-const LogMeIn = ({token, setToken, username, password}) => 
+async function LogMeIn({token, setToken, username, password})
 {
     // TODO: obtain all user data
-    fetch('/token', {
+    return await fetch('/token', {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -55,9 +55,9 @@ const LogMeIn = ({token, setToken, username, password}) =>
     });
 }
 
-const SignMeUp = ({username, password}) =>
+async function SignMeUp({username, password})
 {
-    fetch("/signup", {
+    return await fetch("/signup", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',

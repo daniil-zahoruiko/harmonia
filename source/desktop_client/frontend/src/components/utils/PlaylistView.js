@@ -10,16 +10,17 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
   const {   playing:[isPlaying,],
             playlist:[currentPlaylist,setCurrentPlaylist],
             songData:[currentSongData,setCurrentSongData],
-            song:[songLoaded, ],
+            song:[songLoaded, setSongLoaded],
             toggles:[PlayPause] } = useContext(SongsContext)
 
 
   const toggle = (index) =>{
     const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name}
     console.log(currentPlaylist.id !== id)
+    if(!songLoaded) return
     if(currentPlaylist.id !== id){
-
         setCurrentPlaylist(data)
+        setSongLoaded(false)
         if(index === -1){
             setCurrentSongData(songs[0])
         }
@@ -27,6 +28,7 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
             setCurrentSongData(songs[index])
         }
     }else if(index !== -1){
+        setSongLoaded(false)
         setCurrentSongData(songs[index])
     }
     PlayPause()
