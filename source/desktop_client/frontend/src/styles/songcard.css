@@ -4,7 +4,12 @@
     padding: 1%;
     text-align: left;
     width:13vw;
-    height:18vw;
+    height:19vw;
+    position: relative;
+    transition: all ease-in-out 0.3s;
+}
+.SongCard:hover{
+    background-color: #44499f3a;
 }
 
 .song_card_title{
@@ -12,6 +17,7 @@
     font-size: 1.5vw;
     width:100%;
     margin: 0;
+    margin-top: 3%;
 }
 
 .song_card_artist{
@@ -26,4 +32,25 @@
 
 .SongCard img{
     width: 100%;
+}
+
+.song_card_play{
+    width:3vw;
+    height:auto;
+    position: absolute;
+    left:75%;
+    bottom: 5%;
+    margin: 0;
+}
+.do_animation{
+    animation: player 0.5s;
+}
+
+@keyframes player {
+    0%{
+        transform: translateY(30%);
+    }
+    100%{
+        transform: translateY(0%);
+    }
 }
