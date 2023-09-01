@@ -4,8 +4,8 @@
     background: linear-gradient(90deg, #44489F 0%,rgba(68, 72, 159, 0.00) 65%);
 }
 .playlist_image{
-    width:20vw;
-    height:20vw;
+    width:15vw;
+    height:15vw;
 }
 .playlist_data{
     margin-left: 5%;
@@ -13,27 +13,30 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height:15vw;
 }
 .playlist_type, .playlist_owner{
-    font-size: 1vw;
+    font-size: 1.1vw;
+    margin: 0;
 }
 .playlist_type{
-    margin-top: 15%;
+    margin-top: 10%;
 }
 
 .playlist_name{
     font-size: 4vw;
     font-weight: bold;
-    margin:10% 0;
+    margin:0;
 }
 
 .playlist_description{
     color: rgba(255, 255, 255, 0.571);
+    font-size: 1.3vw;
     margin: 0;
 }
 
 .playlist_utils{
-    padding: 2% 0;
+    padding-top: 2%;
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -172,8 +175,11 @@ tbody tr:hover{
     }
 }
 
+.song_n{
+    height:2vw;
+}
 
 .song_row_play{
-    width:1.5vw;
+    width:2vw;
     height:auto;
 }
