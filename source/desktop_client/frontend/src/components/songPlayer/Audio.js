@@ -1,4 +1,4 @@
-import { useRef, useEffect,useState,useContext } from "react";
+import { useRef, useEffect,useState,useContext, useCallback } from "react";
 import { Player } from "./Player";
 import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
@@ -7,22 +7,20 @@ import { UserContext } from "../../UserContext";
 export const Audio = () =>{
     const audioElem = useRef(null);
 
-    const { playing:[isPlaying,setIsPlaying],
-            songData:[currentSongData,setCurrentSongData],
+    const { playing:[isPlaying,],
+            songData:[currentSongData,],
             song:[songLoaded, setSongLoaded]} = useContext(SongsContext);
-    
+
     const {access_token:[token,,]} = useContext(UserContext);
-    
-    const [first,setFirst] = useState(1)
+
     const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
     const [songUrl, setSongUrl] = useState("");
+    const renderAfterCalled = useRef(false);
 
-    // useEffect(()=>{
-    //     setSongLoaded(false)
-    // },[currentSongData])
 
+    // trigger song play
     useEffect(() => {
-        if(audioElem.current && !first){
+        if(audioElem.current){
             if (isPlaying && songLoaded) {
                 audioElem.current.play();
                 }
@@ -30,10 +28,10 @@ export const Audio = () =>{
                 audioElem.current.pause();
             }
         }
-      }, [isPlaying])
+        }, [isPlaying,songLoaded])
 
+    // fetch song
     useEffect(() => {
-        setSongLoaded(false)
         setCurrentSong({"progress":0,"length":0 })
         fetch(`/api/song/${currentSongData.id}`, {
             method: "GET",
@@ -44,39 +42,24 @@ export const Audio = () =>{
         }).then((res) => res.blob())
         .then((data) => {
             setSongUrl(URL.createObjectURL(data));
-            console.log("url loaded",songLoaded)
         })
-      }, [currentSongData])
-
-      useEffect(()=>{
-        if(first){
-            console.log("changed 1")
-            setFirst(0)
-        }
-        else if(songLoaded){
-            console.log("changed end")
-            if(isPlaying){
-                audioElem.current.play()
-            }
-            else{
-                setIsPlaying(true)
-            }
-        }
-      },[songLoaded])
+        console.log("uploaded song")
+      }, [currentSongData,token])
 
     // on time update after using range scroll
     const onPlaying = () => {
         const duration = audioElem.current.duration;
         const ct = audioElem.current.currentTime;
 
-        setCurrentSong({ "progress": ct / duration * 100,"length":duration})
+        setCurrentSong({ ...currentSong,"progress": ct / duration * 100})
       }
 
-      const onSongLoad = () =>{
-        setCurrentSong({...currentSong,"progress":0,"length":audioElem.current.duration})
+    // when song is loaded
+    const onSongLoad = () =>{
+        setCurrentSong({"progress":0,"length":audioElem.current.duration})
         console.log("song loaded in")
         setSongLoaded(true)
-      }
+    }
 
 
 

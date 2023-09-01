@@ -1,6 +1,5 @@
 import { useEffect,useState,useContext } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill,BsVolumeUp, BsVolumeMute,BsVolumeDown} from 'react-icons/bs';
-import { Loader } from '../utils/Loader';
 import { SongsContext } from "../../SongsData";
 import '../../styles/player.css';
 
@@ -18,7 +17,7 @@ export const Player = ({audioElem, currentSong})=> {
 
   const songs = currentPlaylist.songs
 
-  // set current time while using range scroller
+  // set current time while using range scroller(when unclicked/submitted cur time)
   const changeRange = (e) =>{
     const value = e.target.value
     const res = value/100 * currentSong.length
@@ -26,7 +25,7 @@ export const Player = ({audioElem, currentSong})=> {
       setClicked(false)
   }
 
-
+  // change volume
   const changeVolume = (e) =>{
     const value = e.target.value
     audioElem.current.volume = value
@@ -36,6 +35,8 @@ export const Player = ({audioElem, currentSong})=> {
   // skip to previous music
   const skipBack = ()=>{
     if(!songLoaded) return
+
+    if(!isPlaying) setIsPlaying(true)
 
     if(audioElem.current.currentTime>3){
       audioElem.current.currentTime = 0;
@@ -50,11 +51,14 @@ export const Player = ({audioElem, currentSong})=> {
     }
 
     setCurrentSongData(songs[index - 1]);
+    setSongLoaded(false)
   }
 
   // skip to next music
   const skiptoNext =()=>{
     if(!songLoaded) return
+
+    if(!isPlaying) setIsPlaying(true)
 
     var index = songs.findIndex(x=>x.id === currentSongData.id) + 1;
 
@@ -64,8 +68,10 @@ export const Player = ({audioElem, currentSong})=> {
     }
 
     setCurrentSongData(songs[index]);
+    setSongLoaded(false)
   }
 
+  // change slider position(without changing the actual song position)
   const toggle = (e) =>{
     setClicked(true)
     setSlider(e.target.value)
@@ -75,20 +81,18 @@ export const Player = ({audioElem, currentSong})=> {
   useEffect(()=>{
     if(audioElem.current){
       if(audioElem.current.currentTime/currentSong.length*100 === 100){
-        setSongLoaded(false)
         skiptoNext()
       }
     }
   })
 
+  // change song range slider accordingly to the song progress
   useEffect(()=>{
     if(!clicked){
       setSlider(currentSong.progress)
     }
   },[currentSong])
 
-  // // Load loader page until data is loaded
-  if(audioElem.current === null) return <Loader/>
 
   return (
     <div className='player_container'>
