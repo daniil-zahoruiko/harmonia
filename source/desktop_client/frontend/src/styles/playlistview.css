@@ -171,3 +171,9 @@ tbody tr:hover{
         height:2vw
     }
 }
+
+
+.song_row_play{
+    width:1.5vw;
+    height:auto;
+}
