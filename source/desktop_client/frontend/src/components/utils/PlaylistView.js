@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
@@ -7,33 +7,43 @@ import "../../styles/playlistview.css"
 
 
 export const PlaylistView = ({owner,type, name, description, image, songs,id}) =>{
-  const {   playing:[isPlaying,],
+  const {   playing:[isPlaying,setIsPlaying],
             playlist:[currentPlaylist,setCurrentPlaylist],
             songData:[currentSongData,setCurrentSongData],
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause] } = useContext(SongsContext)
 
 
-  const toggle = (index) =>{
     const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name}
-    console.log(currentPlaylist.id !== id)
-    if(!songLoaded) return
-    if(currentPlaylist.id !== id){
-        setCurrentPlaylist(data)
-        setSongLoaded(false)
-        if(index === -1){
+    const [hover,setHover] = useState({bool:false,key:""})
+
+    // play/pause button functionality
+    const pauseButtonToggle = () =>{
+        if(currentPlaylist.id !== id){
+            setCurrentPlaylist(data)
             setCurrentSongData(songs[0])
+            if(!isPlaying) setIsPlaying(true)
         }
         else{
-            setCurrentSongData(songs[index])
+            PlayPause()
         }
-    }else if(index !== -1){
-        setSongLoaded(false)
-        setCurrentSongData(songs[index])
     }
-    PlayPause()
 
-  }
+    // song onclick functionality
+    const songToggle = (index) =>{
+        if(!songLoaded) return
+        if(currentPlaylist.id !== id){
+            setCurrentPlaylist(data)
+        }
+        if(currentSongData === songs[index]){
+            PlayPause()
+        }
+        else{
+            setSongLoaded(false)
+            setCurrentSongData(songs[index])
+            if(!isPlaying) setIsPlaying(true)
+        }
+    }
 
     return(
         <div>
@@ -48,8 +58,8 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
             </div>
             <div className="playlist_utils">
                 <div className='play_playlist_wrapper'>
-                    {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={() =>toggle(-1)}/>
-                    :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={()=>toggle(-1)}/>}
+                    {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
+                    :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
             </div>
             <table className='songs_list'>
@@ -78,10 +88,15 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
                 <tbody>
                     {songs.map((song,key)=>{
                         return(
-                            <tr onClick={()=>toggle(key)} className='song_row'>
+                            <tr onMouseEnter={()=>setHover({bool:true,key:key})} onMouseLeave={()=>setHover(false)} key={key} className='song_row'>
                                 <td>
                                     <div className='song_n'>
-                                        {isPlaying && currentSongData.id === song.id?
+                                        {hover.bool && key===hover.key
+                                        ?currentSongData.id === songs[hover.key].id && isPlaying
+                                        ?<BsFillPauseCircleFill onClick={()=>songToggle(key)} className='song_row_play'/>
+                                        :<BsFillPlayCircleFill onClick={()=>songToggle(key)} className='song_row_play'/>
+                                        :isPlaying && currentSongData.id === song.id
+                                        ?
                                         <div className='song_playing_animation'>
                                             <div></div>
                                             <div></div>
