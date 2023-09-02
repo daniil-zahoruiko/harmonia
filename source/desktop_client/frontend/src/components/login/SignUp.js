@@ -53,7 +53,7 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
                         Username:
                     </label>
                     <input className={`signing_input ${errors.username?"invalid":""}`} id="username"  placeholder="Username" {...register("username")} />
-                    <p>{errors.username?.message}</p>
+                    <p className="form_error">{errors.username?.message}</p>
                 </div>
                 <div>
                     <label htmlFor="password">
@@ -61,30 +61,30 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
                     </label>
                     <input className={`signing_input ${errors.password?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="password"  placeholder="Password" {...register("password")} />
                     {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
-                    <p>{errors.password?.message}</p>
+                    <p className="form_error">{errors.password?.message}</p>
                 </div>
                 <div>
                     <label htmlFor="passwordConfirmation">
                         Confirm password:
                     </label>
                     <input className={`signing_input ${errors.passwordConfirmation?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="passwordConfirmation"  placeholder="Confirm password" {...register("passwordConfirmation")}/>
-                    <p>{errors.passwordConfirmation?.message}</p>
+                    <p className="form_error">{errors.passwordConfirmation?.message}</p>
                 </div>
                 <div>
                     <label htmlFor="email">
                         Email:
                     </label>
                     <input className={`signing_input ${errors.email?"invalid":""}`} id="email"  placeholder="Email" {...register("email")}/>
-                    <p>{errors.email?.message}</p>
+                    <p className="form_error">{errors.email?.message}</p>
                 </div>
                 <div>
                     <label htmlFor="fullName">
                         Full Name:
                     </label>
                     <input className={`signing_input ${errors.fullName?"invalid":""}`} id="fullName"  placeholder="Full Name" {...register("fullName")} />
-                    <p>{errors.fullName?.message}</p>
+                    <p className="form_error">{errors.fullName?.message}</p>
                 </div>
-                {error != null ? <p>{error}</p> : null}
+                {error != null ? <p className="login_error">{error}</p> : null}
                 <div className="signing_submit_button">
                     <input id="submit" type="submit" value="Create account"/>
                 </div>

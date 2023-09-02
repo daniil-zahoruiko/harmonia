@@ -75,6 +75,11 @@
     transition: all ease-in-out 0.2s;
 }
 
+.login_error{
+    font-size: 1.5vw;
+    margin:0
+}
+
 @media (orientation:portrait) {
     .logged_out_wrapper h1{
         font-size: 7vw;
@@ -90,6 +95,9 @@
     .logged_out_wrapper p{
         color:grey;
         font-size: 2vw;
+    }
+    .login_error{
+        font-size: 5vw;
     }
 
 }

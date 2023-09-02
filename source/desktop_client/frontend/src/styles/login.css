@@ -13,13 +13,6 @@
     text-align: center;
     margin-top: 0;
 }
-.log_in_wrapper p{
-    height:3vh;
-    font-size: 1vw;
-    text-align: end;
-    color:red;
-    margin:0 0 0 0;
-}
 .log_in_wrapper div{
     display: flex;
     flex-direction: column;
@@ -59,9 +52,6 @@
     }
     .log_in_wrapper h1{
         font-size: 7vw;
-    }
-    .log_in_wrapper p{
-        font-size: 2vw;
     }
     .login_submit_button #submit{
         padding: 6% 12%;
