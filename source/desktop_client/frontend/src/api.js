@@ -36,11 +36,7 @@ const FetchSongs = ({token}) =>{
 async function LogMeIn({token, setToken, username, password})
 {
     // TODO: obtain all user data
-<<<<<<< HEAD
-    return fetch('/token', {
-=======
     return await fetch('/token', {
->>>>>>> 37bb86a4432c510008a13a0381c8909c4f1bf247
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -67,15 +63,9 @@ async function LogMeIn({token, setToken, username, password})
     });
 }
 
-<<<<<<< HEAD
-const SignMeUp = async ({username, password}) =>
-{
-    await fetch("/signup", {
-=======
 async function SignMeUp({username, password})
 {
     return await fetch("/signup", {
->>>>>>> 37bb86a4432c510008a13a0381c8909c4f1bf247
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
