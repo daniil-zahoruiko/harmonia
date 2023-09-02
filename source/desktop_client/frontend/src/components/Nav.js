@@ -1,17 +1,17 @@
 import { useContext } from "react"
-import "../styles/nav.css"
 import {IoSettingsOutline} from "react-icons/io5"
 import { SongsContext } from "../SongsData"
+import "../styles/nav.css"
 
-export const Nav = ({setPage}) =>{
-    const {page:[currentPage,setCurrentPage]} = useContext(SongsContext)
+export const Nav = () =>{
+    const {page:[,setCurrentPage]} = useContext(SongsContext)
 
     return(
         <nav className="desktop_nav">
             <ul>
                 <li className="nav_outer nav_logo">
                     <div>
-                        <p onClick={()=>setCurrentPage("home")}>Project name</p>
+                        <p onClick={()=>setCurrentPage("home")}>HARMONIA</p>
                     </div>
                 </li>
                 <li className="nav_li nav_left">

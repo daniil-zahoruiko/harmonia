@@ -1,0 +1,91 @@
+.sign_up_wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    min-height:70vh;
+    padding-top: 3%;
+}
+.sign_up_wrapper h1{
+    font-size: 4vw;
+    text-align: center;
+    margin-top: 0;
+}
+.sign_up_wrapper p{
+    height:3vh;
+    font-size: 1vw;
+    text-align: end;
+    color:red;
+    margin:0 0 0 0;
+}
+.sign_up_wrapper div{
+    display: flex;
+    flex-direction: column;
+    width:25vw;
+    position: relative;
+}
+
+.signing_submit_button, .login_submit_button{
+    align-items: center;
+}
+
+
+.signing_submit_button #submit{
+    padding: 3% 6%;
+    font-size: 1.5vw;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 16px;
+    margin-top: 10%;
+    width:fit-content;
+    align-items: center;
+}
+
+
+.invalid {
+    /* border: none; */
+    outline: 2px solid red;
+  }
+
+  .sign_up_wrapper label{
+    font-size: 1.4vw;
+    margin-bottom: 2%;
+}
+.signing_input{
+    padding: 2% 4%;
+    border-radius: 16px;
+    border:none;
+    font-size: 1.1vw;
+}
+.signing_input:focus{
+    outline: none;
+    box-shadow: 0 0 2px 5px #44489F;
+}
+
+.back_wrapper{
+    top:2%;
+    left:1%;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+}
+
+.back_wrapper_svg{
+    width:3vw;
+    height:auto;
+    color:white;
+}
+
+.pass_visibility{
+    position: absolute;
+    width:2vw;
+    height:auto;
+    left:105%;
+    top:40%;
+}
+
+.hide_pass{
+    -webkit-text-security: disc;
+}

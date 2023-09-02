@@ -33,7 +33,7 @@ export default ({children}) =>{
     },[currentPlaylist])
 
     useEffect(()=>{
-        setCurrentPlaylist({owner:"Project name",type:"",name:"",description:"",songs:songs.slice(2,7),id:"default"})
+        setCurrentPlaylist({owner:"HARMONIA",type:"",name:"",description:"",songs:songs.slice(2,7),id:"default"})
     },[loading])
 
     const songsData = {

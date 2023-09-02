@@ -32,13 +32,11 @@ def create_token():
     if user_id is None:
         print("invalid username")
         return jsonify({"msg": "Invalid username"}), 401
-    
+
     user_data = utils.verify_user(connection, user_id, password)
     if(user_data is None):
         print("not authorized")
         return jsonify({"msg": "Invalid password"}), 401
-    
-    print(user_id)
 
     access_token = create_access_token(identity=user_id)
 
@@ -51,11 +49,11 @@ def sign_up():
     username = request.json["username"]
     password = request.json["password"]
 
-    print(username, password)
+
 
     if(utils.try_get_user(connection, username) is not None):
         return jsonify({"msg": "User already exists"}), 401
-    
+
     utils.create_user(connection, username, password)
 
     return "Success", 200
@@ -70,7 +68,7 @@ def refresh_expiring_jwts(response):
             access_token = create_access_token(identity=get_jwt_identity())
             data = response.get_json()
             if type(data) is dict:
-                data["access_token"] = access_token 
+                data["access_token"] = access_token
                 response.data = json.dumps(data)
         return response
     except (RuntimeError, KeyError):

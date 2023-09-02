@@ -1,25 +1,13 @@
 import { SongCard } from "../utils/SongCard"
 import "../../styles/home.css"
-import { useCallback, useContext } from "react"
+import { useContext } from "react"
 import { SongsContext } from "../../SongsData";
 
 
 
 export const Home = () => {
 
-    const { db:[songs],
-            songData:[currentSongData,setCurrentSongData],
-            playlist:[currentPlaylist,setCurrentPlaylist],
-            song:[songLoaded, ] } = useContext(SongsContext)
-
-
-    const handleClick = (index) =>{
-        if(!songLoaded){
-            return
-        }
-        setCurrentPlaylist({...currentPlaylist,songs:songs})
-        setCurrentSongData(songs.filter((song)=>song.id === index)[0])
-    }
+    const { db:[songs] } = useContext(SongsContext)
 
     return(
         <>
@@ -29,7 +17,7 @@ export const Home = () => {
                     {
                         songs.slice(0,5).map((song,key) =>{
                             return(
-                                <SongCard onClick={() => handleClick(song.id)} key={key} id={song.id} title={song.title} artist={song.artist}/>
+                                <SongCard key={key} id={song.id} title={song.title} artist={song.artist}/>
                             )
                         })
                     }
@@ -41,7 +29,7 @@ export const Home = () => {
                     {
                         songs.slice(5,10).map((song,key) =>{
                             return(
-                                <SongCard onClick={() => handleClick(song.id)}  key={key} id={song.id} title={song.title} artist={song.artist}/>
+                                <SongCard key={key} id={song.id} title={song.title} artist={song.artist}/>
                             )
                         })
                     }

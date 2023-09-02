@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap');
+
+
+.logged_out_background{
+    min-height: 100vh;
+    background: linear-gradient(0deg, rgb(0, 0, 0) 0%,#44489F 50%, rgb(0, 0, 0) 100%);
+}
+
+.logged_out_wrapper{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /* height:100%; */
+    height: 80vh;
+    padding: 10vh 0;
+}
+.logged_buttons{
+    display: flex;
+    flex-direction: column;
+    width:20%;
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+}
+
+.logged_out_wrapper{
+    color:white;
+}
+
+.logged_out_wrapper h1{
+    font-size: 4vw;
+}
+
+.logged_out_wrapper p{
+    color:grey;
+    font-size: 1vw;
+}
+
+.vdnk{
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 1.5vw;
+}
+.logged_out_wrapper a{
+    color:grey;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logged_out_wrapper a:link{
+    color:grey;
+}
+.logged_out_wrapper a:visited{
+    color:grey;
+}
+.logged_out_button{
+    padding: 4% 10%;
+    font-size: 3vw;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 16px;
+    margin-top: 10%;
+    /* background: linear-gradient(180deg, #44489F 0%,rgba(68, 72, 159, 0.00) 90%, rgba(68, 72, 159, 0.00) 100%); */
+}
+
+.logged_out_singup{
+    background-color: black;
+    color: white;
+}
+
+.logged_out_wrapper a:hover{
+    color:#44489F;
+    transition: all ease-in-out 0.2s;
+}

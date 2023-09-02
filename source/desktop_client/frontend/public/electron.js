@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow,shell } = require('electron')
 
 const path = require('path')
 const isDev = require('electron-is-dev')
@@ -21,6 +21,10 @@ function createWindow() {
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`
   )
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
 }
 
 app.on('ready', createWindow)
@@ -39,3 +43,4 @@ app.on('activate', function () {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
+
