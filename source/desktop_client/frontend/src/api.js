@@ -36,7 +36,7 @@ const FetchSongs = ({token}) =>{
 const LogMeIn = ({token, setToken, username, password}) => 
 {
     // TODO: obtain all user data
-    fetch('/token', {
+    return fetch('/token', {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -45,19 +45,27 @@ const LogMeIn = ({token, setToken, username, password}) =>
             "username": username,
             "password": password
         })
-        }).then((response) => {
-        if(!response.ok)
-            throw new Error(response.status)
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        if(response.ok)
+        {
+            setToken(jsonResponse.token);
+            return true
+        }
+        else if(response.status === 401)
+            throw new Error(jsonResponse.msg);
         else
-            return response.json();
-    }).then((data) => {
-        setToken(data.token);
+            throw new Error('Unknown error ' + response.status);
+    }).catch((error) =>{
+        console.log(error.message);
     });
 }
 
-const SignMeUp = ({username, password}) =>
+const SignMeUp = async ({username, password}) =>
 {
-    fetch("/signup", {
+    await fetch("/signup", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -68,7 +76,8 @@ const SignMeUp = ({username, password}) =>
         })
     }).then((response) => {
         if(!response.ok) throw new Error(response.status);
-    })
+        else console.log('abc');
+    });
 }
 
 const LogMeOut = () =>

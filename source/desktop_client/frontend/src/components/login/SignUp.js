@@ -25,11 +25,13 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
         }));
     }
 
-    function handleSubmit()
+    async function handleSubmit()
     {
-        SignMeUp({username: signUpForm.username, password: signUpForm.password});
+        await SignMeUp({username: signUpForm.username, password: signUpForm.password});
 
         LogMeIn({token: token, setToken: setToken, username: signUpForm.username, password: signUpForm.password});
+        
+        console.log("a");
 
         setSelectedAction("Main");
     }

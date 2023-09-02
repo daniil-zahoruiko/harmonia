@@ -15,7 +15,14 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
 
     function handleSubmit()
     {
-        LogMeIn({token: token, setToken: setToken, username: logInForm.username, password:logInForm.password});
+        if(LogMeIn({token: token, setToken: setToken, username: logInForm.username, password:logInForm.password}))
+        {
+            console.log('login succcessfull');
+        }
+        else
+        {
+            console.log('error');
+        }
 
         setSelectedAction("Main");
     }

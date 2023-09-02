@@ -30,12 +30,16 @@ def create_token():
 
     user_id = utils.try_get_user(connection, username)
     if user_id is None:
+        print("invalid username")
         return jsonify({"msg": "Invalid username"}), 401
     
     user_data = utils.verify_user(connection, user_id, password)
     if(user_data is None):
+        print("not authorized")
         return jsonify({"msg": "Invalid password"}), 401
     
+    print(user_id)
+
     access_token = create_access_token(identity=user_id)
 
     print("aaa")
