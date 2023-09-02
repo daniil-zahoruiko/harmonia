@@ -52,3 +52,34 @@
     width:fit-content;
     align-items: center;
 }
+
+@media (orientation:portrait) {
+    .log_in_wrapper{
+        padding-top: 30%;
+    }
+    .log_in_wrapper h1{
+        font-size: 7vw;
+    }
+    .log_in_wrapper p{
+        font-size: 2vw;
+    }
+    .login_submit_button #submit{
+        padding: 6% 12%;
+        font-size: 5vw;
+        margin-top: 10%;
+    }
+    .log_in_wrapper div{
+        display: flex;
+        flex-direction: column;
+        width:50vw;
+        position: relative;
+    }
+    .log_in_wrapper label{
+        font-size: 6vw;
+        margin-bottom: 2%;
+    }
+    .login_input{
+        padding: 2% 4%;
+        font-size:4vw;
+    }
+}
