@@ -10,6 +10,7 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
 {
 
     const [passwordVisibility, setPasswordVisibility] = useState(false)
+    const [error, setError] = useState(null);   
 
     const {
         access_token: [token, setToken,]
@@ -22,13 +23,13 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
         }
     })
 
-    function onSubmit(data)
+    async function onSubmit(data)
     {
-        LogMeIn({token: token, setToken: setToken, username: data.username, password:data.password});
-
-        setSelectedAction("Main");
-        console.log(data)
+        await LogMeIn({setToken: setToken, setError: setError, username: data.username, password:data.password})
+        .then(() => setError(null))
+        .catch((error) => setError(error.message));
     }
+    
     const passwordToggle = () =>{
         setPasswordVisibility(!passwordVisibility)
     }
@@ -54,6 +55,7 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
                     <p></p>
                     {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
                 </div>
+                {error != null ? <p>{error}</p> : null}
                 <div className="login_submit_button">
                     <input id="submit" type="submit" value="Log In"/>
                 </div>

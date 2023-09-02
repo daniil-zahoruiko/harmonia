@@ -33,7 +33,7 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-async function LogMeIn({token, setToken, username, password})
+async function LogMeIn({setToken, setError, username, password})
 {
     // TODO: obtain all user data
     return await fetch('/token', {
@@ -47,20 +47,14 @@ async function LogMeIn({token, setToken, username, password})
         })
     }).then(async (response) => {
         const jsonResponse = await response.json();
-        console.log(jsonResponse);
 
         if(response.ok)
-        {
             setToken(jsonResponse.token);
-            return true
-        }
         else if(response.status === 401)
             throw new Error(jsonResponse.msg);
         else
             throw new Error('Unknown error ' + response.status);
-    }).catch((error) =>{
-        console.log(error.message);
-    });
+    })
 }
 
 async function SignMeUp({username, password})
@@ -74,9 +68,16 @@ async function SignMeUp({username, password})
             "username": username,
             "password": password
         })
-    }).then((response) => {
-        if(!response.ok) throw new Error(response.status);
-        else console.log('abc');
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
     });
 }
 

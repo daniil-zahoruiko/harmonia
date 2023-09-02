@@ -12,6 +12,7 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
 {
 
     const [passwordVisibility, setPasswordVisibility] = useState(false)
+    const [error, setError] = useState(null);
 
     const {
         access_token: [token, setToken,]
@@ -31,10 +32,11 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
     async function onSubmit(data)
     {
         await SignMeUp({username: data.username, password: data.password})
-        await LogMeIn({token: token, setToken: setToken, username: data.username, password: data.password})
-        setSelectedAction("Main");
-
-        console.log(data)
+        .then(async () => {
+            await LogMeIn({token: token, setToken: setToken, username: data.username, password: data.password})
+            .then(() => setError(null))
+        })
+        .catch((error) => setError(error.message));
     }
 
     const passwordToggle = () =>{
@@ -82,6 +84,7 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
                     <input className={`signing_input ${errors.fullName?"invalid":""}`} id="fullName"  placeholder="Full Name" {...register("fullName")} />
                     <p>{errors.fullName?.message}</p>
                 </div>
+                {error != null ? <p>{error}</p> : null}
                 <div className="signing_submit_button">
                     <input id="submit" type="submit" value="Create account"/>
                 </div>

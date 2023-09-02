@@ -22,21 +22,20 @@ jwt = JWTManager(app)
 
 @app.route('/token', methods=['POST'])
 def create_token():
-    print("aaa")
     username = request.json["username"]
     password = request.json["password"]
 
-    print(username, password)
+    error_msg = "Invalid username or password"
 
     user_id = utils.try_get_user(connection, username)
     if user_id is None:
         print("invalid username")
-        return jsonify({"msg": "Invalid username"}), 401
+        return jsonify({"msg": error_msg}), 401
 
     user_data = utils.verify_user(connection, user_id, password)
     if(user_data is None):
         print("not authorized")
-        return jsonify({"msg": "Invalid password"}), 401
+        return jsonify({"msg": error_msg}), 401
 
     access_token = create_access_token(identity=user_id)
 
@@ -49,14 +48,12 @@ def sign_up():
     username = request.json["username"]
     password = request.json["password"]
 
-
-
     if(utils.try_get_user(connection, username) is not None):
         return jsonify({"msg": "User already exists"}), 401
 
     utils.create_user(connection, username, password)
 
-    return "Success", 200
+    return jsonify({"msg": "Success"}), 200
 
 @app.after_request
 def refresh_expiring_jwts(response):
