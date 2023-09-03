@@ -33,7 +33,7 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-async function FetchImages({songs, token, setImagesUrl})
+function FetchImages({songs, token, setImagesUrl})
 {
     const count = useRef(true);
     useEffect(() => {
@@ -44,22 +44,23 @@ async function FetchImages({songs, token, setImagesUrl})
         }
         for(let i = 0; i < songs.length; i++)
         {
-            fetchData({id: songs[i].id});
+            FetchImage({id: songs[i].id, token:token}).then((imageUrl) => setImagesUrl(imagesUrl => [...imagesUrl, imageUrl]));
         }
     },[])
+}
 
-    const fetchData = async ({id}) => 
-    {
-        const response = await fetch(`/api/artist/${id}/cover`, {
-            method: "GET",
-            headers: {
-                'Content-Type': 'blob',
-                'Authorization': 'Bearer ' + token
-            }
-        })
-        const result = await response.blob();
-        setImagesUrl(imagesUrl => [...imagesUrl, URL.createObjectURL(result)]);
-    }
+const FetchImage = async ({id, token}) => 
+{
+    console.log(id);
+    const response = await fetch(`/api/artist/${id}/cover`, {
+        method: "GET",
+        headers: {
+            'Content-Type': 'blob',
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    const result = await response.blob();
+    return(URL.createObjectURL(result));
 }
 
 async function LogMeIn({setToken, setError, username, password})
@@ -120,4 +121,4 @@ const LogMeOut = () =>
     });
 }
 
-export { FetchSongs, FetchImages, LogMeIn, SignMeUp, LogMeOut };
+export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut };

@@ -3,6 +3,7 @@ import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, 
 import { SongsContext } from "../../SongsData";
 import '../../styles/player.css';
 import { UserContext } from '../../UserContext';
+import { FetchImage } from '../../api';
 
 export const Player = ({audioElem, currentSong})=> {
 
@@ -101,22 +102,8 @@ export const Player = ({audioElem, currentSong})=> {
 
   useEffect(() =>
   {
-    fetchImage({id: currentSongData.id});
+    FetchImage({id: currentSongData.id, token: token}).then((res) => setImageUrl(res));
   }, [currentSongData])
-
-  const fetchImage = async ({id}) =>
-  {
-    const response = await fetch(`/api/artist/${id}/cover`, {
-      method: "GET",
-      mode: "cors",
-      headers: {
-          'Content-Type': 'blob',
-          'Authorization': 'Bearer ' + token
-      }
-    })
-    const result = await response.blob();
-    setImageUrl(URL.createObjectURL(result));
-  }
 
   return (
     <div className='player_container'>
