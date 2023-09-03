@@ -18,6 +18,7 @@ export default ({children}) =>{
     const [currentPlaylist,setCurrentPlaylist] = useState({songs:[]})
     const [showedPlaylist,setShowedPlaylist] = useState({owner:"",type:"",name:"",description:"",songs:[],id:""})
     const [songLoaded,setSongLoaded] = useState(false)
+    const [allLoaded,setAllLoaded] = useState(false)
 
     const PlayPause = ()=>
     {
@@ -44,7 +45,8 @@ export default ({children}) =>{
         playlist:[currentPlaylist,setCurrentPlaylist],
         playlistRender:[showedPlaylist,setShowedPlaylist],
         song:[songLoaded,setSongLoaded],
-        toggles:[PlayPause]
+        toggles:[PlayPause],
+        displayLoad:[allLoaded,setAllLoaded]
     }
 
     return(
