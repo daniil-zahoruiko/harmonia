@@ -70,6 +70,13 @@
     border-collapse: separate;
     border-spacing: 0 1em;
 }
+
+.songs_cards{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(5,20%);
+}
+
 thead tr{
     position: relative;
 }
