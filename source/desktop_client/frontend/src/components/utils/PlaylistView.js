@@ -5,6 +5,8 @@ import { LoadedImage } from './LoadedImage';
 import "../../styles/playlistview.css"
 import { FetchImages } from '../../api';
 import { UserContext } from '../../UserContext';
+import { SongRow } from './SongRow';
+import { SongCard } from './SongCard';
 
 
 
@@ -13,16 +15,18 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
             playlist:[currentPlaylist,setCurrentPlaylist],
             songData:[currentSongData,setCurrentSongData],
             song:[songLoaded, setSongLoaded],
-            toggles:[PlayPause] } = useContext(SongsContext)
+            toggles:[PlayPause],
+            displayLoad:[allLoaded,setAllLoaded],
+            playlistView:[playlistView,setPlaylistView] } = useContext(SongsContext)
 
     const {
         access_token: [token,,]
     } = useContext(UserContext);
 
     const [images, setImages] = useState([]);
-    FetchImages({songs, token, setImagesUrl: setImages});
+    FetchImages({songs, token, setImagesUrl: setImages,setLoaded:setAllLoaded});
     const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name, images: images}
-    const [hover,setHover] = useState({bool:false,key:""})
+
 
     // play/pause button functionality
     const pauseButtonToggle = () =>{
@@ -52,6 +56,15 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
         }
     }
 
+    const viewToggle = () =>{
+        if(playlistView === "row"){
+            setPlaylistView("card")
+        }
+        else{
+            setPlaylistView("row")
+        }
+    }
+
     return(
         <div>
             <div className="playlist_header">
@@ -68,8 +81,52 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
+                <div>
+                    <button onClick={viewToggle}>Click me</button>
+                </div>
             </div>
-            <table className='songs_list'>
+            {
+                playlistView==="row"?
+                <table className='songs_list'>
+                    <colgroup>
+                        <col className='n_col'/>
+                        <col className='title_col'/>
+                        <col className='album_col'/>
+                        <col className='time_col'/>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                <p>#</p>
+                            </th>
+                            <th>
+                                <p>Title</p>
+                            </th>
+                            <th>
+                                <p>Album</p>
+                            </th>
+                            <th>
+                                <p>Length</p>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {songs.map((song,key)=>{
+                            return(
+                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} images={data.images}/>
+                            )
+                        })}
+                    </tbody>
+                </table>
+                :<div className='songs_cards'>
+                    {songs.map((song,key)=>{
+                        return(
+                            <SongCard key={key} songs={songs} song={song} imageUrl={data.images[key]} images={data.images}/>
+                        )
+                    })}
+                </div>
+            }
+            {/* <table className='songs_list'>
                 <colgroup>
                     <col className='n_col'/>
                     <col className='title_col'/>
@@ -95,45 +152,13 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                 <tbody>
                     {songs.map((song,key)=>{
                         return(
-                            <tr onMouseEnter={()=>setHover({bool:true,key:key})} onMouseLeave={()=>setHover(false)} key={key} className='song_row'>
-                                <td>
-                                    <div className='song_n'>
-                                        {hover.bool && key===hover.key
-                                        ?currentSongData.id === songs[hover.key].id && isPlaying
-                                        ?<BsFillPauseCircleFill onClick={()=>songToggle(key)} className='song_row_play'/>
-                                        :<BsFillPlayCircleFill onClick={()=>songToggle(key)} className='song_row_play'/>
-                                        :isPlaying && currentSongData.id === song.id
-                                        ?
-                                        <div className='song_playing_animation'>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                            <div></div>
-                                        </div>
-                                        :<p style={currentSongData.id === song.id?{color:"#44489F"}:{}}>{key+1}</p>}
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className='song_row_data'>
-                                        <LoadedImage className='song_row_image' src={data.images[key]} />
-                                        <div className='song_row_text'>
-                                            <p style={currentSongData.id === song.id?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
-                                            <p className='song_row_data_artist'>{song.artist}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className='song_row_album'>
-                                        <p>{song.album}</p>
-                                    </div>
-                                </td>
-                                <td>1:57</td>
-                            </tr>
+                            playlistView==="row"
+                            ?<SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} images={data.images}/>
+                            :<SongCard key={key} songs={songs} song={song} imageUrl={data.images[key]} images={data.images}/>
                         )
                     })}
                 </tbody>
-            </table>
+            </table> */}
         </div>
     )
 }
