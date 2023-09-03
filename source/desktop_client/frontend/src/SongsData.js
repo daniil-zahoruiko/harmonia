@@ -19,7 +19,7 @@ export default ({children}) =>{
     const [showedPlaylist,setShowedPlaylist] = useState({owner:"",type:"",name:"",description:"",songs:[],id:""})
     const [songLoaded,setSongLoaded] = useState(false)
     const [allLoaded,setAllLoaded] = useState(false)
-    const [playlistView,setPlaylistView] = useState()
+    const [playlistView,setPlaylistView] = useState("row")
 
     const PlayPause = ()=>
     {
