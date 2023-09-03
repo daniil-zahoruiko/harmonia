@@ -1,14 +1,17 @@
-import {useState} from "react"
+import {useContext, useState} from "react"
 import { ImageSkeleton } from "./Skeleton"
+import { SongsContext } from "../../SongsData"
 
 
 export const LoadedImage = ({src, className, alt}) =>{
-    const [loaded,setLoaded] = useState(false)
+    const { displayLoad:[allLoaded,] } = useContext(SongsContext)
+
+    console.log(allLoaded)
 
     return(
         <div className={className}>
-            {loaded?null:<ImageSkeleton/>}
-            <img className={className} alt={alt} onLoad={()=>setLoaded(true)} style={loaded?{}:{display:"none"}} src={src} />
+            {allLoaded?null:<ImageSkeleton/>}
+            <img className={className} alt={alt} style={allLoaded?{}:{display:"none"}} src={src} />
         </div>
     )
 }

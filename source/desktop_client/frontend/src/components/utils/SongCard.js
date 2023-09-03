@@ -1,18 +1,18 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../../styles/songcard.css"
 import { LoadedImage } from "./LoadedImage"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { SongsContext } from "../../SongsData";
 
 
-export const SongCard = ({id, title, artist, imageUrl}) => {
+export const SongCard = ({song, imageUrl,songs,images}) => {
 
-    const { db:[songs],
-        songData:[currentSongData,setCurrentSongData],
+    const { songData:[currentSongData,setCurrentSongData],
         playlist:[currentPlaylist,setCurrentPlaylist],
         song:[songLoaded, setSongLoaded],
         playing:[isPlaying,setIsPlaying],
-        toggles:[PlayPause] } = useContext(SongsContext)
+        toggles:[PlayPause],
+        displayLoad:[allLoaded,setAllLoaded] } = useContext(SongsContext)
 
 
     const [hover,setHover] = useState({bool:false,key:""})
@@ -32,17 +32,28 @@ export const SongCard = ({id, title, artist, imageUrl}) => {
         if(!isPlaying) setIsPlaying(true)
     }
 
+    useEffect(()=>{
+        console.log("I invoked")
+        if(!images) return null
+        if(images.length === songs.length){
+            setAllLoaded(true)
+        }
+        else {
+            setAllLoaded(false)
+        }
+        console.log(images)
+    },[images])
 
 
     return(
-        <div onMouseEnter={()=>setHover({bool:true,key:id})} onMouseLeave={()=>setHover({key:id,bool:false})} className="SongCard">
-            <LoadedImage className={"songcard_img"} alt={title} src={imageUrl}/>
-            <h1 className="song_card_title">{title}</h1>
-            <p className="song_card_artist">{artist}</p>
-            {hover.bool && hover.key === id
-                ?currentSongData.id === id && isPlaying
-                ?<BsFillPauseCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>handleClick(id)}/>
-                :<BsFillPlayCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>handleClick(id)}/>
+        <div onMouseEnter={()=>setHover({bool:true,key:song.id})} onMouseLeave={()=>setHover({key:song.id,bool:false})} className="SongCard">
+            <LoadedImage className={"songcard_img"} alt={song.title} src={imageUrl}/>
+            <h1 className="song_card_title">{song.title}</h1>
+            <p className="song_card_artist">{song.artist}</p>
+            {hover.bool && hover.key === song.id
+                ?currentSongData.id === song.id && isPlaying
+                ?<BsFillPauseCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>handleClick(song.id)}/>
+                :<BsFillPlayCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>handleClick(song.id)}/>
                 :""
             }
         </div>
