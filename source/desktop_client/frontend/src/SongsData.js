@@ -7,7 +7,6 @@ import { UserContext } from "./UserContext";
 
 export const SongsContext = createContext(null)
 
-
 export default ({children}) =>{
     const {access_token: [token,,]} = useContext(UserContext);
 

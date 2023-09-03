@@ -5,7 +5,7 @@ import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { SongsContext } from "../../SongsData";
 
 
-export const SongCard = ({id, title, artist}) => {
+export const SongCard = ({id, title, artist, imageUrl}) => {
 
     const { db:[songs],
         songData:[currentSongData,setCurrentSongData],
@@ -34,10 +34,9 @@ export const SongCard = ({id, title, artist}) => {
 
 
 
-
     return(
         <div onMouseEnter={()=>setHover({bool:true,key:id})} onMouseLeave={()=>setHover({key:id,bool:false})} className="SongCard">
-            <LoadedImage className={"songcard_img"} alt={title} src={`api/artist/${id}/cover/`}/>
+            <LoadedImage className={"songcard_img"} alt={title} src={imageUrl}/>
             <h1 className="song_card_title">{title}</h1>
             <p className="song_card_artist">{artist}</p>
             {hover.bool && hover.key === id

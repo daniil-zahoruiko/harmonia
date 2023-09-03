@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, send_file, request, Response
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt, get_jwt_identity, unset_jwt_cookies
+from flask_cors import CORS, cross_origin
 from werkzeug.wsgi import FileWrapper
 from datetime import datetime, timedelta, timezone
 import json
@@ -8,7 +9,9 @@ import populate_db
 
 # Initializing flask app
 app = Flask(__name__)
+cors = CORS(app)
 
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
@@ -105,10 +108,11 @@ def song(id):
 
 
 @app.route("/api/artist/<id>/cover/")
-#@jwt_required()
+@cross_origin()
+@jwt_required()
 def song_image(id):
     file = utils.get_image_file(connection, id)
-    return send_file(file)
+    return file
 
 
 # Running app

@@ -64,39 +64,17 @@ class DBConnection:
         return res
 
     def read_image_file(self, id):
-        dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "images")
+        query = "SELECT image FROM songs WHERE id = %s"
 
-        if(not os.path.exists(dir)):
-            os.mkdir(dir, 0o666)
+        file = self.execute_query(query=query,args=(id, ), fetch_func="fetchone")[0]
 
-        dir = os.path.join(dir, id + ".webp")
-
-        if(not os.path.isfile(dir)):
-            query = "SELECT image FROM main.songs WHERE id = %s"
-
-            file = self.execute_query(query=query,args=(id, ), fetch_func="fetchone")[0]
-
-            helpers.write_file(file, dir)
-
-        return "./images/" + id + ".webp"
+        return file
 
     def read_song_file(self, id):
-        dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "songs")
-
-        if(not os.path.exists(dir)):
-            os.mkdir(dir, 0o666)
-
-        dir = os.path.join(dir, id + ".mp3")
-
-        #if(not os.path.isfile(dir)):
         query = "SELECT data FROM songs WHERE id = %s"
 
         file = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")[0]
 
-            #helpers.write_file(file, dir)
-
-
-        #return "./songs/" + id + ".mp3"
         return file
 
     def write_song(self, name, genre, data, artist_id, album_id):

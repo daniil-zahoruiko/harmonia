@@ -2,6 +2,7 @@ import { useEffect,useState,useContext } from 'react';
 import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, BsFillSkipEndCircleFill,BsVolumeUp, BsVolumeMute,BsVolumeDown} from 'react-icons/bs';
 import { SongsContext } from "../../SongsData";
 import '../../styles/player.css';
+import { UserContext } from '../../UserContext';
 
 export const Player = ({audioElem, currentSong})=> {
 
@@ -11,9 +12,14 @@ export const Player = ({audioElem, currentSong})=> {
           song:[songLoaded, setSongLoaded],
           toggles:[PlayPause] } = useContext(SongsContext)
 
+  const {
+    access_token:[token,,]
+  } = useContext(UserContext);
+
   const [volume, setVolume] = useState(1)
   const [slider,setSlider] = useState(currentSong.progress)
   const [clicked, setClicked] = useState(false)
+  const [imageUrl, setImageUrl] = useState("")
 
   const songs = currentPlaylist.songs
 
@@ -93,12 +99,30 @@ export const Player = ({audioElem, currentSong})=> {
     }
   },[currentSong])
 
+  useEffect(() =>
+  {
+    fetchImage({id: currentSongData.id});
+  }, [currentSongData])
+
+  const fetchImage = async ({id}) =>
+  {
+    const response = await fetch(`/api/artist/${id}/cover`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+          'Content-Type': 'blob',
+          'Authorization': 'Bearer ' + token
+      }
+    })
+    const result = await response.blob();
+    setImageUrl(URL.createObjectURL(result));
+  }
 
   return (
     <div className='player_container'>
       <div className='navigation_wrapper'>
         <div className='player_song_data'>
-          <img className='player_cover' alt={currentSongData.title} src={`api/artist/${currentSongData.id}/cover`} />
+          <img className='player_cover' alt={currentSongData.title} src={imageUrl} />
           <div className='player_song_text'>
             <p className='player_title'>{currentSongData.title}</p>
             <p className='player_artist'>{currentSongData.artist}</p>

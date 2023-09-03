@@ -33,6 +33,35 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
+async function FetchImages({songs, token, setImagesUrl})
+{
+    const count = useRef(true);
+    useEffect(() => {
+        if(count.current)
+        {
+            count.current = false;
+            return;
+        }
+        for(let i = 0; i < songs.length; i++)
+        {
+            fetchData({id: songs[i].id});
+        }
+    },[])
+
+    const fetchData = async ({id}) => 
+    {
+        const response = await fetch(`/api/artist/${id}/cover`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'blob',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        const result = await response.blob();
+        setImagesUrl(imagesUrl => [...imagesUrl, URL.createObjectURL(result)]);
+    }
+}
+
 async function LogMeIn({setToken, setError, username, password})
 {
     // TODO: obtain all user data
@@ -91,4 +120,4 @@ const LogMeOut = () =>
     });
 }
 
-export { FetchSongs, LogMeIn, SignMeUp, LogMeOut };
+export { FetchSongs, FetchImages, LogMeIn, SignMeUp, LogMeOut };

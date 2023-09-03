@@ -3,18 +3,25 @@ import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
 import "../../styles/playlistview.css"
+import { FetchImages } from '../../api';
+import { UserContext } from '../../UserContext';
 
 
 
-export const PlaylistView = ({owner,type, name, description, image, songs,id}) =>{
-  const {   playing:[isPlaying,setIsPlaying],
+export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
+    const {   playing:[isPlaying,setIsPlaying],
             playlist:[currentPlaylist,setCurrentPlaylist],
             songData:[currentSongData,setCurrentSongData],
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause] } = useContext(SongsContext)
 
+    const {
+        access_token: [token,,]
+    } = useContext(UserContext);
 
-    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name}
+    const [images, setImages] = useState([]);
+    FetchImages({songs, token, setImagesUrl: setImages});
+    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name, images: images}
     const [hover,setHover] = useState({bool:false,key:""})
 
     // play/pause button functionality
@@ -48,7 +55,7 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
     return(
         <div>
             <div className="playlist_header">
-                <LoadedImage className="playlist_image" src={`/api/artist/${songs[0].id}/cover/`} />
+                <LoadedImage className="playlist_image" src={data.images[0]} />
                 <div className="playlist_data">
                     <p className='playlist_type'>{type} playlist</p>
                     <p className='playlist_name'>{name}</p>
@@ -109,7 +116,7 @@ export const PlaylistView = ({owner,type, name, description, image, songs,id}) =
                                 </td>
                                 <td>
                                     <div className='song_row_data'>
-                                        <LoadedImage className='song_row_image' src={`/api/artist/${song.id}/cover/`} />
+                                        <LoadedImage className='song_row_image' src={data.images[key]} />
                                         <div className='song_row_text'>
                                             <p style={currentSongData.id === song.id?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
                                             <p className='song_row_data_artist'>{song.artist}</p>
