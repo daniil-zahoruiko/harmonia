@@ -19,8 +19,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
         access_token: [token,,]
     } = useContext(UserContext);
 
-    const [images, setImages] = useState([]);
-    FetchImages({songs, token, setImagesUrl: setImages});
+    const images = FetchImages({songs, token});
     const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name, images: images}
     const [hover,setHover] = useState({bool:false,key:""})
 

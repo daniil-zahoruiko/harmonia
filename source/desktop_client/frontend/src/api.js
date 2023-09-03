@@ -1,4 +1,5 @@
-import { useEffect, useState,useRef } from "react"
+import { useEffect, useState,useRef, useContext } from "react"
+import { UserContext } from "./UserContext"
 
 
 const FetchSongs = ({token}) =>{
@@ -6,6 +7,8 @@ const FetchSongs = ({token}) =>{
     const [loading,setLoading] = useState(true)
     const [userPlaylists, setUserPlaylist] = useState([])
     const dataFetchedRef = useRef(false);
+    const {access_token: [,,removeToken],
+    error: [, setUserError]} = useContext(UserContext);
 
     const fetchData = () =>{
         fetch("/api",{
@@ -13,15 +16,29 @@ const FetchSongs = ({token}) =>{
             headers: {
                 'Authorization': 'Bearer ' + token,
             }
-        }).then((res) =>
-            res.json().then((data) => {
+        }).then((res) => {
+            if(res.ok)
+                return res.json();
+            else
+                throw new Error(res.status);
+        }).then((data) => {
                 // Setting a data from api
                 setSongs(data.user.songs)
                 setUserPlaylist(data.user.playlists)
                 setLoading(false)
                 console.log(data)
-            })
-        );
+        }).catch((error) => 
+        {
+            if(error.message === "401")
+            {
+                LogMeOut({removeToken});
+                setUserError("You have been logged out");
+            }
+            else
+            {
+                console.log("Unkown error " + error.message);
+            }
+        })
     }
 
     useEffect(() => {
@@ -33,10 +50,15 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-function FetchImages({songs, token, setImagesUrl})
+function FetchImages({songs, token})
 {
+    const {access_token: [,,removeToken],
+    error: [,setUserError]} = useContext(UserContext);
+
     const count = useRef(true);
+    const [images, setImages] = useState([]);
     useEffect(() => {
+
         if(count.current)
         {
             count.current = false;
@@ -44,23 +66,42 @@ function FetchImages({songs, token, setImagesUrl})
         }
         for(let i = 0; i < songs.length; i++)
         {
-            FetchImage({id: songs[i].id, token:token}).then((imageUrl) => setImagesUrl(imagesUrl => [...imagesUrl, imageUrl]));
+            FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
+            .then((imageUrl) => setImages(images => [...images, {key: i, Url: imageUrl}]));
         }
     },[])
+    return images.sort((a, b) => a.key > b.key ? 1 : (a.key < b.key ? -1 : 0)).map((object) => object.Url);
 }
 
-const FetchImage = async ({id, token}) => 
+const FetchImage = async ({id, token, removeToken, setUserError}) => 
 {
-    console.log(id);
-    const response = await fetch(`/api/artist/${id}/cover`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'blob',
-            'Authorization': 'Bearer ' + token
+    try
+    {
+        const response = await fetch(`/api/artist/${id}/cover`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'blob',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        if(!response.ok)
+            throw new Error(response.status);
+
+        const result = await response.blob();
+        return(URL.createObjectURL(result));
+    }
+    catch(error)
+    {
+        if(error.message === "401")
+        {
+            LogMeOut({removeToken});
+            setUserError("You have been logged out");
         }
-    })
-    const result = await response.blob();
-    return(URL.createObjectURL(result));
+        else
+        {
+            console.log("Unknown error " + error.message);
+        }
+    }
 }
 
 async function LogMeIn({setToken, setError, username, password})
@@ -111,13 +152,14 @@ async function SignMeUp({username, password})
     });
 }
 
-const LogMeOut = () =>
-{
+const LogMeOut = ({removeToken}) =>
+{ 
     fetch('/logout', {
         method: "POST"
     })
     .then((response) => {
         if(!response.ok) throw new Error(response.status);
+        else removeToken();
     });
 }
 

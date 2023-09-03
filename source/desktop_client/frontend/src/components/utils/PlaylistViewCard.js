@@ -7,8 +7,7 @@ export const PlaylistViewCard = ({songs}) =>
 {
     const {access_token: [token,,]} = useContext(UserContext);
 
-    const [images, setImages] = useState([]);
-    FetchImages({songs, token, setImagesUrl: setImages});
+    const images = FetchImages({songs, token});
 
     return songs.map((song,key) => 
         (<SongCard key={key} id={song.id} title={song.title} artist={song.artist} imageUrl={images[key]}/>)

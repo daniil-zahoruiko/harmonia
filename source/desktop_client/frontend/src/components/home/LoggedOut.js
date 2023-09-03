@@ -1,11 +1,13 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { LogIn } from "../login/LogIn";
 import { SignUp } from "../login/SignUp";
 import "../../styles/loggedout.css"
+import { UserContext } from "../../UserContext";
 
 export const LoggedOut = () =>
 {
     const [selectedAction, setSelectedAction] = useState("None");
+    const {error:[userError, setUserError]} = useContext(UserContext);
 
     const getCurrentDisplay = () =>
     {
@@ -36,5 +38,10 @@ export const LoggedOut = () =>
         }
     }
 
-    return getCurrentDisplay();
+    return (
+    <>
+        {userError}
+        {getCurrentDisplay()}
+    </>
+    );
 }

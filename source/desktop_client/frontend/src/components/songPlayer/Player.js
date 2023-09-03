@@ -14,7 +14,8 @@ export const Player = ({audioElem, currentSong})=> {
           toggles:[PlayPause] } = useContext(SongsContext)
 
   const {
-    access_token:[token,,]
+    access_token:[token,,removeToken],
+    error: [, setUserError]
   } = useContext(UserContext);
 
   const [volume, setVolume] = useState(1)
@@ -102,7 +103,7 @@ export const Player = ({audioElem, currentSong})=> {
 
   useEffect(() =>
   {
-    FetchImage({id: currentSongData.id, token: token}).then((res) => setImageUrl(res));
+    FetchImage({id: currentSongData.id, token: token, removeToken: removeToken, setUserError: setUserError}).then((res) => setImageUrl(res));
   }, [currentSongData])
 
   return (

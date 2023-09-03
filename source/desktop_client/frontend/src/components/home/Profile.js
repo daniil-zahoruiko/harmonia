@@ -7,9 +7,7 @@ export default () => {
 
     function handleLogOut()
     {
-        LogMeOut()
-
-        removeToken();
+        LogMeOut({removeToken});
     }
 
     return(
