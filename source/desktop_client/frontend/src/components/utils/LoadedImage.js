@@ -6,8 +6,6 @@ import { SongsContext } from "../../SongsData"
 export const LoadedImage = ({src, className, alt}) =>{
     const { displayLoad:[allLoaded,] } = useContext(SongsContext)
 
-    console.log(allLoaded)
-
     return(
         <div className={className}>
             {allLoaded?null:<ImageSkeleton/>}

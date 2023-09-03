@@ -14,11 +14,7 @@ export const Home = () => {
         <div className="top_picks_wrapper">
             <h1 className="top_picks_header">Top picks</h1>
             <div className="top_picks_songs">
-                <PlaylistViewCard songs={songs.slice(0,5)}/>
-            </div>
-            <h1 className="top_picks_header">Top picks</h1>
-            <div className="top_picks_songs">
-                <PlaylistViewCard songs={songs.slice(5,10)}/>
+                <PlaylistViewCard songs={songs.slice(0,15)}/>
             </div>
         </div>
     )

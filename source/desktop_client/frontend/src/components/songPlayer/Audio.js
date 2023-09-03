@@ -43,7 +43,6 @@ export const Audio = () =>{
         .then((data) => {
             setSongUrl(URL.createObjectURL(data));
         })
-        console.log("uploaded song")
       }, [currentSongData,token])
 
     // on time update after using range scroll
@@ -57,7 +56,6 @@ export const Audio = () =>{
     // when song is loaded
     const onSongLoad = () =>{
         setCurrentSong({"progress":0,"length":audioElem.current.duration})
-        console.log("song loaded in")
         setSongLoaded(true)
     }
 

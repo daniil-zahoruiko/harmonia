@@ -12,7 +12,6 @@ export const SearchBar = ({setResult, input, setInput}) =>{
     const handleChange = (value) =>{
         setInput(value)
         setResult(songs.filter((song)=>{
-            console.log(song.artist,song.title)
             return value && song.title && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase()))
         }))
     }

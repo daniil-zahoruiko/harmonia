@@ -14,7 +14,6 @@ export const SongRow = ({songs,song,songToggle,id,images}) =>{
     const [hover,setHover] = useState({bool:false,id:""})
 
     useEffect(()=>{
-        console.log("I invoked")
         if(!images) return null
         if(images.length === songs.length){
             setAllLoaded(true)
@@ -22,7 +21,6 @@ export const SongRow = ({songs,song,songToggle,id,images}) =>{
         else {
             setAllLoaded(false)
         }
-        console.log(images)
     },[images])
 
     return(

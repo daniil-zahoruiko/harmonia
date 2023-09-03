@@ -33,7 +33,6 @@ export const SongCard = ({song, imageUrl,songs,images}) => {
     }
 
     useEffect(()=>{
-        console.log("I invoked")
         if(!images) return null
         if(images.length === songs.length){
             setAllLoaded(true)
@@ -41,7 +40,6 @@ export const SongCard = ({song, imageUrl,songs,images}) => {
         else {
             setAllLoaded(false)
         }
-        console.log(images)
     },[images])
 
 
