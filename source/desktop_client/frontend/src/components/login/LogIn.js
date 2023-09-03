@@ -45,17 +45,15 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
                         Username:
                     </label>
                     <input className="login_input" id="username"  placeholder="Username" {...register("username")} />
-                    <p></p>
                 </div>
                 <div>
                     <label htmlFor="password">
                         Password:
                     </label>
                     <input className={`login_input ${passwordVisibility?"":"hide_pass"}`} id="password"  placeholder="Password" {...register("password")} />
-                    <p></p>
                     {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
                 </div>
-                {error != null ? <p>{error}</p> : null}
+                {error != null ? <p className="login_error">{error}</p> : null}
                 <div className="login_submit_button">
                     <input id="submit" type="submit" value="Log In"/>
                 </div>

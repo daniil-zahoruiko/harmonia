@@ -74,3 +74,30 @@
     color:#44489F;
     transition: all ease-in-out 0.2s;
 }
+
+.login_error{
+    font-size: 1.5vw;
+    margin:0
+}
+
+@media (orientation:portrait) {
+    .logged_out_wrapper h1{
+        font-size: 7vw;
+    }
+    .logged_buttons{
+        width:50%;
+    }
+    .logged_out_button{
+        padding: 6% 12%;
+        font-size: 8vw;
+        margin-top: 10%;
+    }
+    .logged_out_wrapper p{
+        color:grey;
+        font-size: 2vw;
+    }
+    .login_error{
+        font-size: 5vw;
+    }
+
+}

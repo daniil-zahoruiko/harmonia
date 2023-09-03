@@ -12,13 +12,18 @@
     text-align: center;
     margin-top: 0;
 }
-.sign_up_wrapper p{
+.form_error{
     height:3vh;
     font-size: 1vw;
     text-align: end;
     color:red;
     margin:0 0 0 0;
 }
+.login_error{
+    color:red;
+    font-size: 5vw;
+}
+
 .sign_up_wrapper div{
     display: flex;
     flex-direction: column;
@@ -49,7 +54,7 @@
     outline: 2px solid red;
   }
 
-  .sign_up_wrapper label{
+.sign_up_wrapper label{
     font-size: 1.4vw;
     margin-bottom: 2%;
 }
@@ -88,4 +93,44 @@
 
 .hide_pass{
     -webkit-text-security: disc;
+}
+
+@media (orientation:portrait) {
+    .sign_up_wrapper{
+        padding-top: 15%;
+    }
+    .sign_up_wrapper h1{
+        font-size: 7vw;
+    }
+    .form_error{
+        font-size: 3vw;
+    }
+    .signing_submit_button #submit{
+        padding: 6% 12%;
+        font-size: 5vw;
+        margin-top: 10%;
+    }
+    .sign_up_wrapper div{
+        display: flex;
+        flex-direction: column;
+        width:50vw;
+        position: relative;
+    }
+    .sign_up_wrapper label{
+        font-size: 4vw;
+        margin-bottom: 2%;
+    }
+    .signing_input{
+        padding: 2% 4%;
+        font-size: 3vw;
+    }
+    .back_wrapper_svg{
+        width:6vw;
+    }
+    .pass_visibility{
+        width:4vw;
+        left:105%;
+        top:40%;
+    }
+
 }
