@@ -1,5 +1,6 @@
 import {useContext } from "react"
 import {FaSearch} from "react-icons/fa"
+import {RxCross1} from "react-icons/rx"
 import { SongsContext } from "../../SongsData"
 import "../../styles/searchbar.css"
 
@@ -16,6 +17,11 @@ export const SearchBar = ({setResult, input, setInput}) =>{
         }))
     }
 
+    const exit = ()=>{
+        setInput("")
+        setResult([])
+    }
+
     return(
         <div className="input_wrapper">
         <input
@@ -24,7 +30,10 @@ export const SearchBar = ({setResult, input, setInput}) =>{
             value={input}
             onChange={(e)=>handleChange(e.target.value)}
         />
-        <FaSearch color="#44489F" id="search_icon"/>
+        {input
+        ?<RxCross1 color="#44489F" id="search_icon" onClick={exit}/>
+        :<FaSearch color="#44489F" id="search_icon"/>
+        }
         </div>
     )
 }

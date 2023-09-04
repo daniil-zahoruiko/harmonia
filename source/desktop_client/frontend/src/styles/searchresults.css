@@ -8,14 +8,41 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 1%;
+    padding:1% 0;
     border-bottom:1px solid #44489F;
     align-items: center;
+}
+.result_div:hover{
+    background-color: #44499faf;
+}
+
+.search_result_image_wrapper{
+    position: relative;
+}
+.search_play{
+    display: none;
+}
+
+.result_div:hover .search_play{
+    display: block;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    width:2vw;
+    height:auto;
+}
+.result_div:hover .search_result_image_wrapper img{
+    opacity: 0.5;
 }
 
 .result_data_wrapper{
     display: flex;
     flex-direction: row;
+}
+
+.result_data_wrapper *{
+    margin-bottom: 0;
 }
 
 .result_image{
