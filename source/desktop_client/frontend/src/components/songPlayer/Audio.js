@@ -9,7 +9,8 @@ export const Audio = () =>{
 
     const { playing:[isPlaying,],
             songData:[currentSongData,],
-            song:[songLoaded, setSongLoaded]} = useContext(SongsContext);
+            song:[songLoaded, setSongLoaded],
+        playlist:[currentPlaylist,setCurrentPlaylist]} = useContext(SongsContext);
 
     const {access_token:[token,,]} = useContext(UserContext);
 
@@ -43,7 +44,7 @@ export const Audio = () =>{
         .then((data) => {
             setSongUrl(URL.createObjectURL(data));
         })
-      }, [currentSongData,token])
+      }, [currentSongData,token,currentPlaylist])
 
     // on time update after using range scroll
     const onPlaying = () => {
