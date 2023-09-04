@@ -11,7 +11,7 @@ export const Nav = () =>{
             <ul>
                 <li className="nav_outer nav_logo">
                     <div>
-                        <p onClick={()=>setCurrentPage("home")}>HARMONIA</p>
+                        <p className="project_name nav_name" onClick={()=>setCurrentPage("home")}>Harmonia</p>
                     </div>
                 </li>
                 <li className="nav_li nav_left">

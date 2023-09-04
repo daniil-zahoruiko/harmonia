@@ -126,6 +126,9 @@
     width: 3vw;
     height:auto;
 }
+.main_name{
+    font-size: 5vw;
+}
 
 @media (orientation:portrait) {
     .logged_out_wrapper h1{

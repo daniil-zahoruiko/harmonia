@@ -28,7 +28,7 @@ export const LoggedOut = () =>
                     <>
                         <main className="logged_out_background">
                             <div className="logged_out_wrapper">
-                                <h1>¡Welcome to HARMONIA!</h1>
+                                <h1>¡Welcome to <span className="project_name main_name">Harmonia</span>!</h1>
                                 <div className="logged_buttons">
                                     <button className="logged_out_button" onClick={() => setSelectedAction("LogIn")}>Log In</button>
                                     <button className="logged_out_button logged_out_singup" onClick={() => setSelectedAction("SignUp")}>Sign Up</button>
