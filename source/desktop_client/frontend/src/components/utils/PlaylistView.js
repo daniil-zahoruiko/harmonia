@@ -80,9 +80,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
-                <div>
-                    <button onClick={viewToggle}>Click me</button>
-                </div>
+                <button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>
             </div>
             {
                 playlistView==="row"?
@@ -125,39 +123,6 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     })}
                 </div>
             }
-            {/* <table className='songs_list'>
-                <colgroup>
-                    <col className='n_col'/>
-                    <col className='title_col'/>
-                    <col className='album_col'/>
-                    <col className='time_col'/>
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>
-                            <p>#</p>
-                        </th>
-                        <th>
-                            <p>Title</p>
-                        </th>
-                        <th>
-                            <p>Album</p>
-                        </th>
-                        <th>
-                            <p>Length</p>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {songs.map((song,key)=>{
-                        return(
-                            playlistView==="row"
-                            ?<SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} images={data.images}/>
-                            :<SongCard key={key} songs={songs} song={song} imageUrl={data.images[key]} images={data.images}/>
-                        )
-                    })}
-                </tbody>
-            </table> */}
         </div>
     )
 }

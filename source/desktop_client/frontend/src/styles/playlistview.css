@@ -40,6 +40,8 @@
     align-items: center;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    width:90%
 }
 .play_playlist{
     width:4vw;
@@ -62,6 +64,15 @@
     background-color: white;
     top:30%;
     left:30%;
+}
+
+.playlist_view_toggle{
+    font-size: 1.5vw;
+    background-color: #44489F;
+    border: none;
+    border-radius: 16px;
+    padding: 1% 2%;
+    color:white;
 }
 
 .songs_list{
