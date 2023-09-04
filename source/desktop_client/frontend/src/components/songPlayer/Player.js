@@ -120,7 +120,7 @@ export const Player = ({audioElem, currentSong})=> {
         --------------------------SONG RANGE SLIDER BAR-------------------
         -------------------------------------------------------------*/}
         <div className='playlist_timer_wrapper'>
-          <p>{!songLoaded?"0:00":Math.floor(slider/100 * currentSong.length%60)<10
+          <p>{!songLoaded || !slider?"0:00":Math.floor(slider/100 * currentSong.length%60)<10
           ?`${Math.floor(slider/100 * currentSong.length/60)}:0${Math.floor(slider/100 * currentSong.length%60)}`
           :`${Math.floor(slider/100 * currentSong.length/60)}:${Math.floor(slider/100 * currentSong.length%60)}`}</p>
           <input
