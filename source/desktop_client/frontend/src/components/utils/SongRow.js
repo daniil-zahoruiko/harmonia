@@ -6,12 +6,15 @@ import { SongsContext } from "../../SongsData";
 
 
 
-export const SongRow = ({songs,song,songToggle,id,images}) =>{
+export const SongRow = ({songs,song,songToggle,id,images,data}) =>{
     const { songData:[currentSongData,],
         playing:[isPlaying,setIsPlaying],
-        displayLoad:[allLoaded,setAllLoaded]
+        displayLoad:[allLoaded,setAllLoaded],
+        playlist:[currentPlaylist,setCurrentPlaylist]
      } = useContext(SongsContext)
+
     const [hover,setHover] = useState({bool:false,id:""})
+    const toInteract = currentSongData.id === song.id && currentPlaylist.id === data.id
 
     useEffect(()=>{
         if(!images) return null
@@ -28,10 +31,10 @@ export const SongRow = ({songs,song,songToggle,id,images}) =>{
             <td>
                 <div className='song_n'>
                     {hover.bool && id===hover.id
-                    ?currentSongData.id === songs[hover.id].id && isPlaying
+                    ?currentSongData.id === songs[hover.id].id && isPlaying && currentPlaylist.id === data.id
                     ?<BsFillPauseCircleFill onClick={()=>songToggle(id)} className='song_row_play'/>
                     :<BsFillPlayCircleFill onClick={()=>songToggle(id)} className='song_row_play'/>
-                    :isPlaying && currentSongData.id === song.id
+                    :isPlaying && toInteract
                     ?
                     <div className='song_playing_animation'>
                         <div></div>
@@ -40,14 +43,14 @@ export const SongRow = ({songs,song,songToggle,id,images}) =>{
                         <div></div>
                         <div></div>
                     </div>
-                    :<p style={currentSongData.id === song.id?{color:"#44489F"}:{}}>{id+1}</p>}
+                    :<p style={toInteract?{color:"#44489F"}:{}}>{id+1}</p>}
                 </div>
             </td>
             <td>
                 <div className='song_row_data'>
                     <LoadedImage className='song_row_image' src={images[id]} />
                     <div className='song_row_text'>
-                        <p style={currentSongData.id === song.id?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
+                        <p style={toInteract?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
                         <p className='song_row_data_artist'>{song.artist}</p>
                     </div>
                 </div>

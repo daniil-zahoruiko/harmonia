@@ -5,7 +5,7 @@ import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { SongsContext } from "../../SongsData";
 
 
-export const SongCard = ({song, imageUrl,songs,images}) => {
+export const SongCard = ({song, imageUrl,songs,images,songToggle,id,data}) => {
 
     const { songData:[currentSongData,setCurrentSongData],
         playlist:[currentPlaylist,setCurrentPlaylist],
@@ -17,20 +17,20 @@ export const SongCard = ({song, imageUrl,songs,images}) => {
 
     const [hover,setHover] = useState({bool:false,key:""})
 
-    const handleClick = (index) =>{
-        if(!songLoaded){
-            return
-        }
-        const song = songs.filter((song)=>song.id === index)[0]
-        if(currentSongData.id === song.id){
-            PlayPause()
-            return
-        }
-        setCurrentPlaylist({...currentPlaylist,songs:songs})
-        setSongLoaded(false)
-        setCurrentSongData(song)
-        if(!isPlaying) setIsPlaying(true)
-    }
+    // const handleClick = (index) =>{
+    //     if(!songLoaded){
+    //         return
+    //     }
+    //     const song = songs.filter((song)=>song.id === index)[0]
+    //     if(currentSongData.id === song.id){
+    //         PlayPause()
+    //         return
+    //     }
+    //     setCurrentPlaylist({...currentPlaylist,songs:songs})
+    //     setSongLoaded(false)
+    //     setCurrentSongData(song)
+    //     if(!isPlaying) setIsPlaying(true)
+    // }
 
     useEffect(()=>{
         if(!images) return null
@@ -49,9 +49,9 @@ export const SongCard = ({song, imageUrl,songs,images}) => {
             <h1 className="song_card_title">{song.title}</h1>
             <p className="song_card_artist">{song.artist}</p>
             {hover.bool && hover.key === song.id
-                ?currentSongData.id === song.id && isPlaying
-                ?<BsFillPauseCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>handleClick(song.id)}/>
-                :<BsFillPlayCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>handleClick(song.id)}/>
+                ?currentSongData.id === song.id && isPlaying && currentPlaylist.id === data.id
+                ?<BsFillPauseCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>songToggle(id)}/>
+                :<BsFillPlayCircleFill className={`song_card_play ${hover.bool?"do_animation":""}`} onClick={()=>songToggle(id)}/>
                 :""
             }
         </div>

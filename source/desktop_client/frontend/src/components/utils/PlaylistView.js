@@ -24,12 +24,13 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
     } = useContext(UserContext);
 
     const images = FetchImages({songs, token});
-    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:name, images: images}
+    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:id, images: images}
 
 
     // play/pause button functionality
     const pauseButtonToggle = () =>{
         if(currentPlaylist.id !== id){
+            setSongLoaded(false)
             setCurrentPlaylist(data)
             setCurrentSongData(songs[0])
             if(!isPlaying) setIsPlaying(true)
@@ -42,10 +43,10 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
     // song onclick functionality
     const songToggle = (index) =>{
         if(!songLoaded) return
-        if(currentPlaylist.id !== id){
+        if(currentPlaylist.id !== data.id){
             setCurrentPlaylist(data)
         }
-        if(currentSongData === songs[index]){
+        if(currentSongData === songs[index] && currentPlaylist.id === data.id){
             PlayPause()
         }
         else{
@@ -110,7 +111,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     <tbody>
                         {songs.map((song,key)=>{
                             return(
-                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} images={data.images}/>
+                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} images={data.images} data={data}/>
                             )
                         })}
                     </tbody>
@@ -118,7 +119,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                 :<div className='songs_cards'>
                     {songs.map((song,key)=>{
                         return(
-                            <SongCard key={key} songs={songs} song={song} imageUrl={data.images[key]} images={data.images}/>
+                            <SongCard key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={data.images[key]} images={data.images} data={data}/>
                         )
                     })}
                 </div>
