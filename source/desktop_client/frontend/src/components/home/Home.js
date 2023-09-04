@@ -1,4 +1,3 @@
-import { SongCard } from "../utils/SongCard"
 import "../../styles/home.css"
 import { useContext } from "react"
 import { SongsContext } from "../../SongsData";
