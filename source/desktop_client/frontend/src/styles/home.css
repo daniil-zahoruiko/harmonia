@@ -8,9 +8,8 @@
 
 
 .top_picks_songs{
-    display: flex;
-    flex-direction: row;
     width:100%;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    display: grid;
+    gap: 1%;
+    grid-template-columns: repeat(5,19%);
 }
