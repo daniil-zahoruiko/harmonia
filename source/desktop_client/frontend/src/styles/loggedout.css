@@ -98,7 +98,7 @@
     top:50%;
     transform: translate(-50%,-100%);
     padding: 1% 3%;
-    border:#811211 solid 2px
+    border:#811211 solid 2px;
 }
 .error_exit{
     position: absolute;
@@ -114,11 +114,13 @@
     margin:0;
     padding-top: 5%;
     padding-bottom: 5%;
+    font-size:2vw;
 }
 .error_popup_message_wrapper{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 .error_popup_svg{
     width: 3vw;
@@ -143,6 +145,19 @@
     }
     .login_error{
         font-size: 5vw;
+    }
+    .error_popup_inner{
+        width:60%;
+    }
+    .error_popup_message{
+        font-size: 4vw;
+    }
+    .error_popup_svg{
+        width: 4vw;
+    }
+    .error_exit{
+        width:3vw;
+        left:98%;
     }
 
 }

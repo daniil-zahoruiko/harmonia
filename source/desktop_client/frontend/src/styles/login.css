@@ -4,8 +4,8 @@
     justify-content: space-between;
     align-items: center;
     color: white;
-    height:50vh;
-    padding-top: 11%;
+    height:60vh;
+    padding-top: 10%;
 }
 
 .log_in_wrapper h1{
@@ -13,35 +13,45 @@
     text-align: center;
     margin-top: 0;
 }
-.log_in_wrapper div{
-    display: flex;
-    flex-direction: column;
+.login_form_input_wrapper{
+    height:3vw;
     width:25vw;
     position: relative;
 }
 .login_input{
-    padding: 3% 6%;
+    padding: 0 4%;
+    height:100%;
     border-radius: 16px;
     border:none;
     font-size: 1.5vw;
+    width:92%;
+    position: absolute;
+    top:0%;
+    left:0%;
 }
 .login_input:focus{
     outline: none;
     box-shadow: 0 0 2px 5px #44489F;
 }
 .log_in_wrapper label{
+    height:4vh;
     font-size: 1.6vw;
     margin-bottom: 2%;
 }
 
-.login_submit_button #submit{
-    padding: 3% 8%;
+.login_submit_button{
+    width:20vw;
+    align-items: center;
+}
+
+#submit{
+    padding: 0.5% 2%;
     font-size: 2vw;
     background-color: white;
     color: black;
     border: none;
     border-radius: 16px;
-    margin-top: 10%;
+    margin-top: 2%;
     width:fit-content;
     align-items: center;
 }
@@ -49,6 +59,7 @@
 @media (orientation:portrait) {
     .log_in_wrapper{
         padding-top: 30%;
+        height:40vh;
     }
     .log_in_wrapper h1{
         font-size: 7vw;
@@ -58,18 +69,15 @@
         font-size: 5vw;
         margin-top: 10%;
     }
-    .log_in_wrapper div{
-        display: flex;
-        flex-direction: column;
-        width:50vw;
-        position: relative;
-    }
     .log_in_wrapper label{
         font-size: 6vw;
         margin-bottom: 2%;
     }
     .login_input{
-        padding: 2% 4%;
         font-size:4vw;
+    }
+    .login_form_input_wrapper{
+        height:6vw;
+        width:50vw;
     }
 }

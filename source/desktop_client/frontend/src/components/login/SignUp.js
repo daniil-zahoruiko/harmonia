@@ -48,46 +48,54 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
             <button className="back_wrapper" onClick={() => setSelectedAction("Main")}><IoArrowBackCircleOutline className="back_wrapper_svg"/></button>
             <form className="sign_up_wrapper" onSubmit={handleSubmit(onSubmit)}>
                 <h1>¡Sing Me Up!</h1>
-                <div>
+                <div className="form_row">
                     <label htmlFor="username">
                         Username:
                     </label>
-                    <input className={`signing_input ${errors.username?"invalid":""}`} id="username"  placeholder="Username" {...register("username")} />
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.username?"invalid":""}`} id="username"  placeholder="Username" {...register("username")} />
+                    </div>
                     <p className="form_error">{errors.username?.message}</p>
                 </div>
-                <div>
+                <div className="form_row">
                     <label htmlFor="password">
                         Password:
                     </label>
-                    <input className={`signing_input ${errors.password?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="password"  placeholder="Password" {...register("password")} />
-                    {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.password?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="password"  placeholder="Password" {...register("password")} />
+                        {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
+                    </div>
                     <p className="form_error">{errors.password?.message}</p>
                 </div>
-                <div>
+                <div className="form_row">
                     <label htmlFor="passwordConfirmation">
                         Confirm password:
                     </label>
-                    <input className={`signing_input ${errors.passwordConfirmation?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="passwordConfirmation"  placeholder="Confirm password" {...register("passwordConfirmation")}/>
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.passwordConfirmation?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="passwordConfirmation"  placeholder="Confirm password" {...register("passwordConfirmation")}/>
+                    </div>
                     <p className="form_error">{errors.passwordConfirmation?.message}</p>
                 </div>
-                <div>
+                <div className="form_row">
                     <label htmlFor="email">
                         Email:
                     </label>
-                    <input className={`signing_input ${errors.email?"invalid":""}`} id="email"  placeholder="Email" {...register("email")}/>
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.email?"invalid":""}`} id="email"  placeholder="Email" {...register("email")}/>
+                    </div>
                     <p className="form_error">{errors.email?.message}</p>
                 </div>
-                <div>
+                <div className="form_row">
                     <label htmlFor="fullName">
                         Full Name:
                     </label>
-                    <input className={`signing_input ${errors.fullName?"invalid":""}`} id="fullName"  placeholder="Full Name" {...register("fullName")} />
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.fullName?"invalid":""}`} id="fullName"  placeholder="Full Name" {...register("fullName")} />
+                    </div>
                     <p className="form_error">{errors.fullName?.message}</p>
                 </div>
                 {error != null ? <p className="login_error">{error}</p> : null}
-                <div className="signing_submit_button">
-                    <input id="submit" type="submit" value="Create account"/>
-                </div>
+                <input id="submit" type="submit" value="Create account"/>
             </form>
         </main>
     );

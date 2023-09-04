@@ -13,22 +13,25 @@
     margin-top: 0;
 }
 .form_error{
-    height:3vh;
+    height:2vh;
     font-size: 1vw;
     text-align: end;
     color:red;
-    margin:0 0 0 0;
+    margin:2% 0 0 0;
 }
 .login_error{
     color:red;
     font-size: 5vw;
 }
 
-.sign_up_wrapper div{
+.form_row{
     display: flex;
     flex-direction: column;
     width:25vw;
     position: relative;
+}
+.password_row{
+    width:100%;
 }
 
 .signing_submit_button, .login_submit_button{
@@ -37,7 +40,7 @@
 
 
 .signing_submit_button #submit{
-    padding: 3% 6%;
+    padding: 5% 10%;
     font-size: 1.5vw;
     background-color: white;
     color: black;
@@ -59,10 +62,15 @@
     margin-bottom: 2%;
 }
 .signing_input{
-    padding: 2% 4%;
+    padding: 0 4%;
+    height:100%;
     border-radius: 16px;
     border:none;
     font-size: 1.1vw;
+    width:92%;
+    position: absolute;
+    top:0%;
+    left:0%;
 }
 .signing_input:focus{
     outline: none;
@@ -88,8 +96,15 @@
     width:2vw;
     height:auto;
     left:105%;
-    top:40%;
+    top:50%;
+    transform: translateY(-50%);
 }
+.form_input_wrapper{
+    height:2.3vw;
+    width:25vw;
+    position: relative;
+}
+
 
 .hide_pass{
     -webkit-text-security: disc;
@@ -110,7 +125,7 @@
         font-size: 5vw;
         margin-top: 10%;
     }
-    .sign_up_wrapper div{
+    .form_row{
         display: flex;
         flex-direction: column;
         width:50vw;
@@ -121,16 +136,18 @@
         margin-bottom: 2%;
     }
     .signing_input{
-        padding: 2% 4%;
+        padding: 0 4%;
         font-size: 3vw;
     }
     .back_wrapper_svg{
         width:6vw;
     }
     .pass_visibility{
-        width:4vw;
-        left:105%;
-        top:40%;
+        width:5vw;
+    }
+    .form_input_wrapper{
+        height:6vw;
+        width:50vw;
     }
 
 }
