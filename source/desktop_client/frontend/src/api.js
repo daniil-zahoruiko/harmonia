@@ -50,26 +50,42 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-function FetchImages({songs, token})
+async function FetchImages({songs, token,removeToken, setUserError})
 {
-    const {access_token: [,,removeToken],
-    error: [,setUserError]} = useContext(UserContext);
+    // const {access_token: [,,removeToken],
+    // error: [,setUserError]} = useContext(UserContext);
+    // const [prevSongs,setPrevSongs] = useState()
 
-    const count = useRef(true);
-    const [images, setImages] = useState([]);
-    useEffect(() => {
+    // const count = useRef(true);
+    // const [images, setImages] = useState([]);
+    // if(prevSongs!== songs){
 
-        if(count.current)
+    // }
+    // useEffect(() => {
+    //     console.log("I called")
+
+    //     if(count.current)
+    //     {
+    //         count.current = false;
+    //         return;
+    //     }
+    //     for(let i = 0; i < songs.length; i++)
+    //     {
+    //         FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
+    //         .then((imageUrl) => setImages(images => [...images, {key: i, Url: imageUrl}]));
+    //     }
+    // },[songs.length])
+    let response
+    let images = []
+    // console.log(songs)
+    console.log("i fetched")
+    for(let i = 0; i < songs.length; i++)
         {
-            count.current = false;
-            return;
+            response = await FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
+            images.push({key:i,Url:response})
+            console.log(images)
         }
-        for(let i = 0; i < songs.length; i++)
-        {
-            FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
-            .then((imageUrl) => setImages(images => [...images, {key: i, Url: imageUrl}]));
-        }
-    },[])
+    // console.log(images)
     return images.sort((a, b) => a.key > b.key ? 1 : (a.key < b.key ? -1 : 0)).map((object) => object.Url);
 }
 

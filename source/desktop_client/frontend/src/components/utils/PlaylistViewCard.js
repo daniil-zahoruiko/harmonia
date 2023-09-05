@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../../UserContext"
 import { FetchImages } from "../../api";
 import { SongCard } from "./SongCard";
@@ -6,14 +6,24 @@ import { SongsContext } from "../../SongsData";
 
 export const TopPicks = ({songs}) =>
 {
-    const {access_token: [token,,]} = useContext(UserContext);
     const {   playing:[isPlaying,setIsPlaying],
         playlist:[currentPlaylist,setCurrentPlaylist],
         songData:[currentSongData,setCurrentSongData],
         song:[songLoaded, setSongLoaded],
         toggles:[PlayPause] } = useContext(SongsContext)
+    const {access_token: [token,,removeToken],
+    error: [,setUserError]} = useContext(UserContext);
 
-    const images = FetchImages({songs, token});
+    // let images = FetchImages({songs, token});
+    const [images,setImages] = useState([])
+    const fetch = async (work) =>{
+        setImages( await FetchImages({songs, token,removeToken,setUserError,work}))
+    }
+    useEffect(()=>{
+        fetch([])
+    },[])
+    // console.log(images.then((val)=>console.log(val)))
+    console.log(images)
     const data = {owner:"Harmonis",type:"public",name:"Top picks",description:"",songs:songs,id:"top_picks", images: images}
 
     const songToggle = (index) =>{

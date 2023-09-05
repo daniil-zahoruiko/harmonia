@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import "../../styles/searchresults.css"
 import { SongsContext } from "../../SongsData"
 import { FetchImages } from "../../api"
@@ -16,9 +16,25 @@ export const SearchResults = ({results, setResult, setInput}) => {
         displayLoad:[allLoaded,setAllLoaded],
         playlistView:[playlistView,setPlaylistView] } = useContext(SongsContext)
     
-    const {access_token: [token,,]} = useContext(UserContext);
-    const images = FetchImages({songs: results, token: token});
+    // const images = FetchImages({songs: results, token: token});
+    // console.log(images)
     const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
+    const {access_token: [token,,removeToken],
+    error: [,setUserError]} = useContext(UserContext);
+    
+        // let images = FetchImages({songs, token});
+    const [images,setImages] = useState([])
+    const fetch = useCallback( async (results) =>{
+        console.log("I called")
+        const fetchedImages = await FetchImages({songs:results, token,removeToken,setUserError})
+        setImages(fetchedImages)
+    },[])
+    useEffect(()=>{
+        setAllLoaded(false)
+        console.log("called",results)
+        fetch(results)
+    },[fetch])
+    // console.log(results)
 
     // song onclick functionality
     const songToggle = (index) =>{
