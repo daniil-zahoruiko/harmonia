@@ -20,6 +20,7 @@ export default ({children}) =>{
     const [songLoaded,setSongLoaded] = useState(false)
     const [allLoaded,setAllLoaded] = useState(false)
     const [playlistView,setPlaylistView] = useState("row")
+    const [images,setImages] = useState([])
 
     const PlayPause = ()=>
     {
@@ -48,7 +49,8 @@ export default ({children}) =>{
         song:[songLoaded,setSongLoaded],
         toggles:[PlayPause],
         displayLoad:[allLoaded,setAllLoaded],
-        playlistView:[playlistView,setPlaylistView]
+        playlistView:[playlistView,setPlaylistView],
+        cachedImages:[images,setImages]
     }
 
     return(
