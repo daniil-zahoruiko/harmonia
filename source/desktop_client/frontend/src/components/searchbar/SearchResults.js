@@ -6,43 +6,28 @@ import { UserContext } from "../../UserContext"
 import { LoadedImage } from "../utils/LoadedImage"
 import {BsPlayFill,BsPauseFill} from "react-icons/bs"
 
-export const SearchResults = ({results, setResult, setInput, setSearchLoaded}) => {
-    const {   db:[songs],
-        playing:[isPlaying,setIsPlaying],
-        playlist:[currentPlaylist,setCurrentPlaylist],
-        songData:[currentSongData,setCurrentSongData],
-        song:[songLoaded, setSongLoaded],
-        toggles:[PlayPause],
-        displayLoad:[allLoaded,setAllLoaded],
-        playlistView:[playlistView,setPlaylistView] } = useContext(SongsContext)
-    
-    // const images = FetchImages({songs: results, token: token});
-    // console.log(images)
+export const SearchResults = ({results}) => {
+    const { db:[songs],
+            playing:[isPlaying,setIsPlaying],
+            playlist:[currentPlaylist,setCurrentPlaylist],
+            songData:[currentSongData,setCurrentSongData],
+            song:[songLoaded, setSongLoaded],
+            toggles:[PlayPause],
+            displayLoad:[,setAllLoaded],
+            cachedImages:[images,setImages] } = useContext(SongsContext)
+
+    const { access_token: [token,,removeToken],
+        error: [,setUserError]  } = useContext(UserContext);
+
     const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
-    const {access_token: [token,,removeToken],
-    error: [,setUserError]} = useContext(UserContext);
-    
-    /*async function temp()
-    {
-        return await FetchImages({songs, token}).then((res) => setImages(res));
-    }*/
-    /*const [images, setImages] = useState([]);
-    temp();*/
-    //console.log(results.length);
-    const images = FetchImages({songs: results, token, removeToken, setUserError});
-    //console.log(images.length);
-    /*const [images,setImages] = useState([])
-    const fetch = useCallback( async (results) =>{
-        console.log("I called")
-        const fetchedImages = await FetchImages({songs:results, token,removeToken,setUserError})
-        setImages(fetchedImages)
-    },[])
+
+    const fetch = async (songs) =>{
+        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+    }
     useEffect(()=>{
         setAllLoaded(false)
-        console.log("called",results)
         fetch(results)
-    },[fetch])*/
-    // console.log(results)
+    },[])
 
     // song onclick functionality
     const songToggle = (index) =>{
@@ -60,17 +45,6 @@ export const SearchResults = ({results, setResult, setInput, setSearchLoaded}) =
         }
     }
 
-    useEffect(()=>{
-        if(!images) return null
-        if(images.length >= results.length){
-            setSearchLoaded(true)
-            console.log("Search loaded");
-        }
-        else {
-            setSearchLoaded(false)
-            console.log("Search loading");
-        }
-    },[images])
 
     return (
         <div className="results_list">
@@ -78,7 +52,7 @@ export const SearchResults = ({results, setResult, setInput, setSearchLoaded}) =
                 return(
                     <div className="result_div" key={key}>
                         <div className="search_result_image_wrapper">
-                            <LoadedImage className="result_image" alt={result.id} src={images[key]} />
+                            <LoadedImage className="result_image" alt={result.id} src={images[result.id]} />
                             {isPlaying && result.id === currentSongData.id?<BsPauseFill className='search_play' onClick={()=>songToggle(key)}/>
                             :<BsPlayFill className='search_play' onClick={()=>songToggle(key)}/>}
                         </div>

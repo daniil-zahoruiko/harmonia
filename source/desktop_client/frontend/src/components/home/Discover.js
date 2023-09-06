@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { SongsContext } from "../../SongsData";
 import { CategoryCard } from "../utils/CategoryCard"
 import { SearchBar } from "../searchbar/SearchBar";
@@ -14,31 +14,17 @@ export const Discover = () =>{
 
     const [result,setResult] = useState([])
     const [input,setInput] = useState("")
-    const [searchLoaded, setSearchLoaded] = useState(true);
-    const [waitingSearch, setWaitingSearch] = useState(false);
 
     const changePlaylist = (owner,type,name,description,songs) =>{
         setShowedPlaylist({owner:owner,type:type,name:name,description:description,songs:songs,id:name})
         setCurrentPage("playlist-view")
     }
 
-    useEffect(() => {
-        //console.log("Search loaded was changed," + searchLoaded);
-        if(searchLoaded && waitingSearch)
-        {
-            setResult(songs.filter((song)=>{
-                return input && song.title && (song.title.toLowerCase().includes(input.toLowerCase()) ||  song.title.toUpperCase().includes(input.toUpperCase()))
-            }));
-            setWaitingSearch(false);
-            console.log("Addressed waiting search");
-        }
-    }, [searchLoaded])
-
     return(
         <>
-            <SearchBar setResult={setResult} input={input} setInput={setInput} searchLoaded={searchLoaded} setWaitingSearch={setWaitingSearch}/>
+            <SearchBar setResult={setResult} input={input} setInput={setInput}/>
             {result.length
-            ?<SearchResults results={result} setInput={setInput} setResult={setResult} setSearchLoaded={setSearchLoaded}/>
+            ?<SearchResults results={result} setInput={setInput} setResult={setResult}/>
             :<div className="genres_cards_wrapper">
             {categories.map((category,key)=>{
                 const genre_songs = songs.filter((song)=> song.genre === category)

@@ -10,21 +10,34 @@ export const TopPicks = ({songs}) =>
         playlist:[currentPlaylist,setCurrentPlaylist],
         songData:[currentSongData,setCurrentSongData],
         song:[songLoaded, setSongLoaded],
-        toggles:[PlayPause] } = useContext(SongsContext)
+        toggles:[PlayPause],
+        displayLoad:[allLoaded,setAllLoaded],
+        cachedImages:[images,setImages] } = useContext(SongsContext)
     const {access_token: [token,,removeToken],
     error: [,setUserError]} = useContext(UserContext);
 
-    let images = FetchImages({songs, token, removeToken, setUserError});
-    /*const [images,setImages] = useState([])
-    const fetch = async (work) =>{
-        setImages( await FetchImages({songs, token,removeToken,setUserError}))
+    // let images = FetchImages({songs, token, removeToken, setUserError});
+    const fetch = async (songs) =>{
+        console.log("I called")
+        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+        // setImages(fetchedImages)
     }
     useEffect(()=>{
-        fetch([])
-    },[])*/
+        setAllLoaded(false)
+        fetch(songs)
+    },[])
+    // const fetch = async (songs) =>{
+    //     console.log("I called")
+    //     const fetchedImages = await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded})
+    //     setImages(fetchedImages)
+    // }
+    // useEffect(()=>{
+    //     console.log("called",songs)
+    //     fetch(songs)
+    // },[allLoaded])
     // console.log(images.then((val)=>console.log(val)))
     console.log(images)
-    const data = {owner:"Harmonis",type:"public",name:"Top picks",description:"",songs:songs,id:"top_picks", images: images}
+    const data = {owner:"Harmonis",type:"public",name:"Top picks",description:"",songs:songs,id:"top_picks"}
 
     const songToggle = (index) =>{
         if(!songLoaded) return
@@ -42,6 +55,6 @@ export const TopPicks = ({songs}) =>
     }
 
     return songs.map((song,key) =>
-        (<SongCard key={key} song={song} imageUrl={images[key]} songToggle={songToggle} id={key} songs={songs} images={images} data={data}/>)
+        (<SongCard key={key} song={song} imageUrl={images[song.id]} songToggle={songToggle} id={key} playlistId={data.id}/>)
     )
 }

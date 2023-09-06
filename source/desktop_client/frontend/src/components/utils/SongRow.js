@@ -6,32 +6,21 @@ import { SongsContext } from "../../SongsData";
 
 
 
-export const SongRow = ({songs,song,songToggle,id,images,data}) =>{
+export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
     const { songData:[currentSongData,],
-        playing:[isPlaying,setIsPlaying],
-        displayLoad:[allLoaded,setAllLoaded],
-        playlist:[currentPlaylist,setCurrentPlaylist]
+        playing:[isPlaying,],
+        playlist:[currentPlaylist,]
      } = useContext(SongsContext)
 
     const [hover,setHover] = useState({bool:false,id:""})
-    const toInteract = currentSongData.id === song.id && currentPlaylist.id === data.id
-
-    useEffect(()=>{
-        if(!images) return null
-        if(images.length === songs.length){
-            setAllLoaded(true)
-        }
-        else {
-            setAllLoaded(false)
-        }
-    },[images])
+    const toInteract = currentSongData.id === song.id && currentPlaylist.id === playlistId
 
     return(
         <tr onMouseEnter={()=>setHover({bool:true,id:id})} onMouseLeave={()=>setHover(false)} className='song_row'>
             <td>
                 <div className='song_n'>
                     {hover.bool && id===hover.id
-                    ?currentSongData.id === songs[hover.id].id && isPlaying && currentPlaylist.id === data.id
+                    ?currentSongData.id === songs[hover.id].id && isPlaying && currentPlaylist.id === playlistId
                     ?<BsFillPauseCircleFill onClick={()=>songToggle(id)} className='song_row_play'/>
                     :<BsFillPlayCircleFill onClick={()=>songToggle(id)} className='song_row_play'/>
                     :isPlaying && toInteract
@@ -48,7 +37,7 @@ export const SongRow = ({songs,song,songToggle,id,images,data}) =>{
             </td>
             <td>
                 <div className='song_row_data'>
-                    <LoadedImage className='song_row_image' src={images[id]} />
+                    <LoadedImage className='song_row_image' src={imageUrl} />
                     <div className='song_row_text'>
                         <p style={toInteract?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
                         <p className='song_row_data_artist'>{song.artist}</p>

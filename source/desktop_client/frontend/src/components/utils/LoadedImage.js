@@ -8,8 +8,10 @@ export const LoadedImage = ({src, className, alt}) =>{
 
     return(
         <div className={className}>
-            {allLoaded?null:<ImageSkeleton/>}
-            <img className={className} alt={alt} style={allLoaded?{}:{display:"none"}} src={src} />
+            {src === "none"?<div style={{border:"1px white solid",height:"100%"}}/>
+            :allLoaded
+            ? <img className={className} alt={alt} style={allLoaded?{}:{display:"none"}} src={src} />
+            :<ImageSkeleton/>}
         </div>
     )
 }

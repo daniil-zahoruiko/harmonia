@@ -27,7 +27,7 @@ const FetchSongs = ({token}) =>{
                 setUserPlaylist(data.user.playlists)
                 setLoading(false)
                 console.log(data)
-        }).catch((error) => 
+        }).catch((error) =>
         {
             if(error.message === "401")
             {
@@ -50,45 +50,27 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-function FetchImages({songs, token,removeToken, setUserError})
+async function FetchImages({songs,images,setImages, token,removeToken, setUserError,setAllLoaded})
 {
-    //const {access_token: [,,removeToken],
-    //error: [,setUserError]} = useContext(UserContext);
-
-    const count = useRef(true);
-    const [images, setImages] = useState([]);
-    useEffect(() => {
-        console.log("I called")
-
-        if(count.current)
-        {
-            count.current = false;
-            return;
-        }
-        console.log(songs.length);
-        setImages([]);
-        for(let i = 0; i < songs.length; i++)
-        {
-            FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
-            .then((imageUrl) => setImages(images => [...images, {key: i, Url: imageUrl}]));
-        }
-    },[songs.length])
-    /*let response
-    let images = []
-    // console.log(songs)
-    console.log("i fetched")
+    let response
+    let temp_dict = {}
     for(let i = 0; i < songs.length; i++)
         {
-            response = await FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
-            images.push({key:i,Url:response})
-            console.log(images)
+            const id = songs[i].id
+
+            if(!images[songs[i].id]){
+                response = await FetchImage({id: id, token:token, removeToken: removeToken, setUserError: setUserError})
+                temp_dict[id] = response
+            }
+            if(i===songs.length-1){
+                console.log(temp_dict)
+                setImages(prevImages=>({...prevImages,...temp_dict}))
+                setAllLoaded(true)
+            }
         }
-    // console.log(images)*/
-    console.log(images.length);
-    return images.sort((a, b) => a.key > b.key ? 1 : (a.key < b.key ? -1 : 0)).map((object) => object.Url);
 }
 
-const FetchImage = async ({id, token, removeToken, setUserError}) => 
+const FetchImage = async ({id, token, removeToken, setUserError}) =>
 {
     try
     {

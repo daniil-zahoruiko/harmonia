@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
@@ -16,19 +16,32 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
             songData:[currentSongData,setCurrentSongData],
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause],
-            displayLoad:[allLoaded,setAllLoaded],
-            playlistView:[playlistView,setPlaylistView] } = useContext(SongsContext)
+            displayLoad:[,setAllLoaded],
+            playlistView:[playlistView,setPlaylistView],
+        cachedImages:[images,setImages] } = useContext(SongsContext)
 
     const {
-        access_token: [token,,]
+        access_token: [token,,removeToken],
+        error: [,setUserError]
     } = useContext(UserContext);
 
-    const images = FetchImages({songs, token});
-    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:id, images: images}
+    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:id}
+    const isEmpty = songs.length === 0
+
+    // const images = FetchImages({songs, token});
+    const fetch = async (songs) =>{
+        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+    }
+    useEffect(()=>{
+        setAllLoaded(false)
+        fetch(songs)
+    },[])
+
 
 
     // play/pause button functionality
     const pauseButtonToggle = () =>{
+        if(isEmpty) return
         if(currentPlaylist.id !== id){
             setSongLoaded(false)
             setCurrentPlaylist(data)
@@ -42,7 +55,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
 
     // song onclick functionality
     const songToggle = (index) =>{
-        if(!songLoaded) return
+        if(!songLoaded || isEmpty) return
         if(currentPlaylist.id !== data.id){
             setCurrentPlaylist(data)
         }
@@ -68,7 +81,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
     return(
         <div>
             <div className="playlist_header">
-                <LoadedImage className="playlist_image" src={data.images[0]} />
+                <LoadedImage className="playlist_image" src={isEmpty?"none":images[songs[0].id]} />
                 <div className="playlist_data">
                     <p className='playlist_type'>{type} playlist</p>
                     <p className='playlist_name'>{name}</p>
@@ -111,7 +124,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     <tbody>
                         {songs.map((song,key)=>{
                             return(
-                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} images={data.images} data={data}/>
+                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
@@ -119,7 +132,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                 :<div className='songs_cards'>
                     {songs.map((song,key)=>{
                         return(
-                            <SongCard key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={data.images[key]} images={data.images} data={data}/>
+                            <SongCard key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                         )
                     })}
                 </div>

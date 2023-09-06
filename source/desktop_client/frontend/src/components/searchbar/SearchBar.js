@@ -6,24 +6,15 @@ import "../../styles/searchbar.css"
 
 
 
-export const SearchBar = ({setResult, input, setInput, searchLoaded, setWaitingSearch}) =>{
+export const SearchBar = ({setResult, input, setInput}) =>{
     const {db:[songs]} = useContext(SongsContext)
 
     const handleChange = (value) =>{
         setInput(value)
-        if(searchLoaded)
-        {
-            setResult(songs.filter((song)=>{
-                return value && song.title && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase()))
-            }));
-            console.log("Setting new result as there's no loading search");
-        }
-        else
-        {
-            console.log("Queueing a search");
-            setWaitingSearch(true);
-        }
-    }
+        setResult(songs.filter((song)=>{
+            return value && song.title && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase()))
+        }))
+}
 
     const exit = ()=>{
         setInput("")
