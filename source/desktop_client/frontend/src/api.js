@@ -50,32 +50,30 @@ const FetchSongs = ({token}) =>{
     return {songs,loading,userPlaylists}
 }
 
-async function FetchImages({songs, token,removeToken, setUserError})
+function FetchImages({songs, token,removeToken, setUserError})
 {
-    // const {access_token: [,,removeToken],
-    // error: [,setUserError]} = useContext(UserContext);
-    // const [prevSongs,setPrevSongs] = useState()
+    //const {access_token: [,,removeToken],
+    //error: [,setUserError]} = useContext(UserContext);
 
-    // const count = useRef(true);
-    // const [images, setImages] = useState([]);
-    // if(prevSongs!== songs){
+    const count = useRef(true);
+    const [images, setImages] = useState([]);
+    useEffect(() => {
+        console.log("I called")
 
-    // }
-    // useEffect(() => {
-    //     console.log("I called")
-
-    //     if(count.current)
-    //     {
-    //         count.current = false;
-    //         return;
-    //     }
-    //     for(let i = 0; i < songs.length; i++)
-    //     {
-    //         FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
-    //         .then((imageUrl) => setImages(images => [...images, {key: i, Url: imageUrl}]));
-    //     }
-    // },[songs.length])
-    let response
+        if(count.current)
+        {
+            count.current = false;
+            return;
+        }
+        console.log(songs.length);
+        setImages([]);
+        for(let i = 0; i < songs.length; i++)
+        {
+            FetchImage({id: songs[i].id, token:token, removeToken: removeToken, setUserError: setUserError})
+            .then((imageUrl) => setImages(images => [...images, {key: i, Url: imageUrl}]));
+        }
+    },[songs.length])
+    /*let response
     let images = []
     // console.log(songs)
     console.log("i fetched")
@@ -85,7 +83,8 @@ async function FetchImages({songs, token,removeToken, setUserError})
             images.push({key:i,Url:response})
             console.log(images)
         }
-    // console.log(images)
+    // console.log(images)*/
+    console.log(images.length);
     return images.sort((a, b) => a.key > b.key ? 1 : (a.key < b.key ? -1 : 0)).map((object) => object.Url);
 }
 

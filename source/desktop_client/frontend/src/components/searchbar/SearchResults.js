@@ -6,7 +6,7 @@ import { UserContext } from "../../UserContext"
 import { LoadedImage } from "../utils/LoadedImage"
 import {BsPlayFill,BsPauseFill} from "react-icons/bs"
 
-export const SearchResults = ({results, setResult, setInput}) => {
+export const SearchResults = ({results, setResult, setInput, setSearchLoaded}) => {
     const {   db:[songs],
         playing:[isPlaying,setIsPlaying],
         playlist:[currentPlaylist,setCurrentPlaylist],
@@ -22,8 +22,16 @@ export const SearchResults = ({results, setResult, setInput}) => {
     const {access_token: [token,,removeToken],
     error: [,setUserError]} = useContext(UserContext);
     
-        // let images = FetchImages({songs, token});
-    const [images,setImages] = useState([])
+    /*async function temp()
+    {
+        return await FetchImages({songs, token}).then((res) => setImages(res));
+    }*/
+    /*const [images, setImages] = useState([]);
+    temp();*/
+    //console.log(results.length);
+    const images = FetchImages({songs: results, token, removeToken, setUserError});
+    //console.log(images.length);
+    /*const [images,setImages] = useState([])
     const fetch = useCallback( async (results) =>{
         console.log("I called")
         const fetchedImages = await FetchImages({songs:results, token,removeToken,setUserError})
@@ -33,7 +41,7 @@ export const SearchResults = ({results, setResult, setInput}) => {
         setAllLoaded(false)
         console.log("called",results)
         fetch(results)
-    },[fetch])
+    },[fetch])*/
     // console.log(results)
 
     // song onclick functionality
@@ -54,11 +62,13 @@ export const SearchResults = ({results, setResult, setInput}) => {
 
     useEffect(()=>{
         if(!images) return null
-        if(images.length === results.length){
-            setAllLoaded(true)
+        if(images.length >= results.length){
+            setSearchLoaded(true)
+            console.log("Search loaded");
         }
         else {
-            setAllLoaded(false)
+            setSearchLoaded(false)
+            console.log("Search loading");
         }
     },[images])
 

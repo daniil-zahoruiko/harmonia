@@ -6,6 +6,7 @@ from artist import Artist
 from album import Album
 from user import User
 from flask_mysqldb import MySQL, MySQLdb
+#from mutagen.mp3 import MP3
 
 
 class DBConnection:
@@ -80,6 +81,9 @@ class DBConnection:
     def write_song(self, name, genre, data, artist_id, album_id):
         id = self.get_table_length("songs") + 1
         query = "INSERT INTO songs(id, name, genre, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s, %s)"
+
+        #audio = MP3(data)
+        #print(audio.info.length)
 
         args = (id, name, genre, data, artist_id, album_id)
 
