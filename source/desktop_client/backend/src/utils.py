@@ -18,8 +18,8 @@ def verify_user(db, user_id, input_password):
 
     return user.get_user_data() if user.verify_password(input_password) else None
 
-def create_user(db, username, password):
-    db.create_user(username, password)
+def create_user(db, username, password,email,full_name):
+    db.create_user(username, password,email,full_name)
 
 def get_all_songs(db):
     songs = db.get_all_songs_query()
@@ -33,6 +33,9 @@ def get_all_songs(db):
             "album":db.get_album_by_id(song.get_album_id()).get_name()} for song in songs]
 
     return data
+
+def like_song(db,song_id,user_id):
+    db.like_song(song_id,user_id)
 
 def get_song_file(db, id):
     return db.read_song_file(id)

@@ -6,6 +6,7 @@ from artist import Artist
 from album import Album
 from user import User
 from flask_mysqldb import MySQL, MySQLdb
+import json
 #from mutagen.mp3 import MP3
 
 
@@ -93,6 +94,9 @@ class DBConnection:
         query = "UPDATE songs SET image = %s WHERE id = %s"
 
         self.execute_query(query=query, args=(data, id), commit=True)
+    
+    # def like_song(self,user_id,song_id):
+
 
 
     def get_artist_by_id(self, id):
@@ -119,16 +123,21 @@ class DBConnection:
     def get_user_by_id(self, id):
         query = "SELECT * FROM users WHERE id = %s"
 
-        (id, username, password, full_name, display_name, email) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
+        (id, username, password, full_name, email,favorites,settings,artistId) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
 
-        return User(id, username, password, full_name, display_name, email)
+        return User(id, username, password, email, full_name,favorites,settings,artistId)
 
-    def create_user(self, username, password):
-        query = "INSERT INTO users(id, username, password, displayName) VALUES (%s, %s, %s, %s)"
+    def create_user(self, username, password,email,full_name):
+        query = "INSERT INTO users(id, username,email, password, fullName,favorites,settings) VALUES (%s, %s, %s, %s,%s,%s,%s)"
 
         salt = bcrypt.gensalt()
 
-        args = (self.get_table_length("users") + 1, username, bcrypt.hashpw(password.encode('utf-8'), salt), "user_display_name")
+        args = (self.get_table_length("users") + 1,
+                username,email,
+                bcrypt.hashpw(password.encode('utf-8'), salt),
+                full_name,
+                json.dumps({"favArtist":[],"favSongs":[]}),
+                json.dumps({"language":"english"}))
 
         self.execute_query(query=query, args=args, commit=True)
 

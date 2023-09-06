@@ -15,7 +15,8 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
     const [error, setError] = useState(null);
 
     const {
-        access_token: [token, setToken,]
+        access_token: [token, setToken,],
+        user_data:[userData,setUserData]
     } = useContext(UserContext)
 
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
@@ -31,9 +32,10 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
 
     async function onSubmit(data)
     {
-        await SignMeUp({username: data.username, password: data.password})
+        console.log(data)
+        await SignMeUp({username: data.username, password: data.password,email:data.email,full_name:data.fullName})
         .then(async () => {
-            await LogMeIn({token: token, setToken: setToken, username: data.username, password: data.password})
+            await LogMeIn({token: token,setUserData:setUserData, setToken: setToken, username: data.username, password: data.password})
             .then(() => setError(null))
         })
         .catch((error) => setError(error.message));

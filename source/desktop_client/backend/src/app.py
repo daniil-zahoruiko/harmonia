@@ -50,11 +50,13 @@ def create_token():
 def sign_up():
     username = request.json["username"]
     password = request.json["password"]
+    email = request.json["email"]
+    full_name = request.json["full_name"]
 
     if(utils.try_get_user(connection, username) is not None):
         return jsonify({"msg": "User already exists"}), 401
 
-    utils.create_user(connection, username, password)
+    utils.create_user(connection, username, password,email,full_name)
 
     return jsonify({"msg": "Success"}), 200
 
@@ -113,6 +115,13 @@ def song(id):
 def song_image(id):
     file = utils.get_image_file(connection, id)
     return file
+
+# @app.route("/api/<user_id>/<song_id>/<bool>/")
+# @cross_origin()
+# # @jwt_required()
+# def like_song(user_id,song_id):
+#     utils.like_song(connection, user_id,song_id)
+#     return "Song was succesfully added as liked"
 
 
 # Running app

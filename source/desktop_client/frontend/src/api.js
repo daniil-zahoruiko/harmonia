@@ -101,7 +101,7 @@ const FetchImage = async ({id, token, removeToken, setUserError}) =>
     }
 }
 
-async function LogMeIn({setToken, setError, username, password})
+async function LogMeIn({setToken,setUserData, setError, username, password})
 {
     // TODO: obtain all user data
     return await fetch('/token', {
@@ -116,8 +116,11 @@ async function LogMeIn({setToken, setError, username, password})
     }).then(async (response) => {
         const jsonResponse = await response.json();
 
-        if(response.ok)
+        if(response.ok){
             setToken(jsonResponse.token);
+            console.log(jsonResponse.user_data)
+            setUserData(jsonResponse.user_data)
+        }
         else if(response.status === 401)
             throw new Error(jsonResponse.msg);
         else
@@ -125,7 +128,7 @@ async function LogMeIn({setToken, setError, username, password})
     })
 }
 
-async function SignMeUp({username, password})
+async function SignMeUp({username, password,email,full_name})
 {
     return await fetch("/signup", {
         method: "POST",
@@ -134,7 +137,9 @@ async function SignMeUp({username, password})
         },
         body: JSON.stringify({
             "username": username,
-            "password": password
+            "password": password,
+            "email":email,
+            "full_name":full_name
         })
     }).then(async (response) => {
         const jsonResponse = await response.json();
