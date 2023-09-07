@@ -5,6 +5,7 @@ import React, {useContext} from "react"
 import { SongsContext } from "../SongsData"
 import { PlaylistView } from "./utils/PlaylistView"
 import Profile from "./home/Profile"
+import { ChangeData } from "./home/ChangeData"
 
 export const MainWindow = () => {
     const { page:[currentPage,],
@@ -41,6 +42,13 @@ export const MainWindow = () => {
                  />
             </div>
         )
+    }else if(currentPage === "change-data"){
+        return(
+            <div className="main_window_wrapper" >
+                <ChangeData/>
+            </div>
+        )
+
     }
 
 }
