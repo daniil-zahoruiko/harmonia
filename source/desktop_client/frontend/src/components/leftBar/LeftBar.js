@@ -3,11 +3,26 @@ import { PlaylistLB } from "./PlaylistLB"
 import { SongsContext } from "../../SongsData";
 import {IoChevronBackCircleSharp,IoChevronForwardCircleSharp} from "react-icons/io5"
 import "../../styles/leftbar.css"
+import { UserContext } from "../../UserContext";
 
 
 export const LeftBar = () => {
-    const {user:[userPlaylists]} = useContext(SongsContext)
+    const {user:[userPlaylists],
+    db:[songs]} = useContext(SongsContext)
     const [lbState, setLbState] = useState("full")
+    const { page:[currentPage,setCurrentPage],
+        playlistRender:[showedPlaylist,setShowedPlaylist]} = useContext(SongsContext)
+
+    const {
+        access_token: [token, setToken, removeToken],
+        error: [userError, setUserError],
+        username:[username,setUsername],
+        email:[email,setEmail],
+        full_name:[fullName,setFullName],
+        password:[password,setPassword],
+        liked_songs:[likedSongs,setLikedSongs],
+        fav_artists:[favArtists,setFavArtists],
+        settings:[settings,setSettings] } = useContext(UserContext);
 
 
     const hideLb = () =>{
@@ -24,6 +39,12 @@ export const LeftBar = () => {
             leftBarStyle.gridArea = "2 / 1 / 3 / 2"
             mainWindowStyle.gridArea = "2 / 2 / 3 / -1"
         }
+    }
+
+    const triggerLikedSongs = () =>{
+        const likes = songs.filter((song)=>likedSongs.likedSongs.includes(song.id))
+        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:likes,id:"liked_songs"})
+        setCurrentPage("playlist-view")
     }
 
     return(
@@ -44,7 +65,7 @@ export const LeftBar = () => {
                     </p>
                 </div>
             </div>
-            <div className="left_bar_topic_wrapper">
+            <div onClick={triggerLikedSongs} className="left_bar_topic_wrapper">
                 <div>
                     <svg className="lb_svg" xmlns="http://www.w3.org/2000/svg" width="29" height="25" viewBox="0 0 29 25" fill="none">
                         <path d="M14.9143 23L4.07093 11.3177C1.88669 8.96447 2.19948 5.24256 4.74584 3.28689V3.28689C5.69808 2.55555 6.86517 2.15909 8.06584 2.15909H9.13896C12.2142 2.15909 14.7071 4.65205 14.7071 7.72727V7.72727" stroke="white" strokeWidth="3"/>

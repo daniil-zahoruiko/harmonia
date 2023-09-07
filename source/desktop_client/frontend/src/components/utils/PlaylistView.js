@@ -7,6 +7,7 @@ import { FetchImages } from '../../api';
 import { UserContext } from '../../UserContext';
 import { SongRow } from './SongRow';
 import { SongCard } from './SongCard';
+import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 
 
 
@@ -81,7 +82,9 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
     return(
         <div>
             <div className="playlist_header">
-                <LoadedImage className="playlist_image" src={isEmpty?"none":images[songs[0].id]} />
+                {id==="liked_songs"
+                ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
+                :<LoadedImage className="playlist_image" src={isEmpty?"none":images[songs[0].id]} />}
                 <div className="playlist_data">
                     <p className='playlist_type'>{type} playlist</p>
                     <p className='playlist_name'>{name}</p>
@@ -103,6 +106,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                         <col className='n_col'/>
                         <col className='title_col'/>
                         <col className='album_col'/>
+                        <col/>
                         <col className='time_col'/>
                     </colgroup>
                     <thead>
@@ -116,6 +120,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                             <th>
                                 <p>Album</p>
                             </th>
+                            <th/>
                             <th>
                                 <p>Length</p>
                             </th>
