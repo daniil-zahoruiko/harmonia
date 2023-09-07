@@ -15,8 +15,7 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
     const [error, setError] = useState(null);   
 
     const {
-        access_token: [token, setToken,],
-        user_data:[userData,setUserData]
+        access_token: [token, setToken,]
     } = useContext(UserContext)
 
     const {register, handleSubmit, watch, formState: {errors}} = useForm({
@@ -29,7 +28,7 @@ export const LogIn = ({selectedAction, setSelectedAction}) =>
 
     async function onSubmit(data)
     {
-        await LogMeIn({setToken: setToken,setUserData:setUserData, setError: setError, username: data.username, password:data.password})
+        await LogMeIn({setToken: setToken, setError: setError, username: data.username, password:data.password})
         .then(() => setError(null))
         .catch((error) => setError(error.message));
     }
