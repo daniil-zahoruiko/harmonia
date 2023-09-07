@@ -84,9 +84,27 @@
 
 .songs_cards{
     display: grid;
-    gap: 1rem;
+    row-gap: 3%;
     grid-template-columns: repeat(5,20%);
     margin-top: 3%;
+}
+.playlist_song_like{
+    color:#44489F;
+    width:1.5vw;
+    height:auto;
+    margin: auto;
+}
+.liked_playlist_image{
+    position: relative;
+}
+
+.liked_playlist_image svg{
+    width:8vw;
+    height:auto;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
 }
 
 thead tr{
