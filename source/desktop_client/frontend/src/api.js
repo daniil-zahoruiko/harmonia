@@ -7,8 +7,15 @@ const FetchSongs = ({token}) =>{
     const [loading,setLoading] = useState(true)
     const [userPlaylists, setUserPlaylist] = useState([])
     const dataFetchedRef = useRef(false);
-    const {access_token: [,,removeToken],
-    error: [, setUserError]} = useContext(UserContext);
+    const { access_token: [,,removeToken],
+            error: [, setUserError],
+            username:[username,setUsername],
+            email:[email,setEmail],
+            full_name:[fullName,setFullName],
+            password:[password,setPassword],
+            liked_songs:[likedSongs,setLikedSongs],
+            fav_artists:[favArtists,setFavArtists],
+            settings:[settings,setSettings] } = useContext(UserContext);
 
     const fetchData = () =>{
         fetch("/api",{
@@ -23,8 +30,15 @@ const FetchSongs = ({token}) =>{
                 throw new Error(res.status);
         }).then((data) => {
                 // Setting a data from api
-                setSongs(data.user.songs)
-                setUserPlaylist(data.user.playlists)
+                setSongs(data.songs)
+                setUserPlaylist(data.playlists)
+                setUsername(data.user_data.username)
+                setEmail(data.user_data.email)
+                setFullName(data.user_data.full_name)
+                setPassword(data.user_data.password)
+                setLikedSongs(data.user_data.liked_songs)
+                setFavArtists(data.user_data.fav_artists)
+                setSettings(data.user_data.settings)
                 setLoading(false)
                 console.log(data)
         }).catch((error) =>
@@ -101,13 +115,13 @@ const FetchImage = async ({id, token, removeToken, setUserError}) =>
     }
 }
 
-async function LogMeIn({setToken,setUserData, setError, username, password})
+async function LogMeIn({setToken, setError, username, password})
 {
     // TODO: obtain all user data
     return await fetch('/token', {
         method: "POST",
         headers:{
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             "username": username,
@@ -119,7 +133,6 @@ async function LogMeIn({setToken,setUserData, setError, username, password})
         if(response.ok){
             setToken(jsonResponse.token);
             console.log(jsonResponse.user_data)
-            setUserData(jsonResponse.user_data)
         }
         else if(response.status === 401)
             throw new Error(jsonResponse.msg);
@@ -133,13 +146,63 @@ async function SignMeUp({username, password,email,full_name})
     return await fetch("/signup", {
         method: "POST",
         headers:{
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             "username": username,
             "password": password,
             "email":email,
             "full_name":full_name
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+
+async function UpdateFavorites({token,username,likedSongs}){
+    return await fetch("/api/like_song", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "username": username,
+            "liked_songs": likedSongs
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+
+async function updateData({token,username,email,fullName,input}){
+    return await fetch("/api/change_data", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "username": username,
+            "email":email,
+            "full_name":fullName,
+            "input": input
         })
     }).then(async (response) => {
         const jsonResponse = await response.json();
@@ -165,4 +228,4 @@ const LogMeOut = ({removeToken}) =>
     });
 }
 
-export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut };
+export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut,UpdateFavorites,updateData };
