@@ -2,6 +2,10 @@ import { useContext } from "react"
 import { UserContext } from "../../UserContext"
 import { LogMeOut } from "../../api";
 import { SongsContext } from "../../SongsData";
+import {AiOutlineUser} from "react-icons/ai"
+import "../../styles/profile.css"
+
+
 
 export default () => {
     const { access_token: [,,removeToken],
@@ -22,11 +26,19 @@ export default () => {
 
     return(
         <div>
-            <h1>{fullName}</h1>
-            <p>#{username}</p>
-            <p>{email}</p>
-            <button onClick={()=>setCurrentPage("change-data")}>Change data</button>
-            <button onClick={handleLogOut}>Log Out</button>
+            <div className="profile_wrapper">
+                <div className="profile_image_wrapper">
+                    <AiOutlineUser/>
+                </div>
+                <div className="profile_data_wrapper">
+                    <h1 className="profile_name">{fullName}</h1>
+                    <p className="profile_username">#{username}</p>
+                    <p className="profile_email">{email}</p>
+                    <button className="profile_button" onClick={()=>setCurrentPage("change-data")}>Change data</button>
+                </div>
+            </div>
+            <button className="profile_button profile_log_out" onClick={handleLogOut}>Log Out</button>
         </div>
+
     );
 }
