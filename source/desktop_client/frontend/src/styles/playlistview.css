@@ -166,6 +166,13 @@ tbody tr:hover{
     background-color: #44499f6d;
 }
 
+.artist_view_discography{
+    text-align: left;
+    border-bottom: #44489F 2px solid;
+    margin-bottom: 2%;
+    padding-top: 2%;
+}
+
 .song_playing_animation{
     display: flex;
     flex-direction: row;
