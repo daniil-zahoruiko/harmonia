@@ -1,42 +1,77 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from "react"
 import { SongsContext } from "../../SongsData"
+import { UserContext } from "../../UserContext";
+import { FetchImages, UpdateFavArtists } from "../../api";
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
 import "../../styles/playlistview.css"
-import { FetchImages } from '../../api';
-import { UserContext } from '../../UserContext';
 import { SongRow } from './SongRow';
-import { SongCard } from './Cards';
-import {AiFillHeart} from "react-icons/ai"
+import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
+import { AlbumCard } from "./Cards";
 
 
 
-export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
-    const {   playing:[isPlaying,setIsPlaying],
+export const ArtistView = () =>{
+    const { db:[songs,,albums],
+            playing:[isPlaying,setIsPlaying],
             playlist:[currentPlaylist,setCurrentPlaylist],
             songData:[currentSongData,setCurrentSongData],
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
-        cachedImages:[images,setImages] } = useContext(SongsContext)
+            cachedImages:[images,setImages],
+            artistRender:[showedArtist,setShowedArtist]} = useContext(SongsContext)
 
     const {
         access_token: [token,,removeToken],
-        error: [,setUserError]
+        error: [,setUserError],
+        username:[username,setUsername],
+        fav_artists:[favArtists,setFavArtists]
     } = useContext(UserContext);
 
-    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:id}
-    const isEmpty = songs.length === 0
+    const artist_songs = songs.filter(song=>{
+        return song.artistId === showedArtist.id
+    })
+
+    const artist_albums = albums.filter(album=>{
+        return album.artistId === showedArtist.id
+    })
+    console.log(favArtists)
+
+    const isEmpty = artist_songs.length === 0
+
+    const name = showedArtist.name
+    const id = showedArtist.id+"_artist"
+
+
+    const data = {owner:name,type:"",name:name,description:"",songs:artist_songs,id:id}
 
     // const images = FetchImages({songs, token});
     const fetch = async (songs) =>{
         await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
     }
+
+
+    const likeArtist = () =>{
+        let temp_list = [...favArtists,showedArtist]
+        if(!favArtists.includes(showedArtist)){
+            setFavArtists(temp_list)
+        }
+        else{
+            temp_list = favArtists.filter(id=>id!==showedArtist)
+            setFavArtists(temp_list)
+        }
+        console.log(temp_list)
+        UpdateFavArtists({token:token,username:username,favArtists:temp_list})
+    }
+
     useEffect(()=>{
         setAllLoaded(false)
-        fetch(songs)
+        fetch(artist_songs)
     },[])
+
+
 
     // play/pause button functionality
     const pauseButtonToggle = () =>{
@@ -44,50 +79,38 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
         if(currentPlaylist.id !== id){
             setSongLoaded(false)
             setCurrentPlaylist(data)
-            setCurrentSongData(songs[0])
+            setCurrentSongData(artist_songs[0])
             if(!isPlaying) setIsPlaying(true)
         }
         else{
             PlayPause()
         }
     }
-
-    // song onclick functionality
     const songToggle = (index) =>{
         if(!songLoaded || isEmpty) return
         if(currentPlaylist.id !== data.id){
             setCurrentPlaylist(data)
         }
-        if(currentSongData === songs[index] && currentPlaylist.id === data.id){
+        if(currentSongData === artist_songs[index] && currentPlaylist.id === data.id){
             PlayPause()
         }
         else{
             setSongLoaded(false)
-            setCurrentSongData(songs[index])
+            setCurrentSongData(artist_songs[index])
             if(!isPlaying) setIsPlaying(true)
         }
     }
 
-    const viewToggle = () =>{
-        if(playlistView === "row"){
-            setPlaylistView("card")
-        }
-        else{
-            setPlaylistView("row")
-        }
-    }
 
     return(
         <div>
             <div className="playlist_header">
                 {id==="liked_songs"
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
-                :<LoadedImage className="playlist_image" src={isEmpty?"none":images[songs[0].id]} />}
+                :<LoadedImage className="playlist_image" src={isEmpty?"none":images[artist_songs[0].id]} />}
                 <div className="playlist_data">
-                    <p className='playlist_type'>{type} playlist</p>
+                    <p className='playlist_type'>Artist</p>
                     <p className='playlist_name'>{name}</p>
-                    <p className='playlist_description'>{description}</p>
-                    <p className='playlist_owner'>{owner}</p>
                 </div>
             </div>
             <div className="playlist_utils">
@@ -95,10 +118,10 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
-                <button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>
+                {favArtists.includes(showedArtist)
+                ?<AiFillHeart className='playlist_song_like' onClick={likeArtist}/>
+                :<AiOutlineHeart className='playlist_song_like' onClick={likeArtist}/>}
             </div>
-            {
-                playlistView==="row"?
                 <table className='songs_list'>
                     <colgroup>
                         <col className='n_col'/>
@@ -125,21 +148,19 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                         </tr>
                     </thead>
                     <tbody>
-                        {songs.map((song,key)=>{
+                        {artist_songs.map((song,key)=>{
                             return(
-                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongRow key={key} songs={artist_songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
                 </table>
-                :<div className='songs_cards'>
-                    {songs.map((song,key)=>{
-                        return(
-                            <SongCard key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
-                        )
+                <h1 className="artist_view_discography">Discography</h1>
+                <div className="songs_cards">
+                    {artist_albums.map((album,key)=>{
+                        return <AlbumCard album={album} key={key}/>
                     })}
                 </div>
-            }
         </div>
     )
 }

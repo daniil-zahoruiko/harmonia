@@ -5,26 +5,23 @@ import '../../styles/player.css';
 import { UserContext } from '../../UserContext';
 import { FetchImage } from '../../api';
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
-import { UpdateFavorites } from "../../api";
+import { UpdateLikedSongs } from "../../api";
 
 export const Player = ({audioElem, currentSong})=> {
 
-  const { playlist:[currentPlaylist,],
+  const { db:[,artists,],
+          playlist:[currentPlaylist,],
           playing:[isPlaying, setIsPlaying],
           songData:[currentSongData,setCurrentSongData],
           song:[songLoaded, setSongLoaded],
-          toggles:[PlayPause] } = useContext(SongsContext)
+          toggles:[PlayPause],
+          artistRender:[,setShowedArtist],
+          page:[,setCurrentPage] } = useContext(SongsContext)
 
-  const {
-    access_token: [token, setToken, removeToken],
-    error: [userError, setUserError],
-    username:[username,setUsername],
-    email:[email,setEmail],
-    full_name:[fullName,setFullName],
-    password:[password,setPassword],
-    liked_songs:[likedSongs,setLikedSongs],
-    fav_artists:[favArtists,setFavArtists],
-    settings:[settings,setSettings] } = useContext(UserContext);
+  const { access_token: [token, , removeToken],
+          error: [, setUserError],
+          username:[username,],
+          liked_songs:[likedSongs,setLikedSongs] } = useContext(UserContext);
 
   const [volume, setVolume] = useState(1)
   const [slider,setSlider] = useState(currentSong.progress)
@@ -32,19 +29,26 @@ export const Player = ({audioElem, currentSong})=> {
   const [imageUrl, setImageUrl] = useState("")
 
   const likeSong = () =>{
-    let temp_list = [...likedSongs.likedSongs,currentSongData.id]
-    if(!likedSongs.likedSongs.includes(currentSongData.id)){
-        setLikedSongs({"likedSongs":temp_list})
+    let temp_list = [...likedSongs,currentSongData]
+    if(!likedSongs.includes(currentSongData)){
+        setLikedSongs(temp_list)
     }
     else{
-        temp_list = likedSongs.likedSongs.filter(id=>id!==currentSongData.id)
-        setLikedSongs({"likedSongs":temp_list})
+        temp_list = likedSongs.filter(id=>id!==currentSongData)
+        setLikedSongs(temp_list)
     }
-    console.log(temp_list)
-    UpdateFavorites({token:token,username:username,likedSongs:{"likedSongs":temp_list}})
+    UpdateLikedSongs({token:token,username:username,likedSongs:temp_list})
 }
 
   const songs = currentPlaylist.songs
+
+  const artistLink = ()=>{
+    const song_artist = artists.filter((artist)=>{
+      return artist.id === currentSongData.artistId
+    })
+    setShowedArtist(song_artist[0])
+    setCurrentPage("artist-view")
+  }
 
   // set current time while using range scroller(when unclicked/submitted cur time)
   const changeRange = (e) =>{
@@ -132,11 +136,11 @@ export const Player = ({audioElem, currentSong})=> {
       <div className='navigation_wrapper'>
         <div className='player_song_data'>
           <img className='player_cover' alt={currentSongData.title} src={imageUrl} />
-          <div className='player_song_text'>
+          <div onClick={artistLink} className='player_song_text'>
             <p className='player_title'>{currentSongData.title}</p>
             <p className='player_artist'>{currentSongData.artist}</p>
           </div>
-            {likedSongs.likedSongs.includes(currentSongData.id)?<AiFillHeart className='player_like' onClick={likeSong}/>:<AiOutlineHeart className='player_like' onClick={likeSong}/>}
+            {likedSongs.includes(currentSongData)?<AiFillHeart className='player_like' onClick={likeSong}/>:<AiOutlineHeart className='player_like' onClick={likeSong}/>}
         </div>
         {/*-------------------------------------------------------------
         --------------------------SONG RANGE SLIDER BAR-------------------

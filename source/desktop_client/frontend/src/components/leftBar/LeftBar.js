@@ -7,22 +7,13 @@ import { UserContext } from "../../UserContext";
 
 
 export const LeftBar = () => {
-    const {user:[userPlaylists],
-    db:[songs]} = useContext(SongsContext)
+    const {user:[userPlaylists]} = useContext(SongsContext)
     const [lbState, setLbState] = useState("full")
-    const { page:[currentPage,setCurrentPage],
-        playlistRender:[showedPlaylist,setShowedPlaylist]} = useContext(SongsContext)
+    const { page:[,setCurrentPage],
+        playlistRender:[,setShowedPlaylist]} = useContext(SongsContext)
 
-    const {
-        access_token: [token, setToken, removeToken],
-        error: [userError, setUserError],
-        username:[username,setUsername],
-        email:[email,setEmail],
-        full_name:[fullName,setFullName],
-        password:[password,setPassword],
-        liked_songs:[likedSongs,setLikedSongs],
-        fav_artists:[favArtists,setFavArtists],
-        settings:[settings,setSettings] } = useContext(UserContext);
+    const { username:[username,],
+            liked_songs:[likedSongs,] } = useContext(UserContext);
 
 
     const hideLb = () =>{
@@ -42,9 +33,12 @@ export const LeftBar = () => {
     }
 
     const triggerLikedSongs = () =>{
-        const likes = songs.filter((song)=>likedSongs.likedSongs.includes(song.id))
-        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:likes,id:"liked_songs"})
+        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:likedSongs,id:"liked_songs"})
         setCurrentPage("playlist-view")
+    }
+
+    const triggerFavArtists = () =>{
+        setCurrentPage("favorite-artists")
     }
 
     return(
@@ -78,7 +72,7 @@ export const LeftBar = () => {
                     </p>
                 </div>
             </div>
-            <div className="left_bar_topic_wrapper">
+            <div onClick={triggerFavArtists} className="left_bar_topic_wrapper">
                 <div>
                     <svg className="lb_svg" xmlns="http://www.w3.org/2000/svg" width="33" height="44" viewBox="0 0 33 44" fill="none">
                         <path d="M16.3219 13.5507L6.11435 29.0662C5.8079 29.532 6.02287 30.1743 6.54327 30.3478C6.82524 30.4418 7.13345 30.3707 7.3488 30.1621L20.5872 17.3374C21.8521 16.112 21.7494 13.9995 20.3712 12.897C19.0847 11.8677 17.2324 12.1668 16.3219 13.5507Z" stroke="white" strokeWidth="3"/>
