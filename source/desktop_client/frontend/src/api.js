@@ -4,6 +4,8 @@ import { UserContext } from "./UserContext"
 
 const FetchSongs = ({token}) =>{
     const [songs, setSongs] = useState([])
+    const [artists,setArtists] = useState([])
+    const [albums,setAlbums] = useState([])
     const [loading,setLoading] = useState(true)
     const [userPlaylists, setUserPlaylist] = useState([])
     const dataFetchedRef = useRef(false);
@@ -31,13 +33,15 @@ const FetchSongs = ({token}) =>{
         }).then((data) => {
                 // Setting a data from api
                 setSongs(data.songs)
+                setArtists(data.artists)
+                setAlbums(data.albums)
                 setUserPlaylist(data.playlists)
                 setUsername(data.user_data.username)
                 setEmail(data.user_data.email)
                 setFullName(data.user_data.full_name)
                 setPassword(data.user_data.password)
-                setLikedSongs(data.user_data.liked_songs)
-                setFavArtists(data.user_data.fav_artists)
+                setLikedSongs(data.user_data.liked_songs.likedSongs)
+                setFavArtists(data.user_data.fav_artists.favArtists)
                 setSettings(data.user_data.settings)
                 setLoading(false)
                 console.log(data)
@@ -61,7 +65,7 @@ const FetchSongs = ({token}) =>{
         fetchData()
     }, []);
 
-    return {songs,loading,userPlaylists}
+    return {songs,artists,albums,loading,userPlaylists}
 }
 
 async function FetchImages({songs,images,setImages, token,removeToken, setUserError,setAllLoaded})
@@ -77,7 +81,6 @@ async function FetchImages({songs,images,setImages, token,removeToken, setUserEr
                 temp_dict[id] = response
             }
             if(i===songs.length-1){
-                console.log(temp_dict)
                 setImages(prevImages=>({...prevImages,...temp_dict}))
                 setAllLoaded(true)
             }
@@ -167,7 +170,7 @@ async function SignMeUp({username, password,email,full_name})
     });
 }
 
-async function UpdateFavorites({token,username,likedSongs}){
+async function UpdateLikedSongs({token,username,likedSongs}){
     return await fetch("/api/like_song", {
         method: "POST",
         headers:{
@@ -176,7 +179,31 @@ async function UpdateFavorites({token,username,likedSongs}){
         },
         body: JSON.stringify({
             "username": username,
-            "liked_songs": likedSongs
+            "liked_songs": {"likedSongs":likedSongs}
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+
+async function UpdateFavArtists({token,username,favArtists}){
+    return await fetch("/api/fav_artist", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "username": username,
+            "fav_artists": {"favArtists":favArtists}
         })
     }).then(async (response) => {
         const jsonResponse = await response.json();
@@ -228,4 +255,4 @@ const LogMeOut = ({removeToken}) =>
     });
 }
 
-export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut,UpdateFavorites,updateData };
+export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut,UpdateLikedSongs,UpdateFavArtists,updateData };

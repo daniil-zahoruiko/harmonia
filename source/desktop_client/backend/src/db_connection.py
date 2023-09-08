@@ -64,6 +64,26 @@ class DBConnection:
             res.append(Song(id, name, genre, artist_id, album_id))
 
         return res
+    
+    def get_all_artists_query(self):
+        query = "SELECT * FROM artists"
+
+        query_res = self.execute_query(query=query,fetch_func="fetchall")
+        res = []
+        for (id,name) in query_res:
+            res.append(Artist(id,name))
+
+        return res
+    
+    def get_all_albums_query(self):
+        query = "SELECT * FROM albums"
+
+        query_res = self.execute_query(query=query,fetch_func="fetchall")
+        res = []
+        for (id,name,artist_id) in query_res:
+            res.append(Album(id,name,artist_id))
+
+        return res
 
     def read_image_file(self, id):
         query = "SELECT image FROM songs WHERE id = %s"
@@ -100,6 +120,12 @@ class DBConnection:
         query = "UPDATE users SET likedSongs = %s WHERE id = %s"
 
         self.execute_query(query=query, args=(liked_songs, user_id), commit=True)
+
+    def update_favorite_artists(self,fav_artists,user_id):
+        print(fav_artists)
+        query = "UPDATE users SET favArtists = %s WHERE id = %s"
+
+        self.execute_query(query=query, args=(fav_artists, user_id), commit=True)
 
 
     def change_username(self,user_id,username):

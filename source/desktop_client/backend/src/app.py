@@ -108,16 +108,21 @@ def data():
         print("invalid username")
         return jsonify({"msg": "Server error: user was not found."}), 401
     user_data = utils.get_user(connection,user_id)
-    print(user_data)
+    artists = utils.get_all_artists(connection)
+    albums = utils.get_all_albums(connection)
+    print(user_data) 
 
     res = {
         "songs":data,
         "playlists":["Playlist 1", "Playlist 2", "Playlist 3"],
-        "user_data":user_data
+        "user_data":user_data,
+        "artists":artists,
+        "albums":albums
     }
 
     # Returning an api for showing in  reactjs
     return jsonify(res)
+
 
 @app.route('/api/song/<id>')
 @jwt_required()
@@ -151,9 +156,27 @@ def update_liked_songs():
 
     return jsonify({"msg": "Success"}), 200
 
+@app.route("/api/fav_artist",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def update_favorite_artists():
+    username = request.json["username"]
+    fav_artists = request.json["fav_artists"]
+
+    print(username,fav_artists)
+
+    user_id = utils.try_get_user(connection, username)
+    if user_id is None:
+        print("invalid username")
+        return jsonify({"msg": "Server error, try again"}), 401
+
+    utils.add_favorite_artist(connection, fav_artists,user_id)
+
+    return jsonify({"msg": "Success"}), 200
+
 @app.route("/api/change_data",methods=["POST"])
-# @cross_origin()
-# @jwt_required()
+@cross_origin()
+@jwt_required()
 def change_data():
     username = request.json["username"]
     email = request.json["email"]
