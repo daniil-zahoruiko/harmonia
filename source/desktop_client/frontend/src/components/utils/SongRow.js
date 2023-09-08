@@ -1,19 +1,50 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from "./LoadedImage";
 import { SongsContext } from "../../SongsData";
+import { UserContext } from "../../UserContext";
+import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
+import { UpdateLikedSongs } from "../../api";
 
 
 
 
 export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
-    const { songData:[currentSongData,],
+    const { db:[,artists,],
+        songData:[currentSongData,],
         playing:[isPlaying,],
-        playlist:[currentPlaylist,]
+        playlist:[currentPlaylist,],
+        artistRender:[,setShowedArtist],
+        page:[,setCurrentPage]
      } = useContext(SongsContext)
+
+    const { access_token: [token, , ],
+            username:[username,],
+            liked_songs:[likedSongs,setLikedSongs]} = useContext(UserContext);
 
     const [hover,setHover] = useState({bool:false,id:""})
     const toInteract = currentSongData.id === song.id && currentPlaylist.id === playlistId
+
+    const likeSong = () =>{
+        let temp_list = [...likedSongs,song]
+        if(!likedSongs.includes(song)){
+            setLikedSongs(temp_list)
+        }
+        else{
+            temp_list = likedSongs.filter(id=>id!==song)
+            setLikedSongs(temp_list)
+        }
+        console.log(temp_list)
+        UpdateLikedSongs({token:token,username:username,likedSongs:temp_list})
+    }
+
+    const artistLink = ()=>{
+        const song_artist = artists.filter((artist)=>{
+          return artist.id === song.artistId
+        })
+        setShowedArtist(song_artist[0])
+        setCurrentPage("artist-view")
+      }
 
     return(
         <tr onMouseEnter={()=>setHover({bool:true,id:id})} onMouseLeave={()=>setHover(false)} className='song_row'>
@@ -40,7 +71,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
                     <LoadedImage className='song_row_image' src={imageUrl} />
                     <div className='song_row_text'>
                         <p style={toInteract?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
-                        <p className='song_row_data_artist'>{song.artist}</p>
+                        <p onClick={artistLink} className='song_row_data_artist'>{song.artist}</p>
                     </div>
                 </div>
             </td>
@@ -49,7 +80,14 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
                     <p>{song.album}</p>
                 </div>
             </td>
-            <td>1:57</td>
+            <td>
+                {likedSongs.includes(song)
+                ?<AiFillHeart className='playlist_song_like' onClick={likeSong}/>
+                :<AiOutlineHeart className='playlist_song_like' onClick={likeSong}/>}
+            </td>
+            <td>
+                1:57
+            </td>
         </tr>
     )
 }

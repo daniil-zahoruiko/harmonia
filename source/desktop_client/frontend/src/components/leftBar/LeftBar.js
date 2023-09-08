@@ -3,11 +3,17 @@ import { PlaylistLB } from "./PlaylistLB"
 import { SongsContext } from "../../SongsData";
 import {IoChevronBackCircleSharp,IoChevronForwardCircleSharp} from "react-icons/io5"
 import "../../styles/leftbar.css"
+import { UserContext } from "../../UserContext";
 
 
 export const LeftBar = () => {
     const {user:[userPlaylists]} = useContext(SongsContext)
     const [lbState, setLbState] = useState("full")
+    const { page:[,setCurrentPage],
+        playlistRender:[,setShowedPlaylist]} = useContext(SongsContext)
+
+    const { username:[username,],
+            liked_songs:[likedSongs,] } = useContext(UserContext);
 
 
     const hideLb = () =>{
@@ -24,6 +30,15 @@ export const LeftBar = () => {
             leftBarStyle.gridArea = "2 / 1 / 3 / 2"
             mainWindowStyle.gridArea = "2 / 2 / 3 / -1"
         }
+    }
+
+    const triggerLikedSongs = () =>{
+        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:likedSongs,id:"liked_songs"})
+        setCurrentPage("playlist-view")
+    }
+
+    const triggerFavArtists = () =>{
+        setCurrentPage("favorite-artists")
     }
 
     return(
@@ -44,7 +59,7 @@ export const LeftBar = () => {
                     </p>
                 </div>
             </div>
-            <div className="left_bar_topic_wrapper">
+            <div onClick={triggerLikedSongs} className="left_bar_topic_wrapper">
                 <div>
                     <svg className="lb_svg" xmlns="http://www.w3.org/2000/svg" width="29" height="25" viewBox="0 0 29 25" fill="none">
                         <path d="M14.9143 23L4.07093 11.3177C1.88669 8.96447 2.19948 5.24256 4.74584 3.28689V3.28689C5.69808 2.55555 6.86517 2.15909 8.06584 2.15909H9.13896C12.2142 2.15909 14.7071 4.65205 14.7071 7.72727V7.72727" stroke="white" strokeWidth="3"/>
@@ -57,7 +72,7 @@ export const LeftBar = () => {
                     </p>
                 </div>
             </div>
-            <div className="left_bar_topic_wrapper">
+            <div onClick={triggerFavArtists} className="left_bar_topic_wrapper">
                 <div>
                     <svg className="lb_svg" xmlns="http://www.w3.org/2000/svg" width="33" height="44" viewBox="0 0 33 44" fill="none">
                         <path d="M16.3219 13.5507L6.11435 29.0662C5.8079 29.532 6.02287 30.1743 6.54327 30.3478C6.82524 30.4418 7.13345 30.3707 7.3488 30.1621L20.5872 17.3374C21.8521 16.112 21.7494 13.9995 20.3712 12.897C19.0847 11.8677 17.2324 12.1668 16.3219 13.5507Z" stroke="white" strokeWidth="3"/>

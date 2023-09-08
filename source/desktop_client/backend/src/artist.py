@@ -5,3 +5,5 @@ class Artist:
 
     def get_name(self):
         return self.name
+    def get_id(self):
+        return self.id

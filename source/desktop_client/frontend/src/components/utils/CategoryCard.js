@@ -1,5 +1,3 @@
-import {SongCard} from "./SongCard"
-
 
 export const CategoryCard = ({onClick,category}) => {
     return(

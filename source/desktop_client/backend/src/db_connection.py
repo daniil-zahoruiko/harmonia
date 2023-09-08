@@ -6,6 +6,8 @@ from artist import Artist
 from album import Album
 from user import User
 from flask_mysqldb import MySQL, MySQLdb
+import json
+#from mutagen.mp3 import MP3
 
 
 class DBConnection:
@@ -62,6 +64,26 @@ class DBConnection:
             res.append(Song(id, name, genre, artist_id, album_id))
 
         return res
+    
+    def get_all_artists_query(self):
+        query = "SELECT * FROM artists"
+
+        query_res = self.execute_query(query=query,fetch_func="fetchall")
+        res = []
+        for (id,name) in query_res:
+            res.append(Artist(id,name))
+
+        return res
+    
+    def get_all_albums_query(self):
+        query = "SELECT * FROM albums"
+
+        query_res = self.execute_query(query=query,fetch_func="fetchall")
+        res = []
+        for (id,name,artist_id) in query_res:
+            res.append(Album(id,name,artist_id))
+
+        return res
 
     def read_image_file(self, id):
         query = "SELECT image FROM songs WHERE id = %s"
@@ -90,6 +112,37 @@ class DBConnection:
 
         self.execute_query(query=query, args=(data, id), commit=True)
 
+    def update_liked_songs(self,liked_songs,user_id):
+        print(liked_songs)
+        query = "UPDATE users SET likedSongs = %s WHERE id = %s"
+
+        self.execute_query(query=query, args=(liked_songs, user_id), commit=True)
+
+    def update_favorite_artists(self,fav_artists,user_id):
+        print(fav_artists)
+        query = "UPDATE users SET favArtists = %s WHERE id = %s"
+
+        self.execute_query(query=query, args=(fav_artists, user_id), commit=True)
+
+
+    def change_username(self,user_id,username):
+        print(user_id,username)
+        query = "UPDATE users SET username = %s WHERE id = %s"
+
+        self.execute_query(query=query, args=(username, user_id), commit=True)
+
+    def change_email(self,user_id,email):
+        print(user_id,email)
+        query = "UPDATE users SET email = %s WHERE id = %s"
+
+        self.execute_query(query=query, args=(email, user_id), commit=True)
+
+    def change_full_name(self,user_id,full_name):
+        print(user_id,full_name)
+        query = "UPDATE users SET fullName = %s WHERE id = %s"
+
+        self.execute_query(query=query, args=(full_name, user_id), commit=True)
+
 
     def get_artist_by_id(self, id):
         query = "SELECT * FROM artists WHERE id = %s"
@@ -112,19 +165,32 @@ class DBConnection:
 
         return id
 
+    def get_user_id_by_email(self, email):
+        query = "SELECT id FROM users WHERE email = %s"
+
+        id = self.execute_query(query=query, args=(email, ), fetch_func="fetchone")
+
+        return id
+
     def get_user_by_id(self, id):
         query = "SELECT * FROM users WHERE id = %s"
 
-        (id, username, password, full_name, display_name, email) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
+        (id, username, password, full_name, email,likedSongs,favArtists,settings,artistId) = self.execute_query(query=query, args=(id, ), fetch_func="fetchone")
 
-        return User(id, username, password, full_name, display_name, email)
+        return User(id, username, password, email, full_name,likedSongs,favArtists,settings,artistId)
 
-    def create_user(self, username, password):
-        query = "INSERT INTO users(id, username, password, displayName) VALUES (%s, %s, %s, %s)"
+    def create_user(self, username, password,email,full_name):
+        query = "INSERT INTO users(id, username,email, password, fullName,likedSongs,favArtists,settings) VALUES (%s, %s, %s, %s,%s,%s,%s,%s)"
 
         salt = bcrypt.gensalt()
 
-        args = (self.get_table_length("users") + 1, username, bcrypt.hashpw(password.encode('utf-8'), salt), "user_display_name")
+        args = (self.get_table_length("users") + 1,
+                username,email,
+                bcrypt.hashpw(password.encode('utf-8'), salt),
+                full_name,
+                json.dumps({"likedSongs":[]}),
+                json.dumps({"favArtists":[]}),
+                json.dumps({"language":"english"}))
 
         self.execute_query(query=query, args=args, commit=True)
 

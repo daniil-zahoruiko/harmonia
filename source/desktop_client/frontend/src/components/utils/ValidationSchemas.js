@@ -20,3 +20,11 @@ export const logInSchema = yup.object({
     password: yup.string()
         .required('No password provided.')
 }).required();
+
+export const changeDataSchema = yup.object({
+    username: yup.string().required("No username provided."),
+    email: yup.string()
+        .required("No email provided")
+        .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email"),
+    fullName: yup.string().required("No full name provided")
+}).required();

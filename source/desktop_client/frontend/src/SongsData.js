@@ -10,7 +10,7 @@ export const SongsContext = createContext(null)
 export default ({children}) =>{
     const {access_token: [token,,]} = useContext(UserContext);
 
-    const {songs,loading,userPlaylists} = FetchSongs({token: token});
+    const {songs,artists,albums,loading,userPlaylists} = FetchSongs({token: token});
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentPage,setCurrentPage] = useState("home")
@@ -21,6 +21,8 @@ export default ({children}) =>{
     const [allLoaded,setAllLoaded] = useState(false)
     const [playlistView,setPlaylistView] = useState("row")
     const [images,setImages] = useState([])
+    const [showedAlbum,setShowedAlbum] = useState({artist:{}})
+    const [showedArtist,setShowedArtist] = useState({album:{}})
 
     const PlayPause = ()=>
     {
@@ -42,7 +44,7 @@ export default ({children}) =>{
         playing:[isPlaying,setIsPlaying],
         songData:[currentSongData,setCurrentSongData],
         page:[currentPage,setCurrentPage],
-        db:[songs],
+        db:[songs,artists,albums],
         user:[userPlaylists],
         playlist:[currentPlaylist,setCurrentPlaylist],
         playlistRender:[showedPlaylist,setShowedPlaylist],
@@ -50,7 +52,9 @@ export default ({children}) =>{
         toggles:[PlayPause],
         displayLoad:[allLoaded,setAllLoaded],
         playlistView:[playlistView,setPlaylistView],
-        cachedImages:[images,setImages]
+        cachedImages:[images,setImages],
+        albumRender:[showedAlbum,setShowedAlbum],
+        artistRender:[showedArtist,setShowedArtist]
     }
 
     return(

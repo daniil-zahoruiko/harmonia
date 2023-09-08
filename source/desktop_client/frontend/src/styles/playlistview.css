@@ -84,9 +84,27 @@
 
 .songs_cards{
     display: grid;
-    gap: 1rem;
+    row-gap: 3%;
     grid-template-columns: repeat(5,20%);
     margin-top: 3%;
+}
+.playlist_song_like{
+    color:#44489F;
+    width:1.5vw;
+    height:auto;
+    margin: auto;
+}
+.liked_playlist_image{
+    position: relative;
+}
+
+.liked_playlist_image svg{
+    width:8vw;
+    height:auto;
+    position: absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
 }
 
 thead tr{
@@ -146,6 +164,13 @@ thead tr::after{
 }
 tbody tr:hover{
     background-color: #44499f6d;
+}
+
+.artist_view_discography{
+    text-align: left;
+    border-bottom: #44489F 2px solid;
+    margin-bottom: 2%;
+    padding-top: 2%;
 }
 
 .song_playing_animation{

@@ -1,14 +1,21 @@
 from io import BytesIO
 from mutagen import MP3
 
-def write_file(data, filename):
-    with open(filename, 'wb') as f:
+import os
+import json
+
+def write_file(data, path):
+    with open(path, 'w') as f:
         f.write(data)
+    print("File succesfully downloaded")
 
 def read_file(filename):
-    with open(filename, 'rb') as f:
-        data = f.read()
-    return data
+    if file_exists(filename):
+        with open(filename, 'r') as f:
+            data = f.read()        
+        return data
+    print("The file does not exists")
+    return None
 
 def get_mp3_length(blob):
     data = BytesIO(blob)
@@ -16,3 +23,14 @@ def get_mp3_length(blob):
     audio = MP3(data)
 
     return audio.info.length
+
+def delete_file(filename):
+    if file_exists(filename):
+        os.remove(filename)
+    else:
+        print("The file does not exist")
+
+def file_exists(path):
+    if os.path.exists(path):
+        return True
+    return False

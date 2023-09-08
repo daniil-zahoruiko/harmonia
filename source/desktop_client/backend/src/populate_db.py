@@ -15,7 +15,8 @@ def main(db_connection):
     for file in os.listdir(path):
         dir = os.path.join(path, file)
         if os.path.isfile(dir) and file[-3:] == "mp3":
-            file_data = helpers.read_file(dir)
+            with open(dir, 'rb') as f:
+                file_data = f.read()
 
             db_connection.write_song(file[:-4], random.choice(genres_samples), file_data, 1, 1)
 
@@ -34,7 +35,8 @@ def main(db_connection):
         valid_ext = ["jpg", "jpeg", "webp", "png"]
 
         if os.path.isfile(dir) and ext in valid_ext:
-            file_data = helpers.read_file(dir)
+            with open(dir, 'rb') as f:
+                file_data = f.read()
 
             db_connection.add_image(id, file_data)
         else:
