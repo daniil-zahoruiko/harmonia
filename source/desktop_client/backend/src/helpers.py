@@ -1,8 +1,6 @@
 from io import BytesIO
 from mutagen import MP3
-
 import os
-import json
 
 def write_file(data, path):
     with open(path, 'w') as f:

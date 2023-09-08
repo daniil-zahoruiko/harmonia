@@ -7,7 +7,6 @@ from album import Album
 from user import User
 from flask_mysqldb import MySQL, MySQLdb
 import json
-#from mutagen.mp3 import MP3
 
 
 class DBConnection:
@@ -101,9 +100,9 @@ class DBConnection:
 
     def write_song(self, name, genre, data, artist_id, album_id):
         id = self.get_table_length("songs") + 1
-        query = "INSERT INTO songs(id, name, genre, data, artistId, albumId) VALUES (%s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO songs(id, name, genre, data, artistId, albumId, length) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
-        args = (id, name, genre, data, artist_id, album_id)
+        args = (id, name, genre, data, artist_id, album_id, helpers.get_mp3_length(data))  # if the song is not mp3, will this work?
 
         self.execute_query(query=query, args=args, commit=True)
 
