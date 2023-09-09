@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { UserContext } from "../../UserContext"
 import { ArtistCard, SongCard } from "./Cards"; 
 import { SongsContext } from "../../SongsData";
@@ -17,13 +17,20 @@ export const TopPicks = ({songs}) =>
     const {access_token: [token,,removeToken],
     error: [,setUserError]} = useContext(UserContext);
 
+    const firstRender = useRef(true)
+
     const fetch = async (data, url) =>{
         await FetchImages({data:data, url: url, token,removeToken,setUserError,setAllLoaded,images,setImages});
         setAllLoaded(true);
     }
     useEffect(()=>{
-        setAllLoaded(false)
-        fetch(songs, '/api/song/cover')
+        if(firstRender.current){
+            firstRender.current = false
+        }
+        else{
+            setAllLoaded(false)
+            fetch(songs, '/api/song/cover')
+        }
     },[])
 
     const data = {owner:"Harmonis",type:"public",name:"Top picks",description:"",songs:songs,id:"top_picks"}

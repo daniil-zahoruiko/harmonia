@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
@@ -29,14 +29,21 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
     const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:id}
     const isEmpty = songs.length === 0
 
+    const firstRender = useRef(true)
+
     // const images = FetchImages({songs, token});
     const fetch = async (data, url) =>{
         await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
         setAllLoaded(true);
     }
     useEffect(()=>{
-        setAllLoaded(false)
-        fetch(songs, '/api/song/cover')
+        if(firstRender.current){
+            firstRender.current = true
+        }
+        else{
+            setAllLoaded(false)
+            fetch(songs, '/api/song/cover')
+        }
     },[])
 
     // play/pause button functionality

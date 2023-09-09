@@ -70,6 +70,7 @@ const FetchSongs = ({token}) =>{
 
 async function FetchImages({data,url,images,setImages, token,removeToken, setUserError})
 {
+    console.log("I called")
     let response
     let temp_dict = {}
     for(let i = 0; i < data.length; i++)

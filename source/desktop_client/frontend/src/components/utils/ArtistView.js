@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useRef } from "react"
 import { SongsContext } from "../../SongsData"
 import { UserContext } from "../../UserContext";
 import { FetchImages, UpdateFavArtists } from "../../api";
@@ -44,12 +44,15 @@ export const ArtistView = () =>{
     const name = showedArtist.name
     const id = showedArtist.id+"_artist"
 
+    const firstRender = useRef(true)
+
 
     const data = {owner:name,type:"",name:name,description:"",songs:artist_songs,id:id}
 
     // const images = FetchImages({songs, token});
-    const fetch = async (songs) =>{
-        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+    const fetch = async (data,url) =>{
+        await FetchImages({data:data,url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
+        setAllLoaded(true)
     }
 
 
@@ -68,8 +71,13 @@ export const ArtistView = () =>{
     }
 
     useEffect(()=>{
-        setAllLoaded(false)
-        fetch(artist_songs)
+        if(firstRender.current){
+            firstRender.current = false
+        }else{
+            setAllLoaded(false)
+            console.log(artist_songs)
+            fetch(artist_songs,"/api/song/cover")
+        }
     },[])
 
 

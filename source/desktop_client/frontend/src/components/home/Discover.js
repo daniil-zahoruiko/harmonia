@@ -20,7 +20,6 @@ export const Discover = () =>{
         setCurrentPage("playlist-view")
     }
 
-    console.log(result)
     return(
         <>
             <SearchBar setResult={setResult} input={input} setInput={setInput}/>

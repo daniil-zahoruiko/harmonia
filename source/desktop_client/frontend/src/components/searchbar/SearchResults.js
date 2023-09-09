@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import "../../styles/searchresults.css"
 import { SongsContext } from "../../SongsData"
 import { FetchImages } from "../../api"
@@ -15,6 +15,8 @@ export const SearchResults = ({results}) => {
     const { access_token: [token,,removeToken],
         error: [,setUserError]  } = useContext(UserContext);
 
+    const firstRender = useRef(true)
+
     // const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
 
     const fetch = async (data, url, images, setImages) =>{
@@ -22,13 +24,15 @@ export const SearchResults = ({results}) => {
         setAllLoaded(true);
     }
     useEffect(()=>{
-        setAllLoaded(false)
-        fetch(results["songs"], '/api/song/cover', songImages, setSongImages)
-        fetch(results["artists"], '/api/artist/cover', artistImages, setArtistImages)
-        fetch(results["albums"], '/api/album/cover', albumImages, setAlbumImages)
+        if(firstRender.current){
+            firstRender.current = false
+        }else{
+            setAllLoaded(false)
+            fetch(results["songs"], '/api/song/cover', songImages, setSongImages)
+            fetch(results["artists"], '/api/artist/cover', artistImages, setArtistImages)
+            fetch(results["albums"], '/api/album/cover', albumImages, setAlbumImages)
+        }
     },[])
-
-    console.log(results)
 
 
     return (
