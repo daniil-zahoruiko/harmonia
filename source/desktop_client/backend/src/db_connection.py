@@ -53,14 +53,14 @@ class DBConnection:
 
 
     def get_all_songs_query(self):
-        query = "SELECT id, name, genre, artistId, albumId FROM songs"
+        query = "SELECT id, name, genre, artistId, albumId, length FROM songs"
 
         query_res = self.execute_query(query=query, fetch_func="fetchall")
 
         res = []
 
-        for (id, name, genre, artist_id, album_id) in query_res:
-            res.append(Song(id, name, genre, artist_id, album_id))
+        for (id, name, genre, artist_id, album_id, length) in query_res:
+            res.append(Song(id, name, genre, artist_id, album_id, length))
 
         return res
     

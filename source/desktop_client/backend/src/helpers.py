@@ -1,5 +1,5 @@
 from io import BytesIO
-from mutagen import MP3
+from mutagen.mp3 import MP3
 import os
 
 def write_file(data, path):

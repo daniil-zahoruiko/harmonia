@@ -1,10 +1,11 @@
 class Song:
-    def __init__(self, id, name, genre, artist_id, album_id):
+    def __init__(self, id, name, genre, artist_id, album_id, length):
         self.id = id
         self.name = name
         self.genre = genre
         self.artist_id = artist_id
         self.album_id = album_id
+        self.length = length
 
     def get_name(self):
         return self.name
@@ -20,3 +21,6 @@ class Song:
 
     def get_album_id(self):
         return self.album_id
+    
+    def get_length(self):
+        return self.length
