@@ -20,7 +20,7 @@ def get_mp3_length(blob):
 
     audio = MP3(data)
 
-    return audio.info.length
+    return int(audio.info.length)
 
 def delete_file(filename):
     if file_exists(filename):

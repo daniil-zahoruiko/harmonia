@@ -86,7 +86,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
                 :<AiOutlineHeart className='playlist_song_like' onClick={likeSong}/>}
             </td>
             <td>
-                {Math.floor(song.length / 60)}:{song.length % 60}
+                {Math.floor(song.length / 60)}:{(song.length % 60).toLocaleString('en-US', {minimumIntegerDigits: 2})}
             </td>
         </tr>
     )
