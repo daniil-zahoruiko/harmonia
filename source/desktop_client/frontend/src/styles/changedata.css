@@ -11,3 +11,28 @@
 .change_data_form h1{
     font-size: 3vw;
 }
+
+.change_data_button_wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:30%;
+    margin: 2% 0;
+}
+
+#cancel_change{
+    font-size: 2vw;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #44489F;
+    color:#44489F;
+}
+
+#submit_change{
+    font-size: 2vw;
+    border-radius: 16px;
+    padding: 2% 4%;
+    background-color: #44489F;
+    border: none;
+    color:white;
+}
