@@ -30,12 +30,13 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
     const isEmpty = songs.length === 0
 
     // const images = FetchImages({songs, token});
-    const fetch = async (songs) =>{
-        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+    const fetch = async (data, url) =>{
+        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
+        setAllLoaded(true);
     }
     useEffect(()=>{
         setAllLoaded(false)
-        fetch(songs)
+        fetch(songs, '/api/song/cover')
     },[])
 
     // play/pause button functionality

@@ -132,7 +132,7 @@ export const Player = ({audioElem, currentSong})=> {
 
   useEffect(() =>
   {
-    FetchImage({id: currentSongData.id, token: token, removeToken: removeToken, setUserError: setUserError}).then((res) => setImageUrl(res));
+    FetchImage({url:`/api/song/cover/${currentSongData.id}`, token: token, removeToken: removeToken, setUserError: setUserError}).then((res) => setImageUrl(res));
   }, [currentSongData,songLoaded])
 
   return (

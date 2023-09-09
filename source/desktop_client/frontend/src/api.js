@@ -68,30 +68,29 @@ const FetchSongs = ({token}) =>{
     return {songs,artists,albums,loading,userPlaylists}
 }
 
-async function FetchImages({songs,images,setImages, token,removeToken, setUserError,setAllLoaded})
+async function FetchImages({data,url,images,setImages, token,removeToken, setUserError})
 {
     let response
     let temp_dict = {}
-    for(let i = 0; i < songs.length; i++)
+    for(let i = 0; i < data.length; i++)
         {
-            const id = songs[i].id
+            const id = data[i].id
 
-            if(!images[songs[i].id]){
-                response = await FetchImage({id: id, token:token, removeToken: removeToken, setUserError: setUserError})
+            if(!images[data[i].id]){
+                response = await FetchImage({url: url + '/' + id, token:token, removeToken: removeToken, setUserError: setUserError})
                 temp_dict[id] = response
             }
-            if(i===songs.length-1){
+            if(i===data.length-1){
                 setImages(prevImages=>({...prevImages,...temp_dict}))
-                setAllLoaded(true)
             }
         }
 }
 
-const FetchImage = async ({id, token, removeToken, setUserError}) =>
+const FetchImage = async ({url, token, removeToken, setUserError}) =>
 {
     try
     {
-        const response = await fetch(`/api/artist/${id}/cover`, {
+        const response = await fetch(url, {
             method: "GET",
             headers: {
                 'Content-Type': 'blob',

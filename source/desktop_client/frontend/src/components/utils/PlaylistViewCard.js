@@ -17,12 +17,13 @@ export const TopPicks = ({songs}) =>
     const {access_token: [token,,removeToken],
     error: [,setUserError]} = useContext(UserContext);
 
-    const fetch = async (songs) =>{
-        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+    const fetch = async (data, url) =>{
+        await FetchImages({data:data, url: url, token,removeToken,setUserError,setAllLoaded,images,setImages});
+        setAllLoaded(true);
     }
     useEffect(()=>{
         setAllLoaded(false)
-        fetch(songs)
+        fetch(songs, '/api/song/cover')
     },[])
 
     const data = {owner:"Harmonis",type:"public",name:"Top picks",description:"",songs:songs,id:"top_picks"}

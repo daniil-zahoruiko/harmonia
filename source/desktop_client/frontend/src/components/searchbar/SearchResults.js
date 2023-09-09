@@ -15,12 +15,13 @@ export const SearchResults = ({results}) => {
 
     // const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
 
-    const fetch = async (songs) =>{
-        await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
+    const fetch = async (data, url) =>{
+        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images,setImages});
+        setAllLoaded(true);
     }
     useEffect(()=>{
         setAllLoaded(false)
-        fetch(results)
+        fetch(results, '/api/song/cover')
     },[])
 
     // song onclick functionality

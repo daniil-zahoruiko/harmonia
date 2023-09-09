@@ -130,7 +130,7 @@ def song(id):
     return file
 
 
-@app.route("/api/artist/<id>/cover/")
+@app.route("/api/song/cover/<id>/")
 @cross_origin()
 @jwt_required()
 def song_image(id):
