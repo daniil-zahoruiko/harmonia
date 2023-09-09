@@ -1,5 +1,3 @@
-from db_connection import DBConnection
-import helpers
 import os
 import random
 

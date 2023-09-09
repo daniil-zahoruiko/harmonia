@@ -1,4 +1,3 @@
-import os
 import helpers
 import bcrypt
 from song import Song
