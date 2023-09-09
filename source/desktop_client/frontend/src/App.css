@@ -11,4 +11,7 @@
   font-family: 'Istok Web', sans-serif;
   background-color: black;
   height:100vh;
+  user-select: none;
+  -webkit-user-select: none; /*Safari*/
+  -moz-user-select: none; /*Firefox*/
 }
