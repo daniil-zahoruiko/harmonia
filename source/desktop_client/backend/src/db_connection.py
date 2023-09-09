@@ -90,7 +90,7 @@ class DBConnection:
         return res
     
     def get_all_artists_query(self):
-        query_res = self.select_all_rows("*", "artists")
+        query_res = self.select_all_rows("id, name", "artists")
         res = []
         for (id,name) in query_res:
             res.append(Artist(id,name))
@@ -98,15 +98,15 @@ class DBConnection:
         return res
     
     def get_all_albums_query(self):
-        query_res = self.select_all_rows("*", "albums")
+        query_res = self.select_all_rows("id, name, artistId", "albums")
         res = []
         for (id,name,artist_id) in query_res:
             res.append(Album(id,name,artist_id))
 
         return res
 
-    def read_image_file(self, id):
-        return self.select_by_id("image", "songs", id)
+    def read_image_file(self, id, table):
+        return self.select_by_id("image", table, id)
 
     def read_song_file(self, id):
         return self.select_by_id("data", "songs", id)

@@ -134,7 +134,21 @@ def song(id):
 @cross_origin()
 @jwt_required()
 def song_image(id):
-    file = utils.get_image_file(connection, id)
+    file = utils.get_image_file(connection, id, "songs")
+    return file
+
+@app.route("/api/artist/cover/<id>/")
+@cross_origin()
+@jwt_required()
+def artist_image(id):
+    file = utils.get_image_file(connection, id, "artists")
+    return file
+
+@app.route("/api/album/cover/<id>/")
+@cross_origin()
+@jwt_required()
+def album_image(id):
+    file = utils.get_image_file(connection, id, "albums")
     return file
 
 @app.route("/api/like_song",methods=["POST"])

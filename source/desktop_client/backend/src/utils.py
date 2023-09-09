@@ -81,8 +81,8 @@ def add_streams(db,song_id):
 def get_song_file(db, id):
     return db.read_song_file(id)
 
-def get_image_file(db, id):
-    return db.read_image_file(id)
+def get_image_file(db, id, table):
+    return db.read_image_file(id, table)
 
 def change_username(db,user_id,username):
     return db.change_username(user_id,username)
