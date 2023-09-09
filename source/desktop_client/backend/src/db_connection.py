@@ -171,8 +171,8 @@ class DBConnection:
                 username,email,
                 bcrypt.hashpw(password.encode('utf-8'), salt),
                 full_name,
-                json.dumps({"likedSongs":[]}),
-                json.dumps({"favArtists":[]}),
+                json.dumps({"likedSongs":{}}),
+                json.dumps({"favArtists":{}}),
                 json.dumps({"language":"english"}))
 
         self.execute_query(query=query, args=args, commit=True)

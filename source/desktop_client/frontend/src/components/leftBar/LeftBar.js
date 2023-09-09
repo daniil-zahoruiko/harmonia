@@ -31,9 +31,10 @@ export const LeftBar = () => {
             mainWindowStyle.gridArea = "2 / 2 / 3 / -1"
         }
     }
+    const songs = Object.keys(likedSongs).map((key)=>{return likedSongs[key]})
 
     const triggerLikedSongs = () =>{
-        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:likedSongs,id:"liked_songs"})
+        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:songs,id:"liked_songs"})
         setCurrentPage("playlist-view")
     }
 

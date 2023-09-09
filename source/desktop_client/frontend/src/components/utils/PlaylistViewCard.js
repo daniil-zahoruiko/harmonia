@@ -54,6 +54,8 @@ export const FavArtists = () =>{
         fav_artists:[favArtists,]
     } = useContext(UserContext);
 
+    const artists = Object.keys(favArtists).map((key)=>{return favArtists[key]})
+
 
     return(
         <div>
@@ -73,7 +75,7 @@ export const FavArtists = () =>{
                 </div>
             </div>
             <div className='songs_cards'>
-                {favArtists.map((artist,key)=>{
+                {artists.map((artist,key)=>{
                     return(
                         <ArtistCard artist={artist} key={key}/>
                     )

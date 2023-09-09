@@ -26,16 +26,17 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
     const toInteract = currentSongData.id === song.id && currentPlaylist.id === playlistId
 
     const likeSong = () =>{
-        let temp_list = [...likedSongs,song]
-        if(!likedSongs.includes(song)){
-            setLikedSongs(temp_list)
+        var keys = Object.keys(likedSongs)
+        let temp_dict = {...likedSongs}
+        if(!keys.includes(song.id)){
+          temp_dict[song.id] = song
+            setLikedSongs(temp_dict)
         }
         else{
-            temp_list = likedSongs.filter(id=>id!==song)
-            setLikedSongs(temp_list)
+            delete temp_dict[song.id]
+            setLikedSongs(temp_dict)
         }
-        console.log(temp_list)
-        UpdateLikedSongs({token:token,username:username,likedSongs:temp_list})
+        UpdateLikedSongs({token:token,username:username,likedSongs:temp_dict})
     }
 
     const artistLink = ()=>{
@@ -81,7 +82,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
                 </div>
             </td>
             <td>
-                {likedSongs.includes(song)
+                {likedSongs[song.id]
                 ?<AiFillHeart className='playlist_song_like' onClick={likeSong}/>
                 :<AiOutlineHeart className='playlist_song_like' onClick={likeSong}/>}
             </td>

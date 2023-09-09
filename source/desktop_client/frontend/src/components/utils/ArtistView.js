@@ -54,16 +54,17 @@ export const ArtistView = () =>{
 
 
     const likeArtist = () =>{
-        let temp_list = [...favArtists,showedArtist]
-        if(!favArtists.includes(showedArtist)){
-            setFavArtists(temp_list)
+        var keys = Object.keys(favArtists)
+        let temp_dict = {...favArtists}
+        if(!keys.includes(showedArtist.id)){
+            temp_dict[showedArtist.id] = showedArtist
+            setFavArtists(temp_dict)
         }
         else{
-            temp_list = favArtists.filter(id=>id!==showedArtist)
-            setFavArtists(temp_list)
+            delete temp_dict[showedArtist.id]
+            setFavArtists(temp_dict)
         }
-        console.log(temp_list)
-        UpdateFavArtists({token:token,username:username,favArtists:temp_list})
+        UpdateFavArtists({token:token,username:username,favArtists:temp_dict})
     }
 
     useEffect(()=>{
@@ -118,7 +119,7 @@ export const ArtistView = () =>{
                     {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
-                {favArtists.includes(showedArtist)
+                {favArtists[showedArtist.id]
                 ?<AiFillHeart className='playlist_song_like' onClick={likeArtist}/>
                 :<AiOutlineHeart className='playlist_song_like' onClick={likeArtist}/>}
             </div>

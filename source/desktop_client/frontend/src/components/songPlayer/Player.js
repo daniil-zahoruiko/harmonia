@@ -29,15 +29,17 @@ export const Player = ({audioElem, currentSong})=> {
   const [imageUrl, setImageUrl] = useState("")
 
   const likeSong = () =>{
-    let temp_list = [...likedSongs,currentSongData]
-    if(!likedSongs.includes(currentSongData)){
-        setLikedSongs(temp_list)
+    var keys = Object.keys(likedSongs)
+    let temp_dict = {...likedSongs}
+    if(!keys.includes(currentSongData.id)){
+      temp_dict[currentSongData.id] = currentSongData
+        setLikedSongs(temp_dict)
     }
     else{
-        temp_list = likedSongs.filter(id=>id!==currentSongData)
-        setLikedSongs(temp_list)
+        delete temp_dict[currentSongData.id]
+        setLikedSongs(temp_dict)
     }
-    UpdateLikedSongs({token:token,username:username,likedSongs:temp_list})
+    UpdateLikedSongs({token:token,username:username,likedSongs:temp_dict})
 }
 
   const songs = currentPlaylist.songs
@@ -140,7 +142,7 @@ export const Player = ({audioElem, currentSong})=> {
             <p className='player_title'>{currentSongData.title}</p>
             <p className='player_artist'>{currentSongData.artist}</p>
           </div>
-            {likedSongs.includes(currentSongData)?<AiFillHeart className='player_like' onClick={likeSong}/>:<AiOutlineHeart className='player_like' onClick={likeSong}/>}
+            {likedSongs[currentSongData.id]?<AiFillHeart className='player_like' onClick={likeSong}/>:<AiOutlineHeart className='player_like' onClick={likeSong}/>}
         </div>
         {/*-------------------------------------------------------------
         --------------------------SONG RANGE SLIDER BAR-------------------
