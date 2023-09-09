@@ -20,7 +20,9 @@ export const ArtistView = () =>{
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
-            cachedSongImages:[images,setImages],
+            cachedSongImages:[songImages,setSongImages],
+            cachedArtistImages:[artistImages, setArtistImages],
+            cachedAlbumImages:[albumImages, setAlbumImages],
             artistRender:[showedArtist,setShowedArtist]} = useContext(SongsContext)
 
     const {
@@ -50,7 +52,7 @@ export const ArtistView = () =>{
     const data = {owner:name,type:"",name:name,description:"",songs:artist_songs,id:id}
 
     // const images = FetchImages({songs, token});
-    const fetch = async (data,url) =>{
+    const fetch = async (data, url, images, setImages) =>{
         await FetchImages({data:data,url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
         setAllLoaded(true)
     }
@@ -75,8 +77,10 @@ export const ArtistView = () =>{
             firstRender.current = false
         }else{
             setAllLoaded(false)
-            console.log(artist_songs)
-            fetch(artist_songs,"/api/song/cover")
+            fetch(artist_songs,"/api/song/cover", songImages, setSongImages);
+            fetch([showedArtist], "/api/artist/cover", artistImages, setArtistImages);
+            fetch(artist_albums, "/api/album/cover", albumImages, setAlbumImages);
+
         }
     },[])
 
@@ -116,7 +120,7 @@ export const ArtistView = () =>{
             <div className="playlist_header">
                 {id==="liked_songs"
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
-                :<LoadedImage className="playlist_image" src={isEmpty?"none":images[artist_songs[0].id]} />}
+                :<LoadedImage className="playlist_image" src={isEmpty?"none":artistImages[showedArtist.id]} />}
                 <div className="playlist_data">
                     <p className='playlist_type'>Artist</p>
                     <p className='playlist_name'>{name}</p>
@@ -159,7 +163,7 @@ export const ArtistView = () =>{
                     <tbody>
                         {artist_songs.map((song,key)=>{
                             return(
-                            <SongRow key={key} songs={artist_songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongRow key={key} songs={artist_songs} song={song} songToggle={songToggle} id={key} imageUrl={songImages[song.id]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>

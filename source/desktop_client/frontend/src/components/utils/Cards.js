@@ -8,7 +8,8 @@ import { SongsContext } from "../../SongsData";
 export const AlbumCard = ({album}) =>{
     const { db:[songs],
             page:[,setCurrentPage],
-            playlistRender:[,setShowedPlaylist] } = useContext(SongsContext)
+            playlistRender:[,setShowedPlaylist],
+            cachedAlbumImages:[albumImages,] } = useContext(SongsContext)
 
 
     const album_songs = songs.filter(song=>{
@@ -24,7 +25,7 @@ export const AlbumCard = ({album}) =>{
 
     return(
         <div onClick={albumToggle} className="SongCard">
-            <LoadedImage className={"songcard_img"} alt={album.name} src=""/>
+            <LoadedImage className={"songcard_img"} alt={album.name} src={albumImages[album.id]}/>
             <h1 className="song_card_title">{album.name}</h1>
         </div>
     )
@@ -34,7 +35,8 @@ export const AlbumCard = ({album}) =>{
 
 export const ArtistCard = ({artist}) =>{
     const { artistRender:[,setShowedArtist],
-            page:[,setCurrentPage] } = useContext(SongsContext)
+            page:[,setCurrentPage],
+            cachedArtistImages: [artistImages,] } = useContext(SongsContext)
 
 
 
@@ -43,9 +45,10 @@ export const ArtistCard = ({artist}) =>{
         setCurrentPage("artist-view")
     }
 
+    console.log(artistImages);
     return(
         <div onClick={artistToggle} className="SongCard">
-            <LoadedImage className={"songcard_img"} alt={artist.name} src=""/>
+            <LoadedImage className={"songcard_img"} alt={artist.name} src={artistImages[artist.id]}/>
             <h1 className="song_card_title">{artist.name}</h1>
         </div>
     )

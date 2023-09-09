@@ -19,7 +19,8 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
-        cachedSongImages:[images,setImages] } = useContext(SongsContext)
+            cachedSongImages:[images,setImages],
+            cachedAlbumImages: [albumImages,] } = useContext(SongsContext)
 
     const {
         access_token: [token,,removeToken],
@@ -91,7 +92,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                 {id==="liked_songs"
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
                 :id==="recent_songs"?<div className="playlist_image liked_playlist_image"><AiOutlineClockCircle/></div>
-                :<LoadedImage className="playlist_image" src={isEmpty?"none":images[songs[0].id]} />}
+                :<LoadedImage className="playlist_image" src={isEmpty?"none":(type==="album"?albumImages[id.slice(0,-6)]:images[songs[0].id])} />}
                 <div className="playlist_data">
                     <p className='playlist_type'>{type} playlist</p>
                     <p className='playlist_name'>{name}</p>

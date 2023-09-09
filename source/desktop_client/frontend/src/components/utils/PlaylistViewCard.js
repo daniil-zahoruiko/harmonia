@@ -58,12 +58,35 @@ export const TopPicks = ({songs}) =>
 
 export const FavArtists = () =>{
     const {
+        access_token: [token,,removeToken],
+        error: [,setUserError],
         username:[username,],
         fav_artists:[favArtists,]
     } = useContext(UserContext);
 
+    const {
+        cachedArtistImages:[images, setImages],
+        displayLoad:[,setAllLoaded]
+    } = useContext(SongsContext);
+
     const artists = Object.keys(favArtists).map((key)=>{return favArtists[key]})
 
+    const firstRender = useRef(true);
+
+    const fetch = async (data, url) =>{
+        await FetchImages({data:data,url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
+        setAllLoaded(true)
+        console.log(favArtists);
+    }
+
+    useEffect(()=>{
+        if(firstRender.current){
+            firstRender.current = false
+        }else{
+            setAllLoaded(false)
+            fetch(Object.keys(favArtists).map((key)=>{return favArtists[key]}), "/api/artist/cover");
+        }
+    },[])
 
     return(
         <div>
