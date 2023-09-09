@@ -119,9 +119,7 @@ export const ArtistView = () =>{
                     {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
-                {favArtists[showedArtist.id]
-                ?<AiFillHeart className='playlist_song_like' onClick={likeArtist}/>
-                :<AiOutlineHeart className='playlist_song_like' onClick={likeArtist}/>}
+                <button className="artist_follow_button" onClick={likeArtist}>{favArtists[showedArtist.id]?"Following":"Follow"}</button>
             </div>
                 <table className='songs_list'>
                     <colgroup>

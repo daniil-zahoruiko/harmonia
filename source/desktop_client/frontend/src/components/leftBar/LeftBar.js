@@ -83,7 +83,7 @@ export const LeftBar = () => {
                 </div>
                 <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
-                        Favourite artists
+                        Followed artists
                     </p>
                 </div>
             </div>

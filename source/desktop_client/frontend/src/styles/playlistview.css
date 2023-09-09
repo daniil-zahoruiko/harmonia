@@ -238,3 +238,12 @@ tbody tr:hover{
     width:2vw;
     height:auto;
 }
+
+.artist_follow_button{
+    background-color: #44489F;
+    border:none;
+    color:white;
+    font-size: 1.5vw;
+    padding: 1% 1%;
+    border-radius: 16px;
+}
