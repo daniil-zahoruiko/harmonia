@@ -19,7 +19,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
-        cachedImages:[images,setImages] } = useContext(SongsContext)
+        cachedSongImages:[images,setImages] } = useContext(SongsContext)
 
     const {
         access_token: [token,,removeToken],

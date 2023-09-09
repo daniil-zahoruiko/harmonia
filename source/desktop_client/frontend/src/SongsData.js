@@ -20,7 +20,9 @@ export default ({children}) =>{
     const [songLoaded,setSongLoaded] = useState(false)
     const [allLoaded,setAllLoaded] = useState(false)
     const [playlistView,setPlaylistView] = useState("row")
-    const [images,setImages] = useState([])
+    const [songImages,setSongImages] = useState([])
+    const [artistImages,setArtistImages] = useState([])
+    const [albumImages,setAlbumImages] = useState([])
     const [showedAlbum,setShowedAlbum] = useState({artist:{}})
     const [showedArtist,setShowedArtist] = useState({album:{}})
 
@@ -52,7 +54,9 @@ export default ({children}) =>{
         toggles:[PlayPause],
         displayLoad:[allLoaded,setAllLoaded],
         playlistView:[playlistView,setPlaylistView],
-        cachedImages:[images,setImages],
+        cachedSongImages:[songImages,setSongImages],
+        cachedArtistImages:[artistImages,setArtistImages],
+        cachedAlbumImages:[albumImages,setAlbumImages],
         albumRender:[showedAlbum,setShowedAlbum],
         artistRender:[showedArtist,setShowedArtist]
     }

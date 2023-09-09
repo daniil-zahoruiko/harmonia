@@ -20,7 +20,7 @@ export const ArtistView = () =>{
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
-            cachedImages:[images,setImages],
+            cachedSongImages:[images,setImages],
             artistRender:[showedArtist,setShowedArtist]} = useContext(SongsContext)
 
     const {

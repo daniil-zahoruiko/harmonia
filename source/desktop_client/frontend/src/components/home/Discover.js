@@ -20,10 +20,11 @@ export const Discover = () =>{
         setCurrentPage("playlist-view")
     }
 
+    console.log(result)
     return(
         <>
             <SearchBar setResult={setResult} input={input} setInput={setInput}/>
-            {result.length
+            {result.songs
             ?<SearchResults results={result} setInput={setInput} setResult={setResult}/>
             :<div className="genres_cards_wrapper">
             {categories.map((category,key)=>{

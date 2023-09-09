@@ -11,6 +11,11 @@ export const SearchBar = ({setResult, input, setInput}) =>{
 
     const handleChange = (value) =>{
         setInput(value)
+        if(value === "")
+        {
+            setResult([]);
+            return;
+        }
         setResult({
             "artists":[...artists.filter((artist)=>{
                     return value && artist.name && (artist.name.toLowerCase().includes(value.toLowerCase()) ||  artist.name.toUpperCase().includes(value.toUpperCase()))})],

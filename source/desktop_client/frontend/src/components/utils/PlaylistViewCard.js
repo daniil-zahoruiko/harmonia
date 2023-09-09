@@ -12,7 +12,7 @@ export const TopPicks = ({songs}) =>
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
-            cachedImages:[images,setImages] } = useContext(SongsContext)
+            cachedSongImages:[images,setImages] } = useContext(SongsContext)
 
     const {access_token: [token,,removeToken],
     error: [,setUserError]} = useContext(UserContext);
