@@ -3,7 +3,7 @@ import {BsFillPlayCircleFill, BsFillPauseCircleFill, BsFillSkipStartCircleFill, 
 import { SongsContext } from "../../SongsData";
 import '../../styles/player.css';
 import { UserContext } from '../../UserContext';
-import { FetchImage } from '../../api';
+import { AddStreams, FetchImage } from '../../api';
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 import { UpdateLikedSongs } from "../../api";
 
@@ -101,7 +101,9 @@ export const Player = ({audioElem, currentSong})=> {
     {
       index = 0;
     }
-
+    if(currentSong.progress*currentSong.length/100 > 30){
+      AddStreams({token:token,streams:currentSongData.streams+1,song_id:currentSongData.id})
+    }
     setCurrentSongData(songs[index]);
     setSongLoaded(false)
   }

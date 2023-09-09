@@ -80,12 +80,12 @@ class DBConnection:
     #region Selecting data
     
     def get_all_songs_query(self):
-        query_res = self.select_all_rows("id, name, genre, artistId, albumId, length", "songs")
+        query_res = self.select_all_rows("id, name, genre, artistId, albumId, length, streams", "songs")
 
         res = []
 
-        for (id, name, genre, artist_id, album_id, length) in query_res:
-            res.append(Song(id, name, genre, artist_id, album_id, length))
+        for (id, name, genre, artist_id, album_id, length,streams) in query_res:
+            res.append(Song(id, name, genre, artist_id, album_id, length,streams))
 
         return res
     
@@ -145,6 +145,10 @@ class DBConnection:
     def update_favorite_artists(self,fav_artists,user_id):
         self.update_single_field_by_id("favArtists", fav_artists, "users", user_id)
 
+    def update_streams(self,song_id):
+        streams = self.select_by_id("streams","songs",song_id) + 1
+        self.update_single_field_by_id("streams",streams,"songs",song_id)
+
     def change_username(self,user_id,username):
         self.update_single_field_by_id("username", username, "users", user_id)
 
@@ -168,7 +172,8 @@ class DBConnection:
         salt = bcrypt.gensalt()
 
         args = (self.get_table_length("users") + 1,
-                username,email,
+                username,
+                email,
                 bcrypt.hashpw(password.encode('utf-8'), salt),
                 full_name,
                 json.dumps({"likedSongs":{}}),

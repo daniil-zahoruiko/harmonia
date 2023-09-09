@@ -15,7 +15,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
         playing:[isPlaying,],
         playlist:[currentPlaylist,],
         artistRender:[,setShowedArtist],
-        page:[,setCurrentPage]
+        page:[currentPage,setCurrentPage]
      } = useContext(SongsContext)
 
     const { access_token: [token, , ],
@@ -81,6 +81,13 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
                     <p>{song.album}</p>
                 </div>
             </td>
+            {currentPage==="artist-view"
+            ?<td>
+                <div className='song_row_streams'>
+                    <p>{song.streams}</p>
+                </div>
+            </td>
+            :""}
             <td>
                 {likedSongs[song.id]
                 ?<AiFillHeart className='playlist_song_like' onClick={likeSong}/>

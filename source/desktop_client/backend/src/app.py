@@ -209,6 +209,17 @@ def change_data():
 
     return jsonify({"msg": "Success"}), 200
 
+@app.route("/api/add_streams",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def update_streams():
+    id = request.json["id"]
+
+    try:
+        utils.add_streams(connection,id)
+    except:
+        return jsonify({"msg": "Server Error"}), 401
+    return jsonify({"msg": "Success"}), 200
 
 # Running app
 if __name__ == '__main__':

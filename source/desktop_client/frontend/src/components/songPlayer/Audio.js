@@ -16,8 +16,6 @@ export const Audio = () =>{
 
     const [currentSong, setCurrentSong] = useState({"progress":0,"length":0 });
     const [songUrl, setSongUrl] = useState("");
-    const renderAfterCalled = useRef(false);
-
 
     // trigger song play
     useEffect(() => {

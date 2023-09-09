@@ -42,7 +42,8 @@ def get_all_songs(db):
             "album":db.get_album_by_id(song.get_album_id()).get_name(),
             "artistId":str(song.get_artist_id()),
             "albumId":str(song.get_album_id()),
-            "length":song.get_length()} for song in songs]
+            "length":song.get_length(),
+            "streams":song.get_streams()} for song in songs]
 
     return data
 
@@ -73,6 +74,9 @@ def like_song(db,liked_songs,user_id):
 
 def add_favorite_artist(db,fav_artists,user_id):
     db.update_favorite_artists(json.dumps(fav_artists),user_id)
+
+def add_streams(db,song_id):
+    db.update_streams(song_id)
 
 def get_song_file(db, id):
     return db.read_song_file(id)

@@ -218,6 +218,30 @@ async function UpdateFavArtists({token,username,favArtists}){
     });
 }
 
+async function AddStreams({token,streams,song_id}){
+    return await fetch("/api/add_streams", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "id": song_id,
+            "streams": streams
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+
 async function updateData({token,username,email,fullName,input}){
     return await fetch("/api/change_data", {
         method: "POST",
@@ -255,4 +279,4 @@ const LogMeOut = ({removeToken}) =>
     });
 }
 
-export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut,UpdateLikedSongs,UpdateFavArtists,updateData };
+export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut, UpdateLikedSongs, UpdateFavArtists, AddStreams, updateData };
