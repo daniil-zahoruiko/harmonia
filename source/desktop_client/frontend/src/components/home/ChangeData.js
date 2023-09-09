@@ -7,6 +7,7 @@ import { changeDataSchema } from "../utils/ValidationSchemas";
 import {IoArrowBackCircleOutline} from "react-icons/io5"
 import "../../styles/changedata.css"
 import { SongsContext } from "../../SongsData";
+import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
 
 export const ChangeData = () =>
 {
@@ -18,29 +19,37 @@ export const ChangeData = () =>
         password:[password,setPassword],
         settings:[settings,setSettings] } = useContext(UserContext);
 
+
+    const [passwordVisibility, setPasswordVisibility] = useState(false)
     const [error, setError] = useState(null);
 
     const {
         access_token: [token, setToken,]
     } = useContext(UserContext)
 
-    const {register, handleSubmit, watch, formState: {errors}} = useForm({
+    const {register, handleSubmit, reset, formState: {errors}} = useForm({
         defaultValues:{
             username: username,
             email: email,
-            fullName:fullName
+            fullName:fullName,
+            password:"",
+            passwordConfirmation:""
         },
         resolver:yupResolver(changeDataSchema)
     })
 
     async function onSubmit(data)
     {
-        await updateData({setToken: setToken, username: username,email:email,fullName:fullName, input:data})
+        await updateData({token: token, username: username,email:email,fullName:fullName, input:data})
         .then(() => setError(null))
         .catch((error) => setError(error.message));
         window.location.reload(false);
+        console.log(data)
     }
 
+    const passwordToggle = () =>{
+        setPasswordVisibility(!passwordVisibility)
+    }
 
 
     return(
@@ -51,17 +60,36 @@ export const ChangeData = () =>
                     <label htmlFor="username">
                         New Username:
                     </label>
-                    <div className="login_form_input_wrapper">
-                        <input className="login_input" id="username"  placeholder="Username" {...register("username")} />
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.username?"invalid":""}`} id="username"  placeholder="Username" {...register("username")} />
                     </div>
                     <p className="form_error">{errors.username?.message}</p>
+                </div>
+                <div className="form_row">
+                    <label htmlFor="password">
+                        Password:
+                    </label>
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.password?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="password"  placeholder="Password" {...register("password")} />
+                        {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
+                    </div>
+                    <p className="form_error">{errors.password?.message}</p>
+                </div>
+                <div className="form_row">
+                    <label htmlFor="passwordConfirmation">
+                        Confirm password:
+                    </label>
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.passwordConfirmation?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="passwordConfirmation"  placeholder="Confirm password" {...register("passwordConfirmation")}/>
+                    </div>
+                    <p className="form_error">{errors.passwordConfirmation?.message}</p>
                 </div>
                 <div className="form_row">
                     <label htmlFor="email">
                         New Email:
                     </label>
-                    <div className="login_form_input_wrapper">
-                        <input className="login_input" id="email"  placeholder="Password" {...register("email")} />
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.email?"invalid":""}`} id="email"  placeholder="Password" {...register("email")} />
                     </div>
                     <p className="form_error">{errors.email?.message}</p>
                 </div>
@@ -69,13 +97,29 @@ export const ChangeData = () =>
                     <label htmlFor="email">
                         New Full Name:
                     </label>
-                    <div className="login_form_input_wrapper">
-                        <input className="login_input" id="email"  placeholder="Password" {...register("fullName")} />
+                    <div className="form_input_wrapper">
+                        <input className={`signing_input ${errors.fullName?"invalid":""}`} id="email"  placeholder="Password" {...register("fullName")} />
                     </div>
                     <p className="form_error">{errors.fullName?.message}</p>
                 </div>
                 {error != null ? <p className="login_error">{error}</p> : null}
-                <input id="submit" type="submit" value="Change data"/>
+                <div className="change_data_button_wrapper">
+                    <input
+                        type="button"
+                        onClick={() => reset(
+                            {
+                                username: username,
+                                email: email,
+                                fullName:fullName,
+                                password:"",
+                                passwordConfirmation:""
+                            }
+                        )}
+                        id="cancel_change"
+                        value="Cancel"
+                    />
+                    <input id="submit_change" type="submit" value="Change data"/>
+                </div>
             </form>
         </div>
     );
