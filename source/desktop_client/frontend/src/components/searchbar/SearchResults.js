@@ -24,21 +24,7 @@ export const SearchResults = ({results}) => {
         fetch(results, '/api/song/cover')
     },[])
 
-    // song onclick functionality
-    // const songToggle = (index) =>{
-    //     if(!songLoaded) return
-    //     if(currentPlaylist.id !== data.id){
-    //         setCurrentPlaylist(data)
-    //     }
-    //     if(currentSongData === songs[index]){
-    //         PlayPause()
-    //     }
-    //     else{
-    //         setSongLoaded(false)
-    //         setCurrentSongData(songs[index])
-    //         if(!isPlaying) setIsPlaying(true)
-    //     }
-    // }
+    console.log(results)
 
 
     return (

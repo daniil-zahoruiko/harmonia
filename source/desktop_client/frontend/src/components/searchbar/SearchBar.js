@@ -11,23 +11,26 @@ export const SearchBar = ({setResult, input, setInput}) =>{
 
     const handleChange = (value) =>{
         setInput(value)
-        setResult([...artists.filter((artist)=>{
-                return value && artist.name && (artist.name.toLowerCase().includes(value.toLowerCase()) ||  artist.name.toUpperCase().includes(value.toUpperCase()))}),
-                ...albums.filter((album)=>{
+        setResult({
+            "artists":[...artists.filter((artist)=>{
+                    return value && artist.name && (artist.name.toLowerCase().includes(value.toLowerCase()) ||  artist.name.toUpperCase().includes(value.toUpperCase()))})],
+
+            "albums":[...albums.filter((album)=>{
                     return value && album.name && (album.name.toLowerCase().includes(value.toLowerCase()) ||  album.name.toUpperCase().includes(value.toUpperCase()))
                 }),
                 ...albums.filter((album)=>{
                     return value && (album.artist
                     && (album.artist.toLowerCase().includes(value.toLowerCase()) ||  album.artist.toUpperCase().includes(value.toUpperCase())))
+                })],
+
+            "songs":[...songs.filter((song)=>{
+                    return value && (song.artist
+                    && (song.artist.toLowerCase().includes(value.toLowerCase()) ||  song.artist.toUpperCase().includes(value.toUpperCase())))
                 }),
-            ...songs.filter((song)=>{
-                return value && (song.artist
-                && (song.artist.toLowerCase().includes(value.toLowerCase()) ||  song.artist.toUpperCase().includes(value.toUpperCase())))
-            }),
-            ...songs.filter((song)=>{
-                return value && song.title
-                && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase()))
-        })])
+                ...songs.filter((song)=>{
+                    return value && song.title
+                    && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase()))
+        })]})
 }
 
     const exit = ()=>{
