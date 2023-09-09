@@ -153,9 +153,19 @@ thead tr::after{
     align-items: center;
 }
 .song_row_text{
+    font-size: 1vw;
     display: flex;
     flex-direction: column;
     margin-left: 3%;
+}
+
+.song_row_album{
+    font-size: 1vw;
+}
+
+.song_row_streams{
+    font-size: 1vw;
+    color:grey
 }
 .song_n p{
     font-weight: bolder;
@@ -189,6 +199,7 @@ tbody tr:hover{
     animation-duration: 0.8s;
     animation-iteration-count: infinite;
 }
+
 
 
 
