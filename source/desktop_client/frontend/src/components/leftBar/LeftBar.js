@@ -10,7 +10,9 @@ export const LeftBar = () => {
     const {user:[userPlaylists]} = useContext(SongsContext)
     const [lbState, setLbState] = useState("full")
     const { page:[,setCurrentPage],
-        playlistRender:[,setShowedPlaylist]} = useContext(SongsContext)
+        playlistRender:[,setShowedPlaylist],
+        recentlyPlayed:[recentlyPlayed,setRecentlyPlayed]
+    } = useContext(SongsContext)
 
     const { username:[username,],
             liked_songs:[likedSongs,] } = useContext(UserContext);
@@ -31,15 +33,21 @@ export const LeftBar = () => {
             mainWindowStyle.gridArea = "2 / 2 / 3 / -1"
         }
     }
-    const songs = Object.keys(likedSongs).map((key)=>{return likedSongs[key]})
 
     const triggerLikedSongs = () =>{
+        const songs = Object.keys(likedSongs).map((key)=>{return likedSongs[key]})
         setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:songs,id:"liked_songs"})
         setCurrentPage("playlist-view")
     }
 
     const triggerFavArtists = () =>{
         setCurrentPage("favorite-artists")
+    }
+    const triggerRecentlyPlayed = () =>{
+        const songs = Object.keys(recentlyPlayed).map((key)=>{return recentlyPlayed[key]})
+        console.log(recentlyPlayed)
+        setShowedPlaylist({owner:"HARMONIA",type:"private",name:"Recently Played",description:"History of your song today right here...",songs:songs,id:"recent_songs"})
+        setCurrentPage("playlist-view")
     }
 
     return(
@@ -54,7 +62,7 @@ export const LeftBar = () => {
                         <path d="M14.069 14.5V5.44827" stroke="white" strokeWidth="3"/>
                     </svg>
                 </div>
-                <div className={"left_bar_topic_text lb_"+lbState}>
+                <div onClick={triggerRecentlyPlayed} className={"left_bar_topic_text lb_"+lbState}>
                     <p>
                         Recently played
                     </p>

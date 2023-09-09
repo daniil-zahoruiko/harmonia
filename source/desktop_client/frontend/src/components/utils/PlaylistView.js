@@ -7,7 +7,7 @@ import { FetchImages } from '../../api';
 import { UserContext } from '../../UserContext';
 import { SongRow } from './SongRow';
 import { SongCard } from './Cards';
-import {AiFillHeart} from "react-icons/ai"
+import {AiFillHeart,AiOutlineClockCircle} from "react-icons/ai"
 
 
 
@@ -83,6 +83,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
             <div className="playlist_header">
                 {id==="liked_songs"
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
+                :id==="recent_songs"?<div className="playlist_image liked_playlist_image"><AiOutlineClockCircle/></div>
                 :<LoadedImage className="playlist_image" src={isEmpty?"none":images[songs[0].id]} />}
                 <div className="playlist_data">
                     <p className='playlist_type'>{type} playlist</p>

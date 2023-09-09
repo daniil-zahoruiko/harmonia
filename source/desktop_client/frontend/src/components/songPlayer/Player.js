@@ -16,7 +16,8 @@ export const Player = ({audioElem, currentSong})=> {
           song:[songLoaded, setSongLoaded],
           toggles:[PlayPause],
           artistRender:[,setShowedArtist],
-          page:[,setCurrentPage] } = useContext(SongsContext)
+          page:[,setCurrentPage],
+          recentlyPlayed:[recentlyPlayed,setRecentlyPlayed] } = useContext(SongsContext)
 
   const { access_token: [token, , removeToken],
           error: [, setUserError],
@@ -104,6 +105,13 @@ export const Player = ({audioElem, currentSong})=> {
     if(currentSong.progress*currentSong.length/100 > 30){
       AddStreams({token:token,streams:currentSongData.streams+1,song_id:currentSongData.id})
     }
+    var cur_dict = {}
+    cur_dict[currentSongData.id+"key"] = currentSongData
+    var temp_dict = {...recentlyPlayed}
+    if(temp_dict[currentSongData.id+"key"]){
+      delete temp_dict[currentSongData.id]
+    }
+    setRecentlyPlayed({...cur_dict,...temp_dict})
     setCurrentSongData(songs[index]);
     setSongLoaded(false)
   }

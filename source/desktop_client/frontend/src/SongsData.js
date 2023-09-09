@@ -25,6 +25,7 @@ export default ({children}) =>{
     const [albumImages,setAlbumImages] = useState([])
     const [showedAlbum,setShowedAlbum] = useState({artist:{}})
     const [showedArtist,setShowedArtist] = useState({album:{}})
+    const [recentlyPlayed,setRecentlyPlayed] = useState([])
 
     const PlayPause = ()=>
     {
@@ -58,7 +59,8 @@ export default ({children}) =>{
         cachedArtistImages:[artistImages,setArtistImages],
         cachedAlbumImages:[albumImages,setAlbumImages],
         albumRender:[showedAlbum,setShowedAlbum],
-        artistRender:[showedArtist,setShowedArtist]
+        artistRender:[showedArtist,setShowedArtist],
+        recentlyPlayed:[recentlyPlayed,setRecentlyPlayed]
     }
 
     return(
