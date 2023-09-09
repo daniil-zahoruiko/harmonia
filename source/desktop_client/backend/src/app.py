@@ -182,8 +182,6 @@ def change_data():
     fullName = request.json["full_name"]
     input = request.json["input"]
 
-    print(input)
-
     user_id = utils.try_get_user(connection, username)
     if user_id is None:
         print("invalid username")
@@ -201,6 +199,9 @@ def change_data():
         utils.change_email(connection,user_id,input["email"])
     elif email != input["email"]:
         return jsonify({"msg": "Buddy. This email is already taken"}), 401
+
+    if input["password"] != "":
+        utils.change_password(connection,user_id,input["password"])
 
 
     if fullName != input["fullName"]:

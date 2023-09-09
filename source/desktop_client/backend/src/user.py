@@ -2,7 +2,7 @@ import bcrypt
 import json
 
 class User:
-    def __init__(self, id, username, password, email, full_name,liked_songs,fav_artists,settings,artistId):
+    def __init__(self, id, username, password, full_name, email,liked_songs,fav_artists,settings,artistId):
         self.id = id
         self.username = username
         self.password = password

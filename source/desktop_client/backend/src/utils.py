@@ -86,6 +86,9 @@ def change_username(db,user_id,username):
 def change_email(db,user_id,email):
     return db.change_email(user_id,email)
 
+def change_password(db,user_id,password):
+    return db.change_password(user_id,password)
+
 def change_full_name(db,user_id,full_name):
     return db.change_full_name(user_id,full_name)
 

@@ -61,7 +61,7 @@ class DBConnection:
 
         query_res = self.execute_query(query=query, args=(criteria_value,), fetch_func="fetchone")
 
-        if(fields == "*"):
+        if(fields == "*" or query_res is None):
             return query_res
         
         return query_res[0]
@@ -150,6 +150,10 @@ class DBConnection:
 
     def change_email(self,user_id,email):
         self.update_single_field_by_id("email", email, "users", user_id)
+
+    def change_password(self,user_id,password):
+        salt = bcrypt.gensalt()
+        self.update_single_field_by_id("password", bcrypt.hashpw(password.encode('utf-8'), salt), "users", user_id)
 
     def change_full_name(self,user_id,full_name):
         self.update_single_field_by_id("fullName", full_name, "users", user_id)
