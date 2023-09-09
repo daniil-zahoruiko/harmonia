@@ -13,8 +13,6 @@ export const SearchResults = ({results}) => {
     const { access_token: [token,,removeToken],
         error: [,setUserError]  } = useContext(UserContext);
 
-    // const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
-
     const fetch = async (songs) =>{
         await FetchImages({songs:songs, token,removeToken,setUserError,setAllLoaded,images,setImages})
     }
@@ -23,21 +21,7 @@ export const SearchResults = ({results}) => {
         fetch(results)
     },[])
 
-    // song onclick functionality
-    // const songToggle = (index) =>{
-    //     if(!songLoaded) return
-    //     if(currentPlaylist.id !== data.id){
-    //         setCurrentPlaylist(data)
-    //     }
-    //     if(currentSongData === songs[index]){
-    //         PlayPause()
-    //     }
-    //     else{
-    //         setSongLoaded(false)
-    //         setCurrentSongData(songs[index])
-    //         if(!isPlaying) setIsPlaying(true)
-    //     }
-    // }
+    console.log(results)
 
 
     return (
