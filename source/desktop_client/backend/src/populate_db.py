@@ -18,7 +18,7 @@ def main(db_connection):
             with open(dir, 'rb') as f:
                 file_data = f.read()
 
-            db_connection.write_song(file[:-4], random.choice(genres_samples), file_data, 1, 1)
+            db_connection.create_song(file[:-4], random.choice(genres_samples), file_data, 1, 1)
 
     path = input("Enter path to image files: ")
 
@@ -38,7 +38,7 @@ def main(db_connection):
             with open(dir, 'rb') as f:
                 file_data = f.read()
 
-            db_connection.add_image(id, file_data)
+            db_connection.update_image(id, file_data)
         else:
             print("Invalid file")
 
