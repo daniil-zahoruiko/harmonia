@@ -69,7 +69,7 @@ def get_user_playlists(db, user_id):
     return [playlist.get_data() for playlist in playlists]
 
 def update_playlist_songs(db, id, songs):
-    db.update_playlist_songs(id,songs)
+    db.update_playlist_songs(id,json.dumps(songs))
 
 def update_playlist_name(db, id, name):
     db.update_playlist_name(id,name)

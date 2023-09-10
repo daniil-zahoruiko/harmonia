@@ -12,7 +12,7 @@ import { ContextMenu } from './ContextMenu';
 
 
 
-export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
+export const PlaylistView = () =>{
     const {   playing:[isPlaying,setIsPlaying],
             playlist:[currentPlaylist,setCurrentPlaylist],
             songData:[currentSongData,setCurrentSongData],
@@ -21,40 +21,52 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
             cachedSongImages:[images,setImages],
-            cachedAlbumImages: [albumImages,] } = useContext(SongsContext)
+            cachedAlbumImages: [albumImages,],
+            cachedPlaylistImages:[playlistImages,setPlaylistImages],
+            playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
 
     const {
         access_token: [token,,removeToken],
         error: [,setUserError]
     } = useContext(UserContext);
 
-    const data = {owner:owner,type:type,name:name,description:description,songs:songs,id:id}
-    const isEmpty = songs.length === 0
+    const data = {owner:showedPlaylist.owner,
+        type:showedPlaylist.type,
+        name:showedPlaylist.name,
+        description:showedPlaylist.description,
+        songs:showedPlaylist.songs,
+        id:showedPlaylist.id,
+        image:showedPlaylist.image}
+    const isEmpty = data.songs.length === 0
+    console.log(data.songs.length,data.songs)
 
     const firstRender = useRef(true)
 
     // const images = FetchImages({songs, token});
-    const fetch = async (data, url) =>{
-        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
-        setAllLoaded(true);
+    const fetch = async (data, url,images,setImages,last) =>{
+        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages})
+        if (last) setAllLoaded(true);
     }
     useEffect(()=>{
         if(firstRender.current){
-            firstRender.current = true
+            firstRender.current = false
         }
         else{
             setAllLoaded(false)
-            fetch(songs, '/api/song/cover')
+            fetch(data.songs, '/api/song/cover',images,setImages)
+            console.log("nigga")
+            console.log(data)
+            fetch([data], '/api/playlist/cover', playlistImages, setPlaylistImages,true)
         }
-    },[])
+    },[data.id])
 
     // play/pause button functionality
     const pauseButtonToggle = () =>{
         if(isEmpty) return
-        if(currentPlaylist.id !== id){
+        if(currentPlaylist.id !== data.id){
             setSongLoaded(false)
             setCurrentPlaylist(data)
-            setCurrentSongData(songs[0])
+            setCurrentSongData(data.songs[0])
             if(!isPlaying) setIsPlaying(true)
         }
         else{
@@ -62,18 +74,20 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
         }
     }
 
+    console.log(playlistImages)
+
     // song onclick functionality
     const songToggle = (index) =>{
         if(!songLoaded || isEmpty) return
         if(currentPlaylist.id !== data.id){
             setCurrentPlaylist(data)
         }
-        if(currentSongData === songs[index] && currentPlaylist.id === data.id){
+        if(currentSongData === data.songs[index] && currentPlaylist.id === data.id){
             PlayPause()
         }
         else{
             setSongLoaded(false)
-            setCurrentSongData(songs[index])
+            setCurrentSongData(data.songs[index])
             if(!isPlaying) setIsPlaying(true)
         }
     }
@@ -101,23 +115,40 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
         setContextId(value)
     }
 
+    // console.log(playlistImages)
+
+    // let image = isEmpty?"none":data.type==="album"?albumImages[data.id.slice(0,-6)]:playlistImages[data.id]?playlistImages[data.id]:images[data.songs[0].id]
+    // if(isEmpty){
+    //     image = "none"
+    // }
+    // else if(data.type==="album"){
+    //     image = albumImages[data.id.slice(0,-6)]
+    // }
+    // else if(playlistImages[data.id]){
+    //     image = playlistImages[data.id]
+    // }else{
+    //     image = images[data.songs[0].id]
+    // }
+
     return(
         <div>
             <div className="playlist_header">
-                {id==="liked_songs"
+                {data.id==="liked_songs"
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
-                :id==="recent_songs"?<div className="playlist_image liked_playlist_image"><AiOutlineClockCircle/></div>
-                :<LoadedImage className="playlist_image" src={isEmpty?"none":(type==="album"?albumImages[id.slice(0,-6)]:images[songs[0].id])} />}
+                :data.id==="recent_songs"?<div className="playlist_image liked_playlist_image"><AiOutlineClockCircle/></div>
+                :<LoadedImage className="playlist_image" src={
+                    isEmpty?"none":data.type==="album"?albumImages[data.id.slice(0,-6)]:playlistImages[data.id] !== "No Content" ?playlistImages[data.id]:images[data.songs[0].id]
+                } />}
                 <div className="playlist_data">
-                    <p className='playlist_type'>{type} playlist</p>
-                    <p className='playlist_name'>{name}</p>
-                    <p className='playlist_description'>{description}</p>
-                    <p className='playlist_owner'>{owner}</p>
+                    <p className='playlist_type'>{data.type} playlist</p>
+                    <p className='playlist_name'>{data.name}</p>
+                    <p className='playlist_description'>{data.description}</p>
+                    <p className='playlist_owner'>{data.owner}</p>
                 </div>
             </div>
             <div className="playlist_utils">
                 <div className='play_playlist_wrapper'>
-                    {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
+                    {isPlaying && currentPlaylist.id === data.id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
                 <button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>
@@ -150,22 +181,22 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                         </tr>
                     </thead>
                     <tbody>
-                        {songs.map((song,key)=>{
+                        {data.songs.map((song,key)=>{
                             return(
-                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={data.songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
                 </table>
                 :<div className='songs_cards'>
-                    {songs.map((song,key)=>{
+                    {data.songs.map((song,key)=>{
                         return(
                             <SongCard key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                         )
                     })}
                 </div>
             }
-            <ContextMenu song={songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
+            <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>
     )
 }

@@ -70,12 +70,14 @@ const FetchSongs = ({token}) =>{
 
 async function FetchImages({data,url,images,setImages, token,removeToken, setUserError})
 {
-    console.log("I called")
+    console.log(data,url)
     let response
     let temp_dict = {}
     for(let i = 0; i < data.length; i++)
         {
             const id = data[i].id
+            if(!parseInt(id)) continue
+            console.log(id)
 
             if(!images[data[i].id]){
                 response = await FetchImage({url: url + '/' + id, token:token, removeToken: removeToken, setUserError: setUserError})
@@ -100,6 +102,10 @@ const FetchImage = async ({url, token, removeToken, setUserError}) =>
         })
         if(!response.ok)
             throw new Error(response.status);
+
+        if(response.status === 204){
+            return("No Content")
+        }
 
         const result = await response.blob();
         return(URL.createObjectURL(result));
@@ -327,4 +333,28 @@ async function updatePlaylist({token,id,name,description,data}){
         }
     });
 }
-export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut, UpdateLikedSongs, UpdateFavArtists, AddStreams, updateData,createPlaylist,updatePlaylist };
+
+async function addPlaylistSongs({token,id,songs}){
+    return await fetch("/add_playlist_song", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "id":id,
+            "songs":songs
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut, UpdateLikedSongs, UpdateFavArtists, AddStreams, updateData,createPlaylist,updatePlaylist,addPlaylistSongs };

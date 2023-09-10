@@ -23,6 +23,7 @@ export default ({children}) =>{
     const [songImages,setSongImages] = useState([])
     const [artistImages,setArtistImages] = useState([])
     const [albumImages,setAlbumImages] = useState([])
+    const [playlistImages,setPlaylistImages] = useState([])
     const [showedAlbum,setShowedAlbum] = useState({artist:{}})
     const [showedArtist,setShowedArtist] = useState({album:{}})
     const [recentlyPlayed,setRecentlyPlayed] = useState([])
@@ -57,6 +58,7 @@ export default ({children}) =>{
         cachedSongImages:[songImages,setSongImages],
         cachedArtistImages:[artistImages,setArtistImages],
         cachedAlbumImages:[albumImages,setAlbumImages],
+        cachedPlaylistImages:[playlistImages,setPlaylistImages],
         albumRender:[showedAlbum,setShowedAlbum],
         artistRender:[showedArtist,setShowedArtist],
         recentlyPlayed:[recentlyPlayed,setRecentlyPlayed]

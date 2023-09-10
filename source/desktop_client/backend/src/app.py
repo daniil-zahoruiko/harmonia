@@ -146,6 +146,8 @@ def album_image(id):
 @jwt_required()
 def playlist_image(id):
     file = utils.get_image_file(connection, id, "playlists")
+    if file is None:
+        return jsonify({"msg": "Playlist contains no image"}), 204
     return file
 
 @app.route("/api/add_playlist",methods=["POST"])
@@ -179,9 +181,22 @@ def update_playlist():
         utils.update_playlist_name(connection,id,data["name"])
     if description != data["description"]:
         utils.update_playlist_description(connection,id,data["description"])
-    if data["songs"] != []:
-        utils.update_playlist_songs(id,data["songs"])
 
+    return jsonify({"msg": "Success"}), 200
+
+@app.route("/add_playlist_song",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def update_playlist_songs():
+    id = request.json["id"]
+    songs = request.json["songs"]
+
+    print(songs)
+
+    try:
+        utils.update_playlist_songs(connection,id,songs)
+    except:
+        return jsonify({"msg": "Server Error"}), 401
     return jsonify({"msg": "Success"}), 200
 
 
