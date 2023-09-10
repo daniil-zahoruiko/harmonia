@@ -13,10 +13,10 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    min-width:20vw
+    min-width:15vw
 }
 .context_menu_like p{
-    font-size: 1.5vw;
+    font-size: 1vw;
 }
 
 .context_menu_like svg{
