@@ -110,11 +110,10 @@ def data():
     user_playlists = utils.get_user_playlists(connection, user_id)
     artists = utils.get_all_artists(connection)
     albums = utils.get_all_albums(connection)
-    print(user_playlists) 
 
     res = {
         "songs":data,
-        "playlists":["Playlist 1", "Playlist 2", "Playlist 3"],
+        "playlists":user_playlists,
         "user_data":user_data,
         "artists":artists,
         "albums":albums

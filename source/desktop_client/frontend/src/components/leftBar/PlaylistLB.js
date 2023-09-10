@@ -35,9 +35,9 @@ export const PlaylistLB = ({lbState}) => {
             </div>
             <div className={"left_bar_playlists_list list_"+style}>
                 {
-                    userPlaylists.map((value,key)=>{
+                    userPlaylists.map((playlist,key)=>{
                         return(
-                            <p className={`lb_${lbState}`} key={key}>{value}</p>
+                            <p className={`lb_${lbState}`} key={key}>{playlist.name}</p>
                         )
                     })}
             </div>
