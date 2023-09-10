@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import "../../styles/contextmenu.css"
 import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
@@ -21,13 +21,16 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
     const { access_token: [token, , removeToken],
         error: [, setUserError],
         username:[username,],
-        liked_songs:[likedSongs,setLikedSongs] } = useContext(UserContext);
+        liked_songs:[likedSongs,setLikedSongs],
+        user_playlists:[playlists,setPlaylists], } = useContext(UserContext);
 
     const menuRef = useRef(null)
+    const listRef = useRef(null)
 
     const closeMenu = (e) =>{
         if(menuRef.current && activated && !menuRef.current.contains(e.target)){
             setActivated(false)
+            setStyle("closed")
         }
     }
 
@@ -48,20 +51,56 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
         UpdateLikedSongs({token:token,username:username,likedSongs:temp_dict})
         }
 
+    const [style,setStyle] = useState("closed")
+    const togglePLList = () =>{
+        if(style === "closed"){
+            setStyle("opened")
+        }else{
+            setStyle("closed")
+        }
+    }
+
+    const [width,setWidth] = useState(0)
+
+
+    useEffect(()=>{
+        console.log(left,left + (menuRef.current ? menuRef.current.offsetWidth : 0)+listRef.current.offsetWidth,window.screen.width)
+        if(left + (menuRef.current ? menuRef.current.offsetWidth : 0)*2>window.screen.width){
+            setWidth(left-(listRef.current.offsetWidth))
+        }else{
+            setWidth(left+(menuRef.current ? menuRef.current.offsetWidth : 0))
+        }
+    },[left])
+
     if(!song) return
 
+
+
     return(
+        <>
         <div ref={menuRef} style={{
             display:`${activated?"block":"none"}`,left:`${left}px`,top:`${top}px`}} className="context_menu">
             {likedSongs[song.id]
-                ?<div onClick={likeSong} className="context_menu_like">
-                    <p>Remove from liked songs</p>
-                    <AiFillHeart />
-                </div>
-                :<div onClick={likeSong} className="context_menu_like">
-                    <p>Add to liked songs</p>
-                    <AiOutlineHeart />
-                </div>}
+            ?<div onClick={likeSong} className="context_menu_like">
+                <p>Remove from liked songs</p>
+                <AiFillHeart />
+            </div>
+            :<div onClick={likeSong} className="context_menu_like">
+                <p>Add to liked songs</p>
+                <AiOutlineHeart />
+            </div>}
+            <div onClick={togglePLList} className="context_menu_like">
+                <p>Add to playlist</p>
+                <div className={`context_playlist_arrow ${style}`}></div>
+            </div>
         </div>
+        <div ref={listRef} style={{
+            display:"block",
+            left:`${width}px`,
+            zIndex:`${style === "closed"?"-99":"22"}`,
+            top:`${top}px`}} className="context_menu">
+            <h1>Wasup</h1>
+        </div>
+        </>
     )
 }

@@ -1,5 +1,7 @@
+
+
 .context_menu{
-    position: absolute;
+    position: fixed;
     background-color: #1e1e1e;
     color:white;
     border:1px solid #44489F;
@@ -21,4 +23,29 @@
     color: #44489F;
     width:2vw;
     height:auto;
+}
+
+.context_playlist_arrow.closed::after{
+    content: " ";
+    border:white solid 2px;
+    border-bottom: none;
+    border-right: none;
+    display:block;
+    width:.8vw;
+    height:.8vw;
+    transform: rotate(135deg);
+    transition: 0.3s;
+}
+
+
+.context_playlist_arrow.opened::after{
+    content: " ";
+    border:white solid 2px;
+    border-bottom: none;
+    border-right: none;
+    display:block;
+    width:.8vw;
+    height:.8vw;
+    transform:rotate(225deg);
+    transition: 0.3s;
 }

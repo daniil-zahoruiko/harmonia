@@ -40,7 +40,7 @@
     display:block;
     width:.8vw;
     height:.8vw;
-    transform: translateY(70%) rotate(135deg);
+    transform: translateY(50%) rotate(135deg);
     transition: 0.3s;
 }
 
@@ -53,7 +53,7 @@
     display:block;
     width:.8vw;
     height:.8vw;
-    transform:translateY(70%) rotate(225deg);
+    transform:translateY(50%) rotate(225deg);
     transition: 0.3s;
 }
 
