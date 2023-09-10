@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "../../styles/contextmenu.css"
 import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
-import { UpdateLikedSongs } from "../../api";
+import { UpdateLikedSongs, addPlaylistSongs } from "../../api";
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 
 
@@ -28,7 +28,7 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
     const listRef = useRef(null)
 
     const closeMenu = (e) =>{
-        if(menuRef.current && activated && !menuRef.current.contains(e.target)){
+        if(menuRef.current && activated && !menuRef.current.contains(e.target) && listRef.current && activated && !listRef.current.contains(e.target)){
             setActivated(false)
             setStyle("closed")
         }
@@ -64,20 +64,35 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
 
 
     useEffect(()=>{
-        console.log(left,left + (menuRef.current ? menuRef.current.offsetWidth : 0)+listRef.current.offsetWidth,window.screen.width)
-        if(left + (menuRef.current ? menuRef.current.offsetWidth : 0)*2>window.screen.width){
+        if(left + (menuRef.current ? menuRef.current.offsetWidth : 0)+(listRef.current ? listRef.current.offsetWidth : 0)>window.innerWidth){
             setWidth(left-(listRef.current.offsetWidth))
         }else{
             setWidth(left+(menuRef.current ? menuRef.current.offsetWidth : 0))
         }
     },[left])
 
+    const addSong = (playlist) => {
+        console.log(playlist,song)
+        var keys = Object.keys(playlist.songs)
+        let temp_dict = {...playlist}
+        if(!keys.includes(song.id)){
+            temp_dict.songs[song.id] = song
+            console.log(playlist)
+            addPlaylistSongs({token:token,id:playlist.id,songs:playlist.songs})
+        }
+        else{
+            console.log("current Song already exists in playlist")
+        }
+    }
+
     if(!song) return
+
+    // console.log(playlists)
 
 
 
     return(
-        <>
+        <div >
         <div ref={menuRef} style={{
             display:`${activated?"block":"none"}`,left:`${left}px`,top:`${top}px`}} className="context_menu">
             {likedSongs[song.id]
@@ -99,8 +114,10 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
             left:`${width}px`,
             zIndex:`${style === "closed"?"-99":"22"}`,
             top:`${top}px`}} className="context_menu">
-            <h1>Wasup</h1>
+            {playlists.map((playlist,key)=>{
+                return <p onClick={()=>addSong(playlist)} key={key}>{playlist.name}</p>
+            })}
         </div>
-        </>
+        </div>
     )
 }
