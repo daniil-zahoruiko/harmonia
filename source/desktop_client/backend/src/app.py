@@ -100,12 +100,8 @@ def populate():
 def data():
     data = utils.get_all_songs(connection)
 
-    username = utils.read_cache("cache.txt")
-    print(username)
-    user_id = utils.try_get_user(connection, username)
-    if user_id is None:
-        print("invalid username")
-        return jsonify({"msg": "Server error: user was not found."}), 401
+    user_id = get_jwt_identity()
+
     user_data = utils.get_user(connection,user_id)
     user_playlists = utils.get_user_playlists(connection, user_id)
     artists = utils.get_all_artists(connection)
@@ -160,10 +156,7 @@ def update_liked_songs():
 
     print(username,liked_songs)
 
-    user_id = utils.try_get_user(connection, username)
-    if user_id is None:
-        print("invalid username")
-        return jsonify({"msg": "Server error, try again"}), 401
+    user_id = get_jwt_identity()
 
     utils.like_song(connection, liked_songs,user_id)
 
@@ -178,10 +171,7 @@ def update_favorite_artists():
 
     print(username,fav_artists)
 
-    user_id = utils.try_get_user(connection, username)
-    if user_id is None:
-        print("invalid username")
-        return jsonify({"msg": "Server error, try again"}), 401
+    user_id = get_jwt_identity()
 
     utils.add_favorite_artist(connection, fav_artists,user_id)
 
@@ -196,10 +186,7 @@ def change_data():
     fullName = request.json["full_name"]
     input = request.json["input"]
 
-    user_id = utils.try_get_user(connection, username)
-    if user_id is None:
-        print("invalid username")
-        return jsonify({"msg": "Server error, try again"}), 401
+    user_id = get_jwt_identity()
 
     isTaken = utils.try_get_user(connection,input["username"])
     if isTaken is None:
