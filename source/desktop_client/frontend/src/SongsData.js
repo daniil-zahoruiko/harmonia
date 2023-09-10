@@ -10,7 +10,7 @@ export const SongsContext = createContext(null)
 export default ({children}) =>{
     const {access_token: [token,,]} = useContext(UserContext);
 
-    const {songs,artists,albums,loading,userPlaylists} = FetchSongs({token: token});
+    const {songs,artists,albums,loading} = FetchSongs({token: token});
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentPage,setCurrentPage] = useState("home")
@@ -48,7 +48,6 @@ export default ({children}) =>{
         songData:[currentSongData,setCurrentSongData],
         page:[currentPage,setCurrentPage],
         db:[songs,artists,albums],
-        user:[userPlaylists],
         playlist:[currentPlaylist,setCurrentPlaylist],
         playlistRender:[showedPlaylist,setShowedPlaylist],
         song:[songLoaded,setSongLoaded],

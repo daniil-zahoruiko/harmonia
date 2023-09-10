@@ -102,7 +102,7 @@ export const FavArtists = () =>{
                     <p className='playlist_type'></p>
                     <p className='playlist_name'>Favorite Artists</p>
                     <p className='playlist_description'>List of your favorite artists</p>
-                    <p className='playlist_owner'>{username}</p>
+                    <p className='playlist_owner'>#{username}</p>
                 </div>
             </div>
             <div className='songs_cards'>

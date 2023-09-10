@@ -1,10 +1,15 @@
 import { useState, useContext } from "react"
 import {MdOutlineLibraryMusic} from "react-icons/md"
 import { SongsContext } from "../../SongsData";
+import { UserContext } from "../../UserContext";
 
 
 export const PlaylistLB = ({lbState}) => {
-    const {user:[userPlaylists]} = useContext(SongsContext)
+    const {username:[username,],
+        user_playlists:[playlists,setPlaylists]} = useContext(UserContext)
+
+    const {page:[currentPage,setCurrentPage],
+        playlistRender:[showedPlaylist,setShowedPlaylist]} = useContext(SongsContext)
     const [style, setStyle] = useState("closed")
 
 
@@ -14,6 +19,15 @@ export const PlaylistLB = ({lbState}) => {
         }else{
             setStyle("closed")
         }
+    }
+
+    const openPlaylist = (id) =>{
+        const cur_playlist = playlists.filter(song=>{return song.id === id})[0]
+        console.log(cur_playlist)
+        console.log(showedPlaylist)
+        const data = {owner:"#"+username,type:"private",name:cur_playlist.name,description:cur_playlist.description,songs:[],id:cur_playlist.description}
+        setShowedPlaylist(data)
+        setCurrentPage("playlist-view")
     }
 
 
@@ -35,9 +49,9 @@ export const PlaylistLB = ({lbState}) => {
             </div>
             <div className={"left_bar_playlists_list list_"+style}>
                 {
-                    userPlaylists.map((playlist,key)=>{
+                    playlists.map((playlist,key)=>{
                         return(
-                            <p className={`lb_${lbState}`} key={key}>{playlist.name}</p>
+                            <p onClick={()=>openPlaylist(playlist.id)} className={`lb_${lbState}`} key={key}>{playlist.name}</p>
                         )
                     })}
             </div>

@@ -29,6 +29,21 @@ export const SongResult = ({result,count}) =>{
             if(!isPlaying) setIsPlaying(true)
         }
     }
+
+    const handleClick = (e) => {
+        if (e.type === 'click') {
+          console.log('Left click');
+        } else if (e.type === 'contextmenu') {
+          console.log('Right click');
+          console.log(e.pageX,e.pageY)
+          const contextMenu = document.getElementsByClassName("context_menu")[0]
+          const style = contextMenu.style
+          style.display = "block"
+          style.left = e.pageX+"px"
+          style.top = e.pageY+"px"
+        }
+      };
+
     return(
         <div className="result_div">
             <div className="search_result_image_wrapper">
@@ -36,7 +51,7 @@ export const SongResult = ({result,count}) =>{
                 {isPlaying && result.id === currentSongData.id?<BsPauseFill className='search_play' onClick={()=>songToggle(count)}/>
                 :<BsPlayFill className='search_play' onClick={()=>songToggle(count)}/>}
             </div>
-            <div className="result_data">
+            <div className="result_data" onClick={handleClick} onContextMenu={handleClick}>
                 <p className="result_title">{result.title}</p>
                 <div className="result_data_wrapper">
                     <p className="result_type">Song</p>

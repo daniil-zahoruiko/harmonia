@@ -1,0 +1,6 @@
+.context_menu{
+    position: absolute;
+    background-color: red;
+    color:white;
+    display: none;
+}

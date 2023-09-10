@@ -148,6 +148,35 @@ def playlist_image(id):
     file = utils.get_image_file(connection, id, "playlists")
     return file
 
+@app.route("/api/add_playlist",methods=["POST"])
+# @cross_origin()
+@jwt_required()
+def add_playlist():
+    print(request)
+    name = request.json["name"]
+
+    user_id = get_jwt_identity()
+
+    print(name,user_id)
+
+    try:
+        utils.add_playlist(connection,user_id,name)
+    except:
+        return jsonify({"msg": "Server error"}), 401
+    return jsonify({"msg": "Success"}), 200
+
+
+# @app.route("/api/update_playlist",methods=["POST"])
+# @cross_origin
+# @jwt_required
+# def update_playlist():
+#     id = request.json["id"]
+#     data = request.json["data"]
+
+#     return
+
+
+
 @app.route("/api/like_song",methods=["POST"])
 @cross_origin()
 @jwt_required()

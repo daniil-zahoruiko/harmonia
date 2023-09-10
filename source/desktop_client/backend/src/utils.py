@@ -68,6 +68,18 @@ def get_user_playlists(db, user_id):
 
     return [playlist.get_data() for playlist in playlists]
 
+def update_playlist_songs(db, id, songs):
+    db.update_playlist_songs(id,songs)
+
+def update_playlist_name(db, id, name):
+    db.update_playlist_name(id,name)
+
+def update_playlist_description(db, id, description):
+    db.update_playlist_description(id,description)
+
+def add_playlist(db,user_id,name):
+    db.create_playlist(user_id,name)
+
 def like_song(db,liked_songs,user_id):
     db.update_liked_songs(json.dumps(liked_songs),user_id)
 

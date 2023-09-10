@@ -14,6 +14,7 @@ const GetUserValue = () =>
     const [likedSongs,setLikedSongs] = useState()
     const [favArtists,setFavArtists] = useState()
     const [settings,setSettings] = useState()
+    const [playlists,setPlaylists] = useState()
 
     const user = {
         access_token: [token, setToken, removeToken],
@@ -24,6 +25,7 @@ const GetUserValue = () =>
         password:[password,setPassword],
         liked_songs:[likedSongs,setLikedSongs],
         fav_artists:[favArtists,setFavArtists],
+        user_playlists:[playlists,setPlaylists],
         settings:[settings,setSettings]
     }
 

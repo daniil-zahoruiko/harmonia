@@ -7,7 +7,6 @@ import { UserContext } from "../../UserContext";
 
 
 export const LeftBar = () => {
-    const {user:[userPlaylists]} = useContext(SongsContext)
     const [lbState, setLbState] = useState("full")
     const { page:[,setCurrentPage],
         playlistRender:[,setShowedPlaylist],
@@ -95,7 +94,7 @@ export const LeftBar = () => {
                     </p>
                 </div>
             </div>
-            <PlaylistLB lbState={lbState} userPlaylists={userPlaylists.userPlaylists}/>
+            <PlaylistLB lbState={lbState}/>
         </div>
     )
 }

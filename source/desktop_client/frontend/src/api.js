@@ -7,7 +7,6 @@ const FetchSongs = ({token}) =>{
     const [artists,setArtists] = useState([])
     const [albums,setAlbums] = useState([])
     const [loading,setLoading] = useState(true)
-    const [userPlaylists, setUserPlaylists] = useState([])
     const dataFetchedRef = useRef(false);
     const { access_token: [,,removeToken],
             error: [, setUserError],
@@ -15,6 +14,7 @@ const FetchSongs = ({token}) =>{
             email:[email,setEmail],
             full_name:[fullName,setFullName],
             password:[password,setPassword],
+            user_playlists:[playlists,setPlaylists],
             liked_songs:[likedSongs,setLikedSongs],
             fav_artists:[favArtists,setFavArtists],
             settings:[settings,setSettings] } = useContext(UserContext);
@@ -35,7 +35,7 @@ const FetchSongs = ({token}) =>{
                 setSongs(data.songs)
                 setArtists(data.artists)
                 setAlbums(data.albums)
-                setUserPlaylists(data.playlists)
+                setPlaylists(data.playlists)
                 setUsername(data.user_data.username)
                 setEmail(data.user_data.email)
                 setFullName(data.user_data.full_name)
@@ -65,7 +65,7 @@ const FetchSongs = ({token}) =>{
         fetchData()
     }, []);
 
-    return {songs,artists,albums,loading,userPlaylists}
+    return {songs,artists,albums,loading}
 }
 
 async function FetchImages({data,url,images,setImages, token,removeToken, setUserError})
@@ -170,6 +170,17 @@ async function SignMeUp({username, password,email,full_name})
     });
 }
 
+const LogMeOut = ({removeToken}) =>
+{ 
+    fetch('/logout', {
+        method: "POST"
+    })
+    .then((response) => {
+        if(!response.ok) throw new Error(response.status);
+        else removeToken();
+    });
+}
+
 async function UpdateLikedSongs({token,username,likedSongs}){
     return await fetch("/api/like_song", {
         method: "POST",
@@ -268,15 +279,26 @@ async function updateData({token,username,email,fullName,input}){
     });
 }
 
-const LogMeOut = ({removeToken}) =>
-{ 
-    fetch('/logout', {
-        method: "POST"
-    })
-    .then((response) => {
-        if(!response.ok) throw new Error(response.status);
-        else removeToken();
+async function createPlaylist({token,name}){
+    return await fetch("/api/add_playlist", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "name":name
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
     });
 }
-
-export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut, UpdateLikedSongs, UpdateFavArtists, AddStreams, updateData };
+export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut, UpdateLikedSongs, UpdateFavArtists, AddStreams, updateData,createPlaylist };

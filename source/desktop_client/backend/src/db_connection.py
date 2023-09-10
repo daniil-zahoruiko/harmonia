@@ -153,16 +153,24 @@ class DBConnection:
     def update_image(self, id, data):
         self.update_single_field_by_id("image", data, "songs", id)
 
+    # playlist update
+    def update_playlist_songs(self,id,songs):
+        self.update_single_field_by_id("songs",songs,"playlists",id)
+
+    # liked songs update
     def update_liked_songs(self,liked_songs,user_id):
         self.update_single_field_by_id("likedSongs", liked_songs, "users", user_id)
 
+    # favorite artists update
     def update_favorite_artists(self,fav_artists,user_id):
         self.update_single_field_by_id("favArtists", fav_artists, "users", user_id)
 
+    # song streams update
     def update_streams(self,song_id):
         streams = self.select_by_id("streams","songs",song_id) + 1
         self.update_single_field_by_id("streams",streams,"songs",song_id)
 
+    # user data update
     def change_username(self,user_id,username):
         self.update_single_field_by_id("username", username, "users", user_id)
 
@@ -203,6 +211,13 @@ class DBConnection:
         args = (id, name, genre, data, artist_id, album_id, helpers.get_mp3_length(data))  # if the song is not mp3, will this work?
 
         self.execute_query(query=query, args=args, commit=True)
+
+    def create_playlist(self,id,name):
+        query = "INSERT INTO playlists(id, name,description, userId, songs) VALUES (%s, %s, %s, %s,%s)"
+
+        args = (self.get_table_length("playlists") + 1,name,"",id,json.dumps({}))
+
+        self.execute_query(query=query, args=args,commit=True)
 
     #endregion
 
