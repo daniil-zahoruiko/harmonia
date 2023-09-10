@@ -147,6 +147,13 @@ def album_image(id):
     file = utils.get_image_file(connection, id, "albums")
     return file
 
+@app.route("/api/playlist/cover/<id>/")
+@cross_origin()
+@jwt_required()
+def playlist_image(id):
+    file = utils.get_image_file(connection, id, "playlists")
+    return file
+
 @app.route("/api/like_song",methods=["POST"])
 @cross_origin()
 @jwt_required()
