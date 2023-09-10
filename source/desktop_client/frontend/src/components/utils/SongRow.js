@@ -9,7 +9,7 @@ import { UpdateLikedSongs } from "../../api";
 
 
 
-export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
+export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextMenu}) =>{
     const { db:[,artists,],
         songData:[currentSongData,],
         playing:[isPlaying,],
@@ -48,7 +48,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId}) =>{
       }
 
     return(
-        <tr onMouseEnter={()=>setHover({bool:true,id:id})} onMouseLeave={()=>setHover(false)} className='song_row'>
+        <tr onContextMenu={onContextMenu} onMouseEnter={()=>setHover({bool:true,id:id})} onMouseLeave={()=>setHover(false)} className='song_row'>
             <td>
                 <div className='song_n'>
                     {hover.bool && id===hover.id

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
@@ -8,6 +8,7 @@ import { UserContext } from '../../UserContext';
 import { SongRow } from './SongRow';
 import { SongCard } from './Cards';
 import {AiFillHeart,AiOutlineClockCircle} from "react-icons/ai"
+import { ContextMenu } from './ContextMenu';
 
 
 
@@ -86,6 +87,20 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
         }
     }
 
+    const [activated,setActivated] = useState(false)
+    const [top,setTop] = useState(0)
+    const [left,setLeft] = useState(0)
+    const [contextId,setContextId] = useState(0)
+
+    const handleClick = (e,value) => {
+        console.log(value)
+        console.log('Right click');
+        setTop(e.pageY)
+        setLeft(e.pageX)
+        setActivated(true)
+        setContextId(value)
+    }
+
     return(
         <div>
             <div className="playlist_header">
@@ -137,7 +152,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     <tbody>
                         {songs.map((song,key)=>{
                             return(
-                            <SongRow key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
@@ -150,6 +165,7 @@ export const PlaylistView = ({owner,type, name, description, songs,id}) =>{
                     })}
                 </div>
             }
+            <ContextMenu song={songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>
     )
 }

@@ -1,9 +1,10 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { SongsContext } from "../../SongsData"
 import {BsPlayFill,BsPauseFill} from "react-icons/bs"
 import { LoadedImage } from "../utils/LoadedImage"
+import { ContextMenu } from "../utils/ContextMenu"
 
-export const SongResult = ({result,count}) =>{
+export const SongResult = ({result,count,onClick}) =>{
     const { db:[songs],
         playing:[isPlaying,setIsPlaying],
         playlist:[currentPlaylist,setCurrentPlaylist],
@@ -14,6 +15,10 @@ export const SongResult = ({result,count}) =>{
         cachedSongImages:[images,setImages] } = useContext(SongsContext)
 
     const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
+
+    // const [activated,setActivated] = useState(false)
+    // const [top,setTop] = useState(0)
+    // const [left,setLeft] = useState(0)
 
     const songToggle = (index) =>{
         if(!songLoaded) return
@@ -30,19 +35,16 @@ export const SongResult = ({result,count}) =>{
         }
     }
 
-    const handleClick = (e) => {
-        if (e.type === 'click') {
-          console.log('Left click');
-        } else if (e.type === 'contextmenu') {
-          console.log('Right click');
-          console.log(e.pageX,e.pageY)
-          const contextMenu = document.getElementsByClassName("context_menu")[0]
-          const style = contextMenu.style
-          style.display = "block"
-          style.left = e.pageX+"px"
-          style.top = e.pageY+"px"
-        }
-      };
+    // const handleClick = (e) => {
+    //     if (e.type === 'click') {
+    //       console.log('Left click');
+    //     } else if (e.type === 'contextmenu') {
+    //       console.log('Right click');
+    //       setTop(e.pageY)
+    //       setLeft(e.pageX)
+    //       setActivated(true)
+    //     }
+    //   };
 
     return(
         <div className="result_div">
@@ -51,7 +53,7 @@ export const SongResult = ({result,count}) =>{
                 {isPlaying && result.id === currentSongData.id?<BsPauseFill className='search_play' onClick={()=>songToggle(count)}/>
                 :<BsPlayFill className='search_play' onClick={()=>songToggle(count)}/>}
             </div>
-            <div className="result_data" onClick={handleClick} onContextMenu={handleClick}>
+            <div onContextMenu={onClick} className="result_data">
                 <p className="result_title">{result.title}</p>
                 <div className="result_data_wrapper">
                     <p className="result_type">Song</p>
@@ -62,6 +64,8 @@ export const SongResult = ({result,count}) =>{
         </div>
     )
 }
+
+// ----------------------------------------------------------------
 
 export const ArtistResult = ({result}) =>{
     const { db:[songs],

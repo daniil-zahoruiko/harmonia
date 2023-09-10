@@ -41,7 +41,6 @@ export const MainWindow = () => {
              :currentPage === "library"
              ?<Library/>
              :""}
-            <ContextMenu/>
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { SongsContext } from "../../SongsData"
 import { UserContext } from "../../UserContext";
 import { FetchImages, UpdateFavArtists } from "../../api";
@@ -8,6 +8,7 @@ import "../../styles/playlistview.css"
 import { SongRow } from './SongRow';
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 import { AlbumCard } from "./Cards";
+import { ContextMenu } from "./ContextMenu";
 
 
 
@@ -114,6 +115,20 @@ export const ArtistView = () =>{
         }
     }
 
+    const [activated,setActivated] = useState(false)
+    const [top,setTop] = useState(0)
+    const [left,setLeft] = useState(0)
+    const [contextId,setContextId] = useState(0)
+
+    const handleClick = (e,value) => {
+        console.log(value)
+        console.log('Right click');
+        setTop(e.pageY)
+        setLeft(e.pageX)
+        setActivated(true)
+        setContextId(value)
+    }
+
 
     return(
         <div>
@@ -163,11 +178,12 @@ export const ArtistView = () =>{
                     <tbody>
                         {artist_songs.map((song,key)=>{
                             return(
-                            <SongRow key={key} songs={artist_songs} song={song} songToggle={songToggle} id={key} imageUrl={songImages[song.id]} playlistId={data.id}/>
+                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={artist_songs} song={song} songToggle={songToggle} id={key} imageUrl={songImages[song.id]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
                 </table>
+                <ContextMenu song={artist_songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
                 <h1 className="artist_view_discography">Discography</h1>
                 <div className="songs_cards">
                     {artist_albums.map((album,key)=>{

@@ -5,6 +5,7 @@ import { FetchImages } from "../../api"
 import { UserContext } from "../../UserContext"
 import { SongResult, ArtistResult, AlbumResult } from "./ResultViews"
 import { AlbumCard } from "../utils/Cards"
+import { ContextMenu } from "../utils/ContextMenu"
 
 export const SearchResults = ({results}) => {
     const { displayLoad:[,setAllLoaded],
@@ -18,6 +19,10 @@ export const SearchResults = ({results}) => {
     const firstRender = useRef(true)
 
     // const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
+    const [activated,setActivated] = useState(false)
+    const [top,setTop] = useState(0)
+    const [left,setLeft] = useState(0)
+    const [contextId,setContextId] = useState(0)
 
     const fetch = async (data, url, images, setImages) =>{
         await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages});
@@ -34,6 +39,15 @@ export const SearchResults = ({results}) => {
         }
     },[])
 
+    const handleClick = (e,value) => {
+        console.log(value)
+        console.log('Right click');
+        setTop(e.pageY)
+        setLeft(e.pageX)
+        setActivated(true)
+        setContextId(value)
+    }
+
 
     return (
         <div className="results_list">
@@ -44,8 +58,9 @@ export const SearchResults = ({results}) => {
                 return <AlbumResult result={result} key={key}/>
             })}
             {results["songs"].map((result, key)=>{
-                return <SongResult result={result} count={key} key={key}/>
+                return <SongResult onClick={(e) =>handleClick(e,key)} result={result} count={key} key={key}/>
             })}
+            <ContextMenu song={results["songs"][contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>
     );
 }
