@@ -149,7 +149,7 @@ def playlist_image(id):
     return file
 
 @app.route("/api/add_playlist",methods=["POST"])
-# @cross_origin()
+@cross_origin()
 @jwt_required()
 def add_playlist():
     print(request)
@@ -166,14 +166,23 @@ def add_playlist():
     return jsonify({"msg": "Success"}), 200
 
 
-# @app.route("/api/update_playlist",methods=["POST"])
-# @cross_origin
-# @jwt_required
-# def update_playlist():
-#     id = request.json["id"]
-#     data = request.json["data"]
+@app.route("/api/update_playlist",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def update_playlist():
+    id = request.json["id"]
+    name = request.json["name"]
+    description = request.json["description"]
+    data = request.json["data"]
 
-#     return
+    if name != data["name"]:
+        utils.update_playlist_name(connection,id,data["name"])
+    if description != data["description"]:
+        utils.update_playlist_description(connection,id,data["description"])
+    if data["songs"] != []:
+        utils.update_playlist_songs(id,data["songs"])
+
+    return jsonify({"msg": "Success"}), 200
 
 
 
