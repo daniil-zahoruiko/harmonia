@@ -7,7 +7,7 @@ const FetchSongs = ({token}) =>{
     const [artists,setArtists] = useState([])
     const [albums,setAlbums] = useState([])
     const [loading,setLoading] = useState(true)
-    const [userPlaylists, setUserPlaylist] = useState([])
+    const [userPlaylists, setUserPlaylists] = useState([])
     const dataFetchedRef = useRef(false);
     const { access_token: [,,removeToken],
             error: [, setUserError],
@@ -35,7 +35,7 @@ const FetchSongs = ({token}) =>{
                 setSongs(data.songs)
                 setArtists(data.artists)
                 setAlbums(data.albums)
-                setUserPlaylist(data.playlists)
+                setUserPlaylists(data.playlists)
                 setUsername(data.user_data.username)
                 setEmail(data.user_data.email)
                 setFullName(data.user_data.full_name)

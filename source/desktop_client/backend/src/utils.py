@@ -69,6 +69,11 @@ def get_all_albums(db):
 
     return data
 
+def get_user_playlists(db, user_id):
+    playlists = db.get_playlists_by_user_id(user_id)
+
+    return [playlist.get_data() for playlist in playlists]
+
 def like_song(db,liked_songs,user_id):
     db.update_liked_songs(json.dumps(liked_songs),user_id)
 

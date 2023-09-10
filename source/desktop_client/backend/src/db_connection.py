@@ -3,6 +3,7 @@ import bcrypt
 from song import Song
 from artist import Artist
 from album import Album
+from playlist import Playlist
 from user import User
 from flask_mysqldb import MySQL, MySQLdb
 import json
@@ -72,6 +73,9 @@ class DBConnection:
     def select_all_rows(self, fields, table):
         return self.execute_query(query=f"SELECT {fields} FROM {table}", fetch_func="fetchall")
 
+    def select_all_rows_by_criteria(self, fields, table, criteria_field, criteria_value):
+        return self.execute_query(query=f"SELECT {fields} FROM {table} WHERE {criteria_field}=%s", args=(criteria_value,), fetch_func="fetchall")
+
     def update_single_field_by_id(self, field, value, table, id):
         self.execute_query(query=f"UPDATE {table} SET {field}=%s WHERE id=%s", args=(value, id), commit=True)
 
@@ -121,6 +125,16 @@ class DBConnection:
 
         return Album(album[0], album[1], album[2])
     
+    def get_playlists_by_user_id(self, user_id):
+        playlists = self.select_all_rows_by_criteria("id, name, description, songs", "playlists", "userId", user_id)
+
+        res = []
+
+        for(id, name, description, songs) in playlists:
+            res.append(Playlist(id, name, description, songs))
+
+        return res
+
     def get_user_id_by_username(self, username):
         return self.select_by_unique_field("id", "users", "username", username)
 

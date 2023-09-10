@@ -107,9 +107,10 @@ def data():
         print("invalid username")
         return jsonify({"msg": "Server error: user was not found."}), 401
     user_data = utils.get_user(connection,user_id)
+    user_playlists = utils.get_user_playlists(connection, user_id)
     artists = utils.get_all_artists(connection)
     albums = utils.get_all_albums(connection)
-    print(user_data) 
+    print(user_playlists) 
 
     res = {
         "songs":data,
