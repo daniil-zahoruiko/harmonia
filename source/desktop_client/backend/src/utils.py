@@ -3,12 +3,6 @@ import helpers
 import os
 import json
 
-USER = "root"
-PASSWORD = "1234"
-HOST = "127.0.0.1"
-DATABASE = "main"
-
-
 def establish_db_connection(app):
     return DBConnection(app)
 

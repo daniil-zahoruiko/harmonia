@@ -39,13 +39,7 @@ def create_token():
         print("not authorized")
         return jsonify({"msg": error_msg}), 401
 
-    data = user_data["username"]
-    utils.create_cache(data,"cache.txt")
-
-
     access_token = create_access_token(identity=user_id)
-
-    print("aaa")
 
     return jsonify({"token":access_token})
 
@@ -99,13 +93,13 @@ def populate():
 @jwt_required()
 def data():
     data = utils.get_all_songs(connection)
+    artists = utils.get_all_artists(connection)
+    albums = utils.get_all_albums(connection)
 
     user_id = get_jwt_identity()
 
     user_data = utils.get_user(connection,user_id)
     user_playlists = utils.get_user_playlists(connection, user_id)
-    artists = utils.get_all_artists(connection)
-    albums = utils.get_all_albums(connection)
 
     res = {
         "songs":data,
@@ -198,7 +192,6 @@ def change_data():
     isTaken = utils.try_get_user(connection,input["username"])
     if isTaken is None:
         utils.change_username(connection,user_id,input["username"])
-        utils.create_cache(input["username"],"cache.txt")
     elif username != input["username"]:
         return jsonify({"msg": "Mate. User with such username already exists"}), 401
 
