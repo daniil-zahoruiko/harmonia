@@ -4,6 +4,7 @@ import { SongsContext } from "../../SongsData";
 import {IoChevronBackCircleSharp,IoChevronForwardCircleSharp} from "react-icons/io5"
 import "../../styles/leftbar.css"
 import { UserContext } from "../../UserContext";
+import { getValues } from "../helpers";
 
 
 export const LeftBar = () => {
@@ -34,7 +35,7 @@ export const LeftBar = () => {
     }
 
     const triggerLikedSongs = () =>{
-        const songs = Object.keys(likedSongs).map((key)=>{return likedSongs[key]})
+        const songs =getValues(likedSongs)
         setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:songs,id:"liked_songs"})
         setCurrentPage("playlist-view")
     }
@@ -43,7 +44,7 @@ export const LeftBar = () => {
         setCurrentPage("favorite-artists")
     }
     const triggerRecentlyPlayed = () =>{
-        const songs = Object.keys(recentlyPlayed).map((key)=>{return recentlyPlayed[key]})
+        const songs = getValues(recentlyPlayed)
         console.log(recentlyPlayed)
         setShowedPlaylist({owner:"HARMONIA",type:"private",name:"Recently Played",description:"History of your song today right here...",songs:songs,id:"recent_songs"})
         setCurrentPage("playlist-view")
