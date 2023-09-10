@@ -24,14 +24,7 @@ export const MainWindow = () => {
             :currentPage === "discover"
             ?<Discover/>
             :currentPage === "playlist-view"
-            ?<PlaylistView
-                owner={showedPlaylist.owner}
-                type={showedPlaylist.type}
-                name={showedPlaylist.name}
-                description={showedPlaylist.description}
-                songs = {showedPlaylist.songs}
-                id = {showedPlaylist.id}
-             />
+            ?<PlaylistView/>
              :currentPage === "change-data"
              ?<ChangeData/>
              :currentPage === "artist-view"
