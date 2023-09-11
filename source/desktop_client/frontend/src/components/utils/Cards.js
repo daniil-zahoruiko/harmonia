@@ -17,9 +17,8 @@ export const AlbumCard = ({album}) =>{
     })
 
 
-
     const albumToggle = ()=>{
-        setShowedPlaylist({owner:"",type:"album",name:album.name,description:"",songs:album_songs,id:album.id+"_album"})
+        setShowedPlaylist({owner:album.artist,type:"album",name:album.name,description:"",songs:album_songs,id:album.id+"_album"})
         setCurrentPage("playlist-view")
     }
 

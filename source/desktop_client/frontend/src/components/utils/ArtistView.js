@@ -129,6 +129,12 @@ export const ArtistView = () =>{
         setContextId(value)
     }
 
+    let total_streams = 0
+
+    artist_songs.forEach(song => {
+        total_streams+=parseInt(song.streams)
+    });
+
 
     return(
         <div>
@@ -139,6 +145,7 @@ export const ArtistView = () =>{
                 <div className="playlist_data">
                     <p className='playlist_type'>Artist</p>
                     <p className='playlist_name'>{name}</p>
+                    <p className='playlist_description'>Totals streams: {total_streams}</p>
                 </div>
             </div>
             <div className="playlist_utils">
