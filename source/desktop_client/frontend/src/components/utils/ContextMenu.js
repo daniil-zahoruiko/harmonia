@@ -31,6 +31,7 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
         if(menuRef.current && activated && !menuRef.current.contains(e.target) && listRef.current && activated && !listRef.current.contains(e.target)){
             setActivated(false)
             setStyle("closed")
+            setActiv(false)
         }
     }
 
@@ -60,16 +61,42 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
         }
     }
 
-    const [width,setWidth] = useState(0)
+    const [widthMain,setWidthMain] = useState(0)
+    const [heightMain,setHeightMain] = useState(0)
+    const [widthPl,setWidthPl] = useState(0)
+    const [heightPl,setHeightPl] = useState(0)
+    const [activ,setActiv] = useState(false)
 
 
     useEffect(()=>{
-        if(left + (menuRef.current ? menuRef.current.offsetWidth : 0)+(listRef.current ? listRef.current.offsetWidth : 0)>window.innerWidth){
-            setWidth(left-(listRef.current.offsetWidth))
+        if(left + menuRef.current.offsetWidth+listRef.current.offsetWidth>window.innerWidth){
+            setWidthPl(left-(listRef.current.offsetWidth))
         }else{
-            setWidth(left+(menuRef.current ? menuRef.current.offsetWidth : 0))
+            setWidthPl(left+menuRef.current.offsetWidth)
+        }
+        if(left+menuRef.current.offsetWidth>window.innerWidth){
+            setWidthMain(left-menuRef.current.offsetWidth)
+            setWidthPl(left-(listRef.current.offsetWidth)-menuRef.current.offsetWidth)
+        }
+        else{
+            setWidthMain(left)
+            setWidthPl(left+menuRef.current.offsetWidth)
         }
     },[left])
+
+    useEffect(()=>{
+        if(activated) setActiv(true)
+    },[widthMain,heightMain])
+
+    useEffect(()=>{
+        if(top + menuRef.current.offsetHeight>window.innerHeight){
+            setHeightMain(top-(menuRef.current.offsetHeight))
+            setHeightPl(top-listRef.current.offsetHeight)
+        }else{
+            setHeightMain(top)
+            setHeightPl(top)
+        }
+    },[top])
 
     const addSong = (playlist) => {
         console.log(playlist,song)
@@ -94,7 +121,10 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
     return(
         <div >
         <div ref={menuRef} style={{
-            display:`${activated?"block":"none"}`,left:`${left}px`,top:`${top}px`}} className="context_menu">
+            display:"block",
+            left:`${widthMain}px`,
+            zIndex:`${activ?"22":"-99"}`,
+            top:`${heightMain}px`}} className="context_menu">
             {likedSongs[song.id]
             ?<div onClick={likeSong} className="context_menu_like">
                 <p>Remove from liked songs</p>
@@ -111,11 +141,11 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
         </div>
         <div ref={listRef} style={{
             display:"block",
-            left:`${width}px`,
+            left:`${widthPl}px`,
             zIndex:`${style === "closed"?"-99":"22"}`,
-            top:`${top}px`}} className="context_menu">
+            top:`${heightPl}px`}} className="context_menu">
             {playlists.map((playlist,key)=>{
-                return <p onClick={()=>addSong(playlist)} key={key}>{playlist.name}</p>
+                return <p className="context_playlist" onClick={()=>addSong(playlist)} key={key}>{playlist.name}</p>
             })}
         </div>
         </div>

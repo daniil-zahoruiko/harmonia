@@ -6,6 +6,7 @@ import { UserContext } from '../../UserContext';
 import { AddStreams, FetchImage } from '../../api';
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 import { UpdateLikedSongs } from "../../api";
+import { ContextMenu } from '../utils/ContextMenu';
 
 export const Player = ({audioElem, currentSong})=> {
 
@@ -143,16 +144,30 @@ export const Player = ({audioElem, currentSong})=> {
     FetchImage({url:`/api/song/cover/${currentSongData.id}`, token: token, removeToken: removeToken, setUserError: setUserError}).then((res) => setImageUrl(res));
   }, [currentSongData,songLoaded])
 
+
+  const [activated,setActivated] = useState(false)
+  const [top,setTop] = useState(0)
+  const [left,setLeft] = useState(0)
+  const [contextId,setContextId] = useState(0)
+
+  const handleClick = (e) => {
+      console.log('Right click');
+      setTop(e.pageY)
+      setLeft(e.pageX)
+      setActivated(true)
+  }
+
   return (
     <div className='player_container'>
       <div className='navigation_wrapper'>
-        <div className='player_song_data'>
+        <div className='player_song_data' onContextMenu={(e) =>handleClick(e)}>
           <img className='player_cover' alt={currentSongData.title} src={imageUrl} />
           <div onClick={artistLink} className='player_song_text'>
             <p className='player_title'>{currentSongData.title}</p>
             <p className='player_artist'>{currentSongData.artist}</p>
           </div>
             {likedSongs[currentSongData.id]?<AiFillHeart className='player_like' onClick={likeSong}/>:<AiOutlineHeart className='player_like' onClick={likeSong}/>}
+            <ContextMenu song={currentSongData} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>
         {/*-------------------------------------------------------------
         --------------------------SONG RANGE SLIDER BAR-------------------

@@ -6,6 +6,7 @@
     color:white;
     border:1px solid #44489F;
     padding: 0% 1%;
+    text-align: left;
 }
 .context_menu_like{
     display: flex;
@@ -16,6 +17,9 @@
     min-width:15vw
 }
 .context_menu_like p{
+    font-size: 1vw;
+}
+.context_playlist{
     font-size: 1vw;
 }
 
