@@ -185,7 +185,16 @@ export const ArtistView = () =>{
                     <tbody>
                         {artist_songs.map((song,key)=>{
                             return(
-                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={artist_songs} song={song} songToggle={songToggle} id={key} imageUrl={songImages[song.id]} playlistId={data.id}/>
+                            <SongRow
+                                type="artist"
+                                onContextMenu={(e) =>handleClick(e,key)}
+                                key={key} songs={artist_songs}
+                                song={song}
+                                songToggle={songToggle}
+                                id={key}
+                                imageUrl={songImages[song.id]}
+                                playlistId={data.id}
+                            />
                             )
                         })}
                     </tbody>

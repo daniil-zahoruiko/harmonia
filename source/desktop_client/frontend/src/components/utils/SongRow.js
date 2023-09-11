@@ -9,7 +9,7 @@ import { UpdateLikedSongs } from "../../api";
 
 
 
-export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextMenu}) =>{
+export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextMenu,type}) =>{
     const { db:[,artists,],
         songData:[currentSongData,],
         playing:[isPlaying,],
@@ -81,7 +81,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextM
                     <p>{song.album}</p>
                 </div>
             </td>
-            {currentPage==="artist-view"
+            {type==="artist"
             ?<td>
                 <div className='song_row_streams'>
                     <p>{song.streams}</p>

@@ -17,7 +17,6 @@ export const Discover = () =>{
 
     const changePlaylist = (owner,type,name,description,songs) =>{
         setShowedPlaylist({owner:owner,type:type,name:name,description:description,songs:songs,id:name})
-        setCurrentPage("playlist-view")
     }
 
     return(

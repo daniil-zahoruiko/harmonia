@@ -77,6 +77,7 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
 
 
     useEffect(()=>{
+        if(!menuRef.current || !listRef.current) return
         if(left + menuRef.current.offsetWidth+listRef.current.offsetWidth>window.innerWidth){
             setWidthPl(left-(listRef.current.offsetWidth))
         }else{
@@ -97,6 +98,7 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
     },[widthMain,heightMain])
 
     useEffect(()=>{
+        if(!menuRef.current || !listRef.current) return
         if(top + menuRef.current.offsetHeight>window.innerHeight){
             setHeightMain(top-(menuRef.current.offsetHeight))
             setHeightPl(top-listRef.current.offsetHeight)

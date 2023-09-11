@@ -130,6 +130,8 @@ export const PlaylistView = () =>{
     //     image = images[data.songs[0].id]
     // }
 
+
+
     return(
         <div>
             <div className="playlist_header">

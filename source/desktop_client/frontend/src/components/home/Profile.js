@@ -4,6 +4,7 @@ import { LogMeOut } from "../../api";
 import { SongsContext } from "../../SongsData";
 import {AiOutlineUser} from "react-icons/ai"
 import "../../styles/profile.css"
+import { Link } from "react-router-dom";
 
 
 
@@ -34,7 +35,7 @@ export default () => {
                     <h1 className="profile_name">{fullName}</h1>
                     <p className="profile_username">#{username}</p>
                     <p className="profile_email">{email}</p>
-                    <button className="profile_button" onClick={()=>setCurrentPage("change-data")}>Change data</button>
+                    <Link to="/change" className="profile_button" onClick={()=>setCurrentPage("change-data")}>Change data</Link>
                 </div>
             </div>
             <button className="profile_button profile_log_out" onClick={handleLogOut}>Log Out</button>

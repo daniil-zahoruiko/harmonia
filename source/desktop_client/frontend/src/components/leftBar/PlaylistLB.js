@@ -3,6 +3,7 @@ import {MdOutlineLibraryMusic} from "react-icons/md"
 import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
 import { getValues } from "../helpers";
+import { Link } from "react-router-dom";
 
 
 export const PlaylistLB = ({lbState}) => {
@@ -29,7 +30,7 @@ export const PlaylistLB = ({lbState}) => {
         console.log(showedPlaylist)
         const data = {owner:"#"+username,type:"private",name:cur_playlist.name,description:cur_playlist.description,songs:songs,id:cur_playlist.id}
         setShowedPlaylist(data)
-        setCurrentPage("playlist-view")
+        // setCurrentPage("playlist-view")
     }
 
 
@@ -53,7 +54,7 @@ export const PlaylistLB = ({lbState}) => {
                 {
                     playlists.map((playlist,key)=>{
                         return(
-                            <p onClick={()=>openPlaylist(playlist.id)} className={`lb_${lbState}`} key={key}>{playlist.name}</p>
+                            <Link to="/playlist" onClick={()=>openPlaylist(playlist.id)} className={`lb_playlist lb_${lbState}`} key={key}>{playlist.name}</Link>
                         )
                     })}
             </div>
