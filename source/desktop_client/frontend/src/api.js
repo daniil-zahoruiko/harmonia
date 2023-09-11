@@ -76,8 +76,6 @@ async function FetchImages({data,url,images,setImages, token,removeToken, setUse
     for(let i = 0; i < data.length; i++)
         {
             const id = data[i].id
-            if(!parseInt(id)) continue
-            console.log(id)
 
             if(!images[data[i].id]){
                 response = await FetchImage({url: url + '/' + id, token:token, removeToken: removeToken, setUserError: setUserError})
