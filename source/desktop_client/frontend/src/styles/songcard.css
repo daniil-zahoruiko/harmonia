@@ -7,6 +7,8 @@
     height:19vw;
     position: relative;
     transition: all ease-in-out 0.3s;
+    color:white;
+    text-decoration: none;
 }
 .SongCard:hover{
     background-color: #44499f3a;
@@ -18,12 +20,16 @@
     width:100%;
     margin: 0;
     margin-top: 3%;
+    color:white;
+    text-decoration: none;
 }
 
 .song_card_artist{
     background-color: transparent;
     font-size: 1vw;
     margin: 2% 0;
+    color:white;
+    text-decoration: none;
 }
 .songcard_img{
     height:13vw;

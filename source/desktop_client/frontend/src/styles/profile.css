@@ -49,6 +49,8 @@
     background-color: #44489F;
     color:white;
     font-size: 1vw;
+    text-decoration: none;
+    text-align: center;
 }
 
 .profile_log_out{

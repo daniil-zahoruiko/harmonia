@@ -13,6 +13,8 @@
     height:13vw;
     margin-bottom: 3%;
     transition: all ease-in-out 0.2s;
+    color:white;
+    text-decoration: none;
 }
 .category_card:hover{
     background-color: #44489F;

@@ -11,6 +11,10 @@
     overflow-x: hidden;
     overflow-y: hidden;
 }
+.desktop_nav a{
+    color:white;
+    text-decoration: none;
+}
 
 .desktop_nav ul{
     list-style: none;
