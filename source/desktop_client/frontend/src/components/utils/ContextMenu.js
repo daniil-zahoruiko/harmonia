@@ -4,19 +4,25 @@ import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
 import { UpdateLikedSongs, addPlaylistSongs } from "../../api";
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
+import {MdCancel} from "react-icons/md"
 
+
+const ContextPopUp = ({message,exit}) =>{
+    return(
+        <div className="context_popup">
+            <div className="context_popup_inner">
+                <div className="context_popup_inner_wrapper">
+                    <MdCancel onClick={exit} className="context_exit"/>
+                    <div className="context_popup_message_wrapper">
+                        <h1 className="context_popup_message">{message}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
-
-    const { db:[,artists,],
-        playlist:[currentPlaylist,],
-        playing:[isPlaying, setIsPlaying],
-        songData:[currentSongData,setCurrentSongData],
-        song:[songLoaded, setSongLoaded],
-        toggles:[PlayPause],
-        artistRender:[,setShowedArtist],
-        page:[,setCurrentPage],
-        recentlyPlayed:[recentlyPlayed,setRecentlyPlayed] } = useContext(SongsContext)
 
     const { access_token: [token, , removeToken],
         error: [, setUserError],
@@ -66,6 +72,8 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
     const [widthPl,setWidthPl] = useState(0)
     const [heightPl,setHeightPl] = useState(0)
     const [activ,setActiv] = useState(false)
+    const [exists,setExists] = useState({"bool":false,"playlist":""})
+    const [success,setSuccess] = useState({"bool":false,"playlist":""})
 
 
     useEffect(()=>{
@@ -106,17 +114,21 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
             temp_dict.songs[song.id] = song
             console.log(playlist)
             addPlaylistSongs({token:token,id:playlist.id,songs:playlist.songs})
+            setSuccess({"bool":true,"playlist":playlist.name})
+            setActivated(false)
+            setActiv(false);
+            setStyle("closed")
         }
         else{
             console.log("current Song already exists in playlist")
+            setExists({"bool":true,"playlist":playlist.name})
+            setActivated(false)
+            setActiv(false);
+            setStyle("closed")
         }
     }
 
     if(!song) return
-
-    // console.log(playlists)
-
-
 
     return(
         <div >
@@ -148,6 +160,12 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
                 return <p className="context_playlist" onClick={()=>addSong(playlist)} key={key}>{playlist.name}</p>
             })}
         </div>
+        {exists.bool
+        ?<ContextPopUp exit={()=>setExists({"bool":false,"playlist":{}})} message={`This song already exists in ${exists.playlist}`}/>
+        :""}
+        {success.bool
+        ?<ContextPopUp exit={()=>setSuccess({"bool":false,"playlist":{}})} message={`Added in ${success.playlist}`}/>
+        :""}
         </div>
     )
 }
