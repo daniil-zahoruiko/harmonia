@@ -45,8 +45,10 @@ export const ChangeUserData = () =>
         await updateData({token: token, username: username,email:email,fullName:fullName, input:data})
         .then(() => setError(null))
         .catch((error) => setError(error.message));
-        window.location.reload(false);
-        console.log(data)
+        setUsername(data.username)
+        setEmail(data.email)
+        setFullName(data.fullName)
+        window.location.href = "/profile"
     }
 
     const passwordToggle = () =>{

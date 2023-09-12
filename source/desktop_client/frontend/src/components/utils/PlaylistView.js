@@ -28,6 +28,10 @@ export const PlaylistView = () =>{
             cachedPlaylistImages:[playlistImages,setPlaylistImages],
             playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
 
+    if(showedPlaylist.id===""){
+        window.location.href = "/"
+    }
+
     const {
         access_token: [token,,removeToken],
         error: [,setUserError]
@@ -40,6 +44,8 @@ export const PlaylistView = () =>{
         songs:showedPlaylist.songs,
         id:showedPlaylist.id,
         image:showedPlaylist.image}
+
+
 
     const [result,setResult] = useState(data.songs)
     const [input,setInput] = useState("")

@@ -95,7 +95,7 @@
 }
 
 .playlist_image_label_wrapper:hover .playlist_change_image{
-    opacity: 0.7;
+    opacity: 0.5;
 }
 
 .playlist_image_label_wrapper:hover .playlist_image_upload_svg{
