@@ -70,7 +70,6 @@ const FetchSongs = ({token}) =>{
 
 async function FetchImages({data,url,images,setImages, token,removeToken, setUserError})
 {
-    console.log(data,url)
     let response
     let temp_dict = {}
     for(let i = 0; i < data.length; i++)
@@ -321,7 +320,7 @@ async function updatePlaylist({token,id,name,description,data}){
         })
     }).then(async (response) => {
         const jsonResponse = await response.json();
-        
+
         if(!response.ok)
         {
             if(response.status === 401)

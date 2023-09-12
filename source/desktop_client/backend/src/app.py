@@ -177,10 +177,16 @@ def update_playlist():
     description = request.json["description"]
     data = request.json["data"]
 
-    if name != data["name"]:
-        utils.update_playlist_name(connection,id,data["name"])
-    if description != data["description"]:
-        utils.update_playlist_description(connection,id,data["description"])
+
+    print(id,name,description,data)
+
+    try:
+        if name != data["name"]:
+            utils.update_playlist_name(connection,id,data["name"])
+        if description != data["description"]:
+            utils.update_playlist_description(connection,id,data["description"])
+    except:
+        return jsonify({"msg": "Server Error"}), 401
 
     return jsonify({"msg": "Success"}), 200
 

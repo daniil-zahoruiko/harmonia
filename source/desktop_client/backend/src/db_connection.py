@@ -157,6 +157,12 @@ class DBConnection:
     def update_playlist_songs(self,id,songs):
         self.update_single_field_by_id("songs",songs,"playlists",id)
 
+    def update_playlist_name(self,id,name):
+        self.update_single_field_by_id("name",name,"playlists",id)
+
+    def update_playlist_description(self,id,description):
+        self.update_single_field_by_id("description",description,"playlists",id)
+
     # liked songs update
     def update_liked_songs(self,liked_songs,user_id):
         self.update_single_field_by_id("likedSongs", liked_songs, "users", user_id)
