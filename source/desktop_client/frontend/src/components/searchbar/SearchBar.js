@@ -1,4 +1,4 @@
-import {useContext } from "react"
+import {useContext, useState } from "react"
 import {FaSearch} from "react-icons/fa"
 import {RxCross1} from "react-icons/rx"
 import { SongsContext } from "../../SongsData"
@@ -29,13 +29,13 @@ export const SearchBar = ({setResult, input, setInput}) =>{
                 })],
 
             "songs":[...songs.filter((song)=>{
-                    return value && (song.artist
+                return value && (
+                    (song.artist
                     && (song.artist.toLowerCase().includes(value.toLowerCase()) ||  song.artist.toUpperCase().includes(value.toUpperCase())))
-                }),
-                ...songs.filter((song)=>{
-                    return value && song.title
-                    && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase()))
-        })]})
+                    ||(song.title
+                    && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase())))
+                )
+            })]})
 }
 
     const exit = ()=>{
@@ -45,6 +45,49 @@ export const SearchBar = ({setResult, input, setInput}) =>{
 
     return(
         <div className="input_wrapper">
+        <input
+            id="search_input"
+            placeholder="search..."
+            value={input}
+            onChange={(e)=>handleChange(e.target.value)}
+        />
+        {input
+        ?<RxCross1 color="#44489F" id="search_icon" onClick={exit}/>
+        :<FaSearch color="#44489F" id="search_icon"/>
+        }
+        </div>
+    )
+}
+
+
+export const PlaylistSearchBar = ({songs,input,setInput,setResult}) =>{
+
+
+
+    const handleChange = (value) =>{
+        setInput(value)
+        if(value === "")
+        {
+            setResult(songs);
+            return;
+        }
+        setResult([...songs.filter((song)=>{
+                    return value && (
+                        (song.artist
+                        && (song.artist.toLowerCase().includes(value.toLowerCase()) ||  song.artist.toUpperCase().includes(value.toUpperCase())))
+                        ||(song.title
+                        && (song.title.toLowerCase().includes(value.toLowerCase()) ||  song.title.toUpperCase().includes(value.toUpperCase())))
+                    )
+                })])
+    }
+
+    const exit = ()=>{
+        setInput("")
+        setResult(songs)
+    }
+
+    return(
+        <div className="input_wrapper playlist_input">
         <input
             id="search_input"
             placeholder="search..."

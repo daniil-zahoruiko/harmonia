@@ -11,7 +11,7 @@ import { Home } from "./components/home/Home";
 import Profile from "./components/home/Profile";
 import { Discover } from "./components/home/Discover";
 import { PlaylistView } from "./components/utils/PlaylistView";
-import { ChangeData } from "./components/home/ChangeData";
+import { ChangeUserData } from "./components/home/ChangeData";
 import { ArtistView } from "./components/utils/ArtistView";
 import { FavArtists } from "./components/utils/PlaylistViewCard";
 import { Library } from "./components/home/Library";
@@ -28,7 +28,6 @@ function App() {
 
     useEffect(()=>{
         if(pageRef.current){
-            console.log("huy")
             pageRef.current.scrollTo({ top: 0});
         }
     },[pathname])
@@ -47,7 +46,7 @@ function App() {
                             <Route path="/profile" element={<Profile/>}/>
                             <Route path="/discover" element={<Discover/>}/>
                             <Route path="/playlist" element={<PlaylistView/>}/>
-                            <Route path="/change" element={<ChangeData/>}/>
+                            <Route path="/change" element={<ChangeUserData/>}/>
                             <Route path="/artist" element={<ArtistView/>}/>
                             <Route path="/favorites" element={<FavArtists/>}/>
                             <Route path="/library" element={<Library/>}/>

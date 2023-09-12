@@ -26,11 +26,8 @@ export const PlaylistLB = ({lbState}) => {
     const openPlaylist = (id) =>{
         const cur_playlist = playlists.filter(song=>{return song.id === id})[0]
         const songs = getValues(cur_playlist.songs)
-        console.log(cur_playlist)
-        console.log(showedPlaylist)
         const data = {owner:"#"+username,type:"private",name:cur_playlist.name,description:cur_playlist.description,songs:songs,id:cur_playlist.id}
         setShowedPlaylist(data)
-        // setCurrentPage("playlist-view")
     }
 
 

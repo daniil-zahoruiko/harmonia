@@ -1,15 +1,16 @@
-import { useState, useContext } from "react"
-import { LogMeIn, updateData } from "../../api";
+import { useState, useContext, useRef } from "react"
+import { LogMeIn, updateData, updatePlaylist } from "../../api";
 import { UserContext } from "../../UserContext";
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup';
-import { changeDataSchema } from "../utils/ValidationSchemas";
-import {IoArrowBackCircleOutline} from "react-icons/io5"
+import { changeUserDataSchema,changePlaylistDataSchema } from "../utils/ValidationSchemas";
+import {MdCancel} from "react-icons/md"
 import "../../styles/changedata.css"
 import { SongsContext } from "../../SongsData";
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
+import { getValues } from "../helpers";
 
-export const ChangeData = () =>
+export const ChangeUserData = () =>
 {
     const { access_token: [,,removeToken],
         error: [, setUserError],
@@ -35,7 +36,7 @@ export const ChangeData = () =>
             password:"",
             passwordConfirmation:""
         },
-        resolver:yupResolver(changeDataSchema)
+        resolver:yupResolver(changeUserDataSchema)
     })
 
     async function onSubmit(data)
@@ -122,5 +123,87 @@ export const ChangeData = () =>
                 </div>
             </form>
         </div>
+    );
+}
+
+
+export const ChangePlaylistData = ({setChange}) =>{
+    const { access_token: [token,setToken,removeToken],
+        user_playlists:[playlists,setPlaylists] } = useContext(UserContext);
+
+
+    const {playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
+
+    const [error, setError] = useState(null);
+    const formRef = useRef(null)
+
+
+    const {register, handleSubmit, formState: {errors}} = useForm({
+        defaultValues:{
+            name: showedPlaylist.name,
+            description: showedPlaylist.description,
+        },
+        resolver:yupResolver(changePlaylistDataSchema)
+    })
+
+
+    const closeMenu = (e) =>{
+        if(formRef.current && !formRef.current.contains(e.target)){
+            setChange(false)
+        }
+    }
+
+    document.addEventListener('mousedown',closeMenu)
+
+    async function onSubmit(data)
+    {
+        await updatePlaylist({token:token,id:showedPlaylist.id,name:showedPlaylist.name,description:showedPlaylist.name,data:data})
+        .then(() => {
+            setError(null);
+            var arr = []
+            for(let i=0;i<playlists.length;i++){
+                if(playlists[i].id === showedPlaylist.id){
+                    arr.push({...playlists[i],name : data.name,description:data.description})
+                    setShowedPlaylist({...showedPlaylist,name : data.name,description:data.description})
+                }else{
+                    arr.push(playlists[i])
+            }}
+            setPlaylists(arr)
+        })
+        .catch((error) => setError(error.message));
+        setChange(false)
+    }
+
+
+    return(
+        <div className="change_playlist_outer">
+            <div ref={formRef} className="change_pl_data_wrapper">
+                <MdCancel onClick={()=>setChange(false)} className="change_exit"/>
+                <form className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
+                    <h1>¡Edit details!</h1>
+                    <div className="form_row_playlist">
+                        <p className="playlist_change_label" htmlFor="username">
+                            Name:
+                        </p>
+                        <div className="form_input_wrapper_playlist">
+                            <input className={`signing_input_playlist ${errors.name?"invalid":""}`} id="name" {...register("name")} />
+                        </div>
+                        <p className="form_error">{errors.name?.message}</p>
+                    </div>
+                    <div className="form_row_playlist">
+                        <p className="playlist_change_label" htmlFor="password">
+                            Description:
+                        </p>
+                        <div className="form_input_wrapper_playlist">
+                            <textarea rows="5" className={`signing_input_playlist ${errors.description?"invalid":""}`} id="description" {...register("description")} />
+                        </div>
+                        <p className="form_error">{errors.password?.message}</p>
+                    </div>
+                    {error != null ? <p className="login_error">{error}</p> : null}
+                    <input id="submit_change" type="submit" value="Save"/>
+                </form>
+            </div>
+        </div>
+
     );
 }

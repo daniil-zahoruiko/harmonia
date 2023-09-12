@@ -9,6 +9,9 @@ import { SongRow } from './SongRow';
 import { SongCard } from './Cards';
 import {AiFillHeart,AiOutlineClockCircle} from "react-icons/ai"
 import { ContextMenu } from './ContextMenu';
+import { PlaylistSearchBar } from '../searchbar/SearchBar';
+import {SlOptions} from "react-icons/sl"
+import { ChangePlaylistData } from '../home/ChangeData';
 
 
 
@@ -37,10 +40,15 @@ export const PlaylistView = () =>{
         songs:showedPlaylist.songs,
         id:showedPlaylist.id,
         image:showedPlaylist.image}
-    const isEmpty = data.songs.length === 0
-    console.log(data.songs.length,data.songs)
 
+    const [result,setResult] = useState(data.songs)
+    const [input,setInput] = useState("")
+    const [change,setChange] = useState(false)
     const firstRender = useRef(true)
+
+    const isChangeable = data.id !== "liked_songs" && data.id !=="recent_songs" && !["hip-hop","rock","rap","trap","classical","workout","jazz","indie","country"].includes(data.id)
+    const isEmpty = data.songs.length === 0
+
 
     // const images = FetchImages({songs, token});
     const fetch = async (data, url,images,setImages,last) =>{
@@ -54,8 +62,6 @@ export const PlaylistView = () =>{
         else{
             setAllLoaded(false)
             fetch(data.songs, '/api/song/cover',images,setImages)
-            console.log("nigga")
-            console.log(data)
             fetch([data], '/api/playlist/cover', playlistImages, setPlaylistImages,true)
         }
     },[data.id])
@@ -73,8 +79,6 @@ export const PlaylistView = () =>{
             PlayPause()
         }
     }
-
-    console.log(playlistImages)
 
     // song onclick functionality
     const songToggle = (index) =>{
@@ -101,6 +105,11 @@ export const PlaylistView = () =>{
         }
     }
 
+    useEffect(()=>{
+        setResult(data.songs)
+        setInput("")
+    },[showedPlaylist])
+
     const [activated,setActivated] = useState(false)
     const [top,setTop] = useState(0)
     const [left,setLeft] = useState(0)
@@ -114,23 +123,6 @@ export const PlaylistView = () =>{
         setActivated(true)
         setContextId(value)
     }
-
-    // console.log(playlistImages)
-
-    // let image = isEmpty?"none":data.type==="album"?albumImages[data.id.slice(0,-6)]:playlistImages[data.id]?playlistImages[data.id]:images[data.songs[0].id]
-    // if(isEmpty){
-    //     image = "none"
-    // }
-    // else if(data.type==="album"){
-    //     image = albumImages[data.id.slice(0,-6)]
-    // }
-    // else if(playlistImages[data.id]){
-    //     image = playlistImages[data.id]
-    // }else{
-    //     image = images[data.songs[0].id]
-    // }
-
-
 
     return(
         <div>
@@ -149,11 +141,19 @@ export const PlaylistView = () =>{
                 </div>
             </div>
             <div className="playlist_utils">
-                <div className='play_playlist_wrapper'>
-                    {isPlaying && currentPlaylist.id === data.id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
-                    :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
+                <div className='playlist_utils_section utils_left'>
+                    <div className='play_playlist_wrapper'>
+                        {isPlaying && currentPlaylist.id === data.id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
+                        :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
+                    </div>
+                    {isChangeable
+                    ?<SlOptions onClick={()=>setChange(true)} className='playlist_options'/>
+                    :""}
                 </div>
-                <button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>
+                <div className='playlist_utils_section utils_right'>
+                    <PlaylistSearchBar input={input} setInput={setInput} songs={data.songs} setResult={setResult} />
+                    <button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>
+                </div>
             </div>
             {
                 playlistView==="row"?
@@ -183,7 +183,7 @@ export const PlaylistView = () =>{
                         </tr>
                     </thead>
                     <tbody>
-                        {data.songs.map((song,key)=>{
+                        {result.map((song,key)=>{
                             return(
                             <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={data.songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                             )
@@ -191,13 +191,16 @@ export const PlaylistView = () =>{
                     </tbody>
                 </table>
                 :<div className='songs_cards'>
-                    {data.songs.map((song,key)=>{
+                    {result.map((song,key)=>{
                         return(
                             <SongCard key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                         )
                     })}
                 </div>
             }
+            {change
+            ?<ChangePlaylistData setChange={setChange}/>
+            :""}
             <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>
     )
