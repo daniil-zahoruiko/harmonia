@@ -1,8 +1,9 @@
-import { useContext, useEffect, useRef } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { UserContext } from "../../UserContext"
 import { ArtistCard, SongCard } from "./Cards"; 
 import { SongsContext } from "../../SongsData";
 import { FetchImages } from "../../api";
+import { ContextMenu } from "./ContextMenu";
 
 export const TopPicks = ({songs}) =>
 {
@@ -50,9 +51,26 @@ export const TopPicks = ({songs}) =>
         }
     }
 
-    return songs.map((song,key) =>
-        (<SongCard key={key} song={song} imageUrl={images[song.id]} songToggle={songToggle} id={key} playlistId={data.id}/>)
-    )
+    const [activated,setActivated] = useState(false)
+    const [top,setTop] = useState(0)
+    const [left,setLeft] = useState(0)
+    const [contextId,setContextId] = useState(0)
+
+    const handleClick = (e,value) => {
+        console.log(value)
+        console.log('Right click');
+        setTop(e.pageY)
+        setLeft(e.pageX)
+        setActivated(true)
+        setContextId(value)
+    }
+
+    return(
+    <>
+    {songs.map((song,key) =>
+        (<SongCard onContextMenu={(e) =>handleClick(e,key)} key={key} song={song} imageUrl={images[song.id]} songToggle={songToggle} id={key} playlistId={data.id}/>))}
+        <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
+    </>)
 }
 
 

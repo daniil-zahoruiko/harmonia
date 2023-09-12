@@ -3,8 +3,7 @@ import { LogIn } from "../login/LogIn";
 import { SignUp } from "../login/SignUp";
 import "../../styles/loggedout.css"
 import { UserContext } from "../../UserContext";
-import {MdCancel} from "react-icons/md"
-import {BiError} from "react-icons/bi"
+import { ErrorPopUp } from "../utils/PopUps";
 
 export const LoggedOut = () =>
 {
@@ -38,18 +37,8 @@ export const LoggedOut = () =>
                             </div>
                         </main>
                         {userError
-                        ?<div className="error_popup">
-                        <div className="error_popup_inner">
-                            <div className="error_popup_inner_wrapper">
-                                <MdCancel onClick={()=>setUserError(0)} className="error_exit"/>
-                                <div className="error_popup_message_wrapper">
-                                    <BiError className="error_popup_svg"/>
-                                    <h1 className="error_popup_message">{userError}</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    :""}
+                        ?<ErrorPopUp onClick={()=>setUserError(0)} message={userError}/>
+                        :""}
 
                     </>
 
@@ -59,7 +48,6 @@ export const LoggedOut = () =>
 
     return (
     <>
-        {/* {userError} */}
         {getCurrentDisplay()}
     </>
     );

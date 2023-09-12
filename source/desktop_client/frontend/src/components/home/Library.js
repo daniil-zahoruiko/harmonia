@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CreatePlaylistPopUp } from "../utils/CreatePL"
+import { CreatePlaylistPopUp } from "../utils/PopUps"
 
 
 

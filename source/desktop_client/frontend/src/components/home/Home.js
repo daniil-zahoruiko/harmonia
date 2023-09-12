@@ -1,7 +1,7 @@
 import "../../styles/home.css"
 import { useContext } from "react"
 import { SongsContext } from "../../SongsData";
-import { TopPicks } from "../utils/PlaylistViewCard";
+import { TopPicks } from "../utils/Sections";
 
 
 

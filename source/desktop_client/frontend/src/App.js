@@ -13,10 +13,10 @@ import { Discover } from "./components/home/Discover";
 import { PlaylistView } from "./components/utils/PlaylistView";
 import { ChangeUserData } from "./components/home/ChangeData";
 import { ArtistView } from "./components/utils/ArtistView";
-import { FavArtists } from "./components/utils/PlaylistViewCard";
 import { Library } from "./components/home/Library";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./styles/mainWindow.css"
+import { FavArtists } from "./components/utils/Sections";
 
 
 function App() {
