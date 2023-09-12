@@ -28,6 +28,7 @@ export const PlaylistView = () =>{
             cachedPlaylistImages:[playlistImages,setPlaylistImages],
             playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
 
+
     if(showedPlaylist.id===""){
         window.location.href = "/"
     }
@@ -71,8 +72,6 @@ export const PlaylistView = () =>{
             fetch([data], '/api/playlist/cover', playlistImages, setPlaylistImages,true)
         }
     },[data.id])
-
-    console.log(data,playlistImages)
 
     // play/pause button functionality
     const pauseButtonToggle = () =>{
@@ -201,7 +200,7 @@ export const PlaylistView = () =>{
                 :<div className='songs_cards'>
                     {result.map((song,key)=>{
                         return(
-                            <SongCard key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongCard onContextMenu={(e) =>handleClick(e,key)} key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
                         )
                     })}
                 </div>
@@ -209,7 +208,7 @@ export const PlaylistView = () =>{
             {change
             ?<ChangePlaylistData setChange={setChange}/>
             :""}
-            <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
+            <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left} type={isNaN(data.id)?"":"playlist"}/>
         </div>
     )
 }

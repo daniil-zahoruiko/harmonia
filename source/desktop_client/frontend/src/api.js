@@ -282,7 +282,7 @@ async function updateData({token,username,email,fullName,input}){
     });
 }
 
-async function createPlaylist({token,name}){
+async function createPlaylist({token,name,setPlaylists,setShowedPlaylist,username}){
     return await fetch("/api/add_playlist", {
         method: "POST",
         headers:{
@@ -294,14 +294,19 @@ async function createPlaylist({token,name}){
         })
     }).then(async (response) => {
         const jsonResponse = await response.json();
-        
+
         if(!response.ok)
         {
             if(response.status === 401)
                 throw new Error(jsonResponse.msg);
             else
                 throw new Error('Unknown error ' + response.status);
+        }else{
+            return jsonResponse
         }
+    }).then(async (data)=>{
+        setPlaylists(data)
+        setShowedPlaylist({owner:"#"+username,type:"private",name:data[data.length-1].name,description:"",songs:[],id:data[data.length-1].id})
     });
 }
 

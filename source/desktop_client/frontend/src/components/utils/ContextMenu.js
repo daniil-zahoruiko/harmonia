@@ -4,31 +4,21 @@ import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
 import { UpdateLikedSongs, addPlaylistSongs } from "../../api";
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
-import {MdCancel} from "react-icons/md"
+import { ContextPopUp } from "./PopUps";
+import { getValues } from "../helpers";
 
 
-const ContextPopUp = ({message,exit}) =>{
-    return(
-        <div className="context_popup">
-            <div className="context_popup_inner">
-                <div className="context_popup_inner_wrapper">
-                    <MdCancel onClick={exit} className="context_exit"/>
-                    <div className="context_popup_message_wrapper">
-                        <h1 className="context_popup_message">{message}</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
 
-export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
+
+export const ContextMenu = ({song,top,left,activated,setActivated,type}) =>{
 
     const { access_token: [token, , removeToken],
         error: [, setUserError],
         username:[username,],
         liked_songs:[likedSongs,setLikedSongs],
         user_playlists:[playlists,setPlaylists], } = useContext(UserContext);
+
+    const {playlistRender:[showedPlaylist,setShowedPlaylist]} = useContext(SongsContext)
 
     const menuRef = useRef(null)
     const listRef = useRef(null)
@@ -38,6 +28,9 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
             setActivated(false)
             setStyle("closed")
             setActiv(false)
+            setRemoved("exit")
+            setSuccess({"bool":false,"playlist":""})
+            setExists({"bool":false,"playlist":""})
         }
     }
 
@@ -73,6 +66,7 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
     const [heightPl,setHeightPl] = useState(0)
     const [activ,setActiv] = useState(false)
     const [exists,setExists] = useState({"bool":false,"playlist":""})
+    const [removed,setRemoved] = useState()
     const [success,setSuccess] = useState({"bool":false,"playlist":""})
 
 
@@ -110,11 +104,12 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
 
     const addSong = (playlist) => {
         console.log(playlist,song)
+        console.log(playlist)
         var keys = Object.keys(playlist.songs)
         let temp_dict = {...playlist}
         if(!keys.includes(song.id)){
             temp_dict.songs[song.id] = song
-            console.log(playlist)
+            console.log(temp_dict)
             addPlaylistSongs({token:token,id:playlist.id,songs:playlist.songs})
             setSuccess({"bool":true,"playlist":playlist.name})
             setActivated(false)
@@ -130,44 +125,78 @@ export const ContextMenu = ({song,top,left,activated,setActivated}) =>{
         }
     }
 
+    const removeSong = ()=>{
+        const temp_playlist = [...playlists]
+        const index = temp_playlist.indexOf(playlists.filter((playlist)=>{return playlist.id === showedPlaylist.id})[0])
+        const cur_songs = {...playlists.filter((playlist)=>{return playlist.id === showedPlaylist.id})[0].songs}
+        var keys = Object.keys(cur_songs)
+        if(keys.includes(song.id)){
+            delete cur_songs[song.id]
+            addPlaylistSongs({token:token,id:showedPlaylist.id,songs:cur_songs})
+            temp_playlist[index] = {...temp_playlist[index],songs:cur_songs}
+            setPlaylists(temp_playlist)
+            setShowedPlaylist({...showedPlaylist,songs:getValues(cur_songs)})
+            setRemoved(true)
+            setActivated(false)
+            setActiv(false);
+        }
+        else{
+            setRemoved(false)
+            setActivated(false)
+            setActiv(false);
+        }
+    }
+
     if(!song) return
 
     return(
         <div >
-        <div ref={menuRef} style={{
-            display:"block",
-            left:`${widthMain}px`,
-            zIndex:`${activ?"22":"-99"}`,
-            top:`${heightMain}px`}} className="context_menu">
-            {likedSongs[song.id]
-            ?<div onClick={likeSong} className="context_menu_like">
-                <p>Remove from liked songs</p>
-                <AiFillHeart />
+            <div ref={menuRef} style={{
+                display:"block",
+                left:`${widthMain}px`,
+                zIndex:`${activ?"22":"-99"}`,
+                top:`${heightMain}px`}} className="context_menu">
+                {likedSongs[song.id]
+                ?<div onClick={likeSong} className="context_menu_like">
+                    <p>Remove from liked songs</p>
+                    <AiFillHeart />
+                </div>
+                :<div onClick={likeSong} className="context_menu_like">
+                    <p>Add to liked songs</p>
+                    <AiOutlineHeart />
+                </div>}
+                {type === "playlist"
+                ?<div onClick={removeSong} className="context_menu_like">
+                    <p>Remove from this playlist</p>
+                </div>
+                :<div onClick={togglePLList} className="context_menu_like">
+                    <p>Add to playlist</p>
+                    <div className={`context_playlist_arrow ${style}`}></div>
+                </div>}
+
             </div>
-            :<div onClick={likeSong} className="context_menu_like">
-                <p>Add to liked songs</p>
-                <AiOutlineHeart />
-            </div>}
-            <div onClick={togglePLList} className="context_menu_like">
-                <p>Add to playlist</p>
-                <div className={`context_playlist_arrow ${style}`}></div>
-            </div>
-        </div>
-        <div ref={listRef} style={{
-            display:"block",
-            left:`${widthPl}px`,
-            zIndex:`${style === "closed"?"-99":"22"}`,
-            top:`${heightPl}px`}} className="context_menu">
-            {playlists.map((playlist,key)=>{
-                return <p className="context_playlist" onClick={()=>addSong(playlist)} key={key}>{playlist.name}</p>
-            })}
-        </div>
-        {exists.bool
-        ?<ContextPopUp exit={()=>setExists({"bool":false,"playlist":{}})} message={`This song already exists in ${exists.playlist}`}/>
-        :""}
-        {success.bool
-        ?<ContextPopUp exit={()=>setSuccess({"bool":false,"playlist":{}})} message={`Added in ${success.playlist}`}/>
-        :""}
+            <>
+                <div ref={listRef} style={{
+                    display:"block",
+                    left:`${widthPl}px`,
+                    zIndex:`${style === "closed"?"-99":"22"}`,
+                    top:`${heightPl}px`}}
+                    className="context_menu">
+                    {playlists.map((playlist,key)=>{
+                        return <p className="context_playlist" onClick={()=>addSong(playlist)} key={key}>{playlist.name}</p>
+                    })}
+                </div>
+                {exists.bool
+                ?<ContextPopUp exit={()=>setExists({"bool":false,"playlist":{}})} message={`This song already exists in ${exists.playlist}`}/>
+                :""}
+                {success.bool
+                ?<ContextPopUp exit={()=>setSuccess({"bool":false,"playlist":{}})} message={`Added in ${success.playlist}`}/>
+                :""}
+                {removed===true
+                ?<ContextPopUp exit={()=>setRemoved("exit")} message={`Successfully removed from ${showedPlaylist.name}`}/>
+                :removed===false?<ContextPopUp exit={()=>setRemoved("exit")} message={`This song was already removed ${showedPlaylist.name}`}/>:""}
+            </>
+
         </div>
     )
 }

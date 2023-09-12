@@ -53,7 +53,7 @@ export const ArtistCard = ({artist}) =>{
 }
 
 
-export const SongCard = ({song, imageUrl,songToggle,id,playlistId}) => {
+export const SongCard = ({song, imageUrl,songToggle,id,playlistId,onContextMenu}) => {
 
     const { db:[,artists,],
         songData:[currentSongData,],
@@ -73,7 +73,7 @@ export const SongCard = ({song, imageUrl,songToggle,id,playlistId}) => {
       }
 
     return(
-        <div onMouseEnter={()=>setHover({bool:true,key:song.id})} onMouseLeave={()=>setHover({key:song.id,bool:false})} className="SongCard">
+        <div onContextMenu={onContextMenu} onMouseEnter={()=>setHover({bool:true,key:song.id})} onMouseLeave={()=>setHover({key:song.id,bool:false})} className="SongCard">
             <LoadedImage className={"songcard_img"} alt={song.title} src={imageUrl}/>
             <h1 className="song_card_title">{song.title}</h1>
             <Link to="/artist" onClick={artistLink} className="song_card_artist">{song.artist}</Link>
