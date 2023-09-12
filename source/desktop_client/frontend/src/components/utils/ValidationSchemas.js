@@ -76,7 +76,7 @@ export const logInSchema = yup.object({
 
 
 
-export const changeDataSchema = yup.object({
+export const changeUserDataSchema = yup.object({
     username: yup.string().required("No username provided."),
     password: yup.string()
         .PasswordChange(),
@@ -87,3 +87,8 @@ export const changeDataSchema = yup.object({
         .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "Invalid email"),
     fullName: yup.string().required("No full name provided")
 }).required();
+
+export const changePlaylistDataSchema = yup.object({
+    name:yup.string().required("No name provided."),
+    description:yup.string()
+})
