@@ -83,6 +83,9 @@ def upload_playlist_image(db,id,image):
 def add_playlist(db,user_id,name):
     db.create_playlist(user_id,name)
 
+def get_playlist(db,id):
+    db.get_playlist_by_id(id)
+
 def like_song(db,liked_songs,user_id):
     db.update_liked_songs(json.dumps(liked_songs),user_id)
 

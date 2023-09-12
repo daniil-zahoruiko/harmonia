@@ -124,7 +124,7 @@ class DBConnection:
         album = self.select_by_id("*", "albums", id)
 
         return Album(album[0], album[1], album[2])
-    
+
     def get_playlists_by_user_id(self, user_id):
         playlists = self.select_all_rows_by_criteria("id, name, description, songs", "playlists", "userId", user_id)
 

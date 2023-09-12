@@ -164,9 +164,10 @@ def add_playlist():
 
     try:
         utils.add_playlist(connection,user_id,name)
+        playlists = utils.get_user_playlists(connection, user_id)
     except:
         return jsonify({"msg": "Server error"}), 401
-    return jsonify({"msg": "Success"}), 200
+    return jsonify(playlists)
 
 
 @app.route("/api/update_playlist",methods=["POST"])
