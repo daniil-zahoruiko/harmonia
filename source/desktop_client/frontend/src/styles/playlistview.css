@@ -86,7 +86,9 @@
     display: grid;
     row-gap: 3%;
     grid-template-columns: repeat(5,20%);
-    margin-top: 3%;
+    margin-top: 1%;
+    padding-top: 3%;
+    border-top: 2px solid #44489F ;
 }
 .playlist_song_like{
     color:#44489F;
@@ -198,6 +200,27 @@ tbody tr:hover{
     animation-name:playing;
     animation-duration: 0.8s;
     animation-iteration-count: infinite;
+}
+
+.playlist_utils_section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.utils_left{
+    width:10vw;
+}
+
+.utils_right{
+    width:30vw;
+}
+
+.playlist_options{
+    width: 2vw;
+    height:auto;
+    color:#44489F;
 }
 
 
