@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 import json
 import utils
 import populate_db
+import helpers
 
 # Initializing flask app
 app = Flask(__name__)
@@ -201,6 +202,21 @@ def update_playlist_songs():
 
     try:
         utils.update_playlist_songs(connection,id,songs)
+    except:
+        return jsonify({"msg": "Server Error"}), 401
+    return jsonify({"msg": "Success"}), 200
+
+
+@app.route("/change_playlist_image/<id>",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def change_playlist_image(id):
+    data = request.files["file"]
+
+    image_bytes = helpers.read_file_bytes(data)
+
+    try:
+        utils.upload_playlist_image(connection,id,image_bytes)
     except:
         return jsonify({"msg": "Server Error"}), 401
     return jsonify({"msg": "Success"}), 200

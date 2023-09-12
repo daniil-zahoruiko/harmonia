@@ -1,5 +1,5 @@
 import { useState, useContext, useRef } from "react"
-import { LogMeIn, updateData, updatePlaylist } from "../../api";
+import { LogMeIn, changePlaylistImage, updateData, updatePlaylist } from "../../api";
 import { UserContext } from "../../UserContext";
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -9,6 +9,7 @@ import "../../styles/changedata.css"
 import { SongsContext } from "../../SongsData";
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
 import { getValues } from "../helpers";
+import {BsFillCloudUploadFill} from "react-icons/bs"
 
 export const ChangeUserData = () =>
 {
@@ -132,9 +133,12 @@ export const ChangePlaylistData = ({setChange}) =>{
         user_playlists:[playlists,setPlaylists] } = useContext(UserContext);
 
 
-    const {playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
+    const {playlistRender:[showedPlaylist,setShowedPlaylist],
+        cachedPlaylistImages:[playlistImages,setPlaylistImages] } = useContext(SongsContext)
 
     const [error, setError] = useState(null);
+    const [imageUrl,setImageUrl] = useState(playlistImages[showedPlaylist.id])
+    const [image,setImage] = useState()
     const formRef = useRef(null)
 
 
@@ -142,6 +146,7 @@ export const ChangePlaylistData = ({setChange}) =>{
         defaultValues:{
             name: showedPlaylist.name,
             description: showedPlaylist.description,
+            file:""
         },
         resolver:yupResolver(changePlaylistDataSchema)
     })
@@ -172,6 +177,15 @@ export const ChangePlaylistData = ({setChange}) =>{
         })
         .catch((error) => setError(error.message));
         setChange(false)
+        if(image){
+            console.log("bam")
+            const newData = new FormData()
+            newData.append('file',image)
+            await changePlaylistImage({token:token,id:showedPlaylist.id,image:newData})
+            let temp_dict = {...playlistImages}
+            temp_dict[showedPlaylist.id] = imageUrl
+            setPlaylistImages(temp_dict)
+        }
     }
 
 
@@ -179,29 +193,46 @@ export const ChangePlaylistData = ({setChange}) =>{
         <div className="change_playlist_outer">
             <div ref={formRef} className="change_pl_data_wrapper">
                 <MdCancel onClick={()=>setChange(false)} className="change_exit"/>
-                <form className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
-                    <h1>¡Edit details!</h1>
-                    <div className="form_row_playlist">
-                        <p className="playlist_change_label" htmlFor="username">
-                            Name:
-                        </p>
-                        <div className="form_input_wrapper_playlist">
-                            <input className={`signing_input_playlist ${errors.name?"invalid":""}`} id="name" {...register("name")} />
-                        </div>
-                        <p className="form_error">{errors.name?.message}</p>
+                <h1>¡Edit details!</h1>
+                <div className="change_playlist_inputs">
+                    <div>
+                        <label htmlFor="file-upload">
+                            <div className="playlist_image_label_wrapper">
+                                <img className="playlist_change_image" src={imageUrl} />
+                                <BsFillCloudUploadFill className="playlist_image_upload_svg"/>
+                            </div>
+                        </label>
+                        <input onChange={(e)=>{
+                            setImageUrl(URL.createObjectURL(e.target.files[0]));
+                            setImage(e.target.files[0])
+                            }}
+                            type="file"
+                            id="file-upload"
+                        />
                     </div>
-                    <div className="form_row_playlist">
-                        <p className="playlist_change_label" htmlFor="password">
-                            Description:
-                        </p>
-                        <div className="form_input_wrapper_playlist">
-                            <textarea rows="5" className={`signing_input_playlist ${errors.description?"invalid":""}`} id="description" {...register("description")} />
+                    <form className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="form_row_playlist">
+                            <p className="playlist_change_label" htmlFor="username">
+                                Name:
+                            </p>
+                            <div className="form_input_wrapper_playlist">
+                                <input className={`signing_input_playlist ${errors.name?"invalid":""}`} id="name" {...register("name")} />
+                            </div>
+                            <p className="form_error">{errors.name?.message}</p>
                         </div>
-                        <p className="form_error">{errors.password?.message}</p>
-                    </div>
-                    {error != null ? <p className="login_error">{error}</p> : null}
-                    <input id="submit_change" type="submit" value="Save"/>
-                </form>
+                        <div className="form_row_playlist">
+                            <p className="playlist_change_label" htmlFor="password">
+                                Description:
+                            </p>
+                            <div className="form_input_wrapper_playlist">
+                                <textarea rows="5" className={`signing_input_playlist ${errors.description?"invalid":""}`} id="description" {...register("description")} />
+                            </div>
+                            <p className="form_error">{errors.password?.message}</p>
+                        </div>
+                        {error != null ? <p className="login_error">{error}</p> : null}
+                        <input id="submit_change" type="submit" value="Save"/>
+                    </form>
+                </div>
             </div>
         </div>
 

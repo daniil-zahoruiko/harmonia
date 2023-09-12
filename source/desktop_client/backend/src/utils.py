@@ -77,6 +77,9 @@ def update_playlist_name(db, id, name):
 def update_playlist_description(db, id, description):
     db.update_playlist_description(id,description)
 
+def upload_playlist_image(db,id,image):
+    db.update_playlist_image(id,image)
+
 def add_playlist(db,user_id,name):
     db.create_playlist(user_id,name)
 

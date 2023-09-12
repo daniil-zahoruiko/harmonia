@@ -15,6 +15,11 @@ def read_file(filename):
     print("The file does not exists")
     return None
 
+def read_file_bytes(file):
+    file_bytes = file.read()
+
+    return BytesIO(file_bytes).read()
+
 def get_mp3_length(blob):
     data = BytesIO(blob)
 

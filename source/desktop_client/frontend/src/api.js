@@ -354,4 +354,37 @@ async function addPlaylistSongs({token,id,songs}){
         }
     });
 }
-export { FetchSongs, FetchImages, FetchImage, LogMeIn, SignMeUp, LogMeOut, UpdateLikedSongs, UpdateFavArtists, AddStreams, updateData,createPlaylist,updatePlaylist,addPlaylistSongs };
+
+async function changePlaylistImage({token,id,image}){
+    return await fetch(`/change_playlist_image/${id}`, {
+        method: "POST",
+        headers:{
+            'Authorization': 'Bearer ' + token
+        },
+        body: image
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+export { FetchSongs,
+        FetchImages,
+        FetchImage,
+        LogMeIn,
+        SignMeUp,
+        LogMeOut,
+        UpdateLikedSongs,
+        UpdateFavArtists,
+        AddStreams,
+        updateData,
+        createPlaylist,
+        updatePlaylist,
+        addPlaylistSongs,
+        changePlaylistImage };

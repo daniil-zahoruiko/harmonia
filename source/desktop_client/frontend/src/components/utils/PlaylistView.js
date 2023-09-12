@@ -66,6 +66,8 @@ export const PlaylistView = () =>{
         }
     },[data.id])
 
+    console.log(data,playlistImages)
+
     // play/pause button functionality
     const pauseButtonToggle = () =>{
         if(isEmpty) return
