@@ -224,6 +224,16 @@ class DBConnection:
 
         self.execute_query(query=query, args=args, commit=True)
 
+    def create_artist(self, name, image,user_id):
+        id = self.get_last_id("artists") + 1
+        query = "INSERT INTO artists(id, name, image) VALUES (%s, %s, %s)"
+
+        args = (id, name, image)
+
+        self.execute_query(query=query, args=args, commit=True)
+        self.update_single_field_by_id("artistId",id,"users",user_id)
+        return id
+
     def create_playlist(self,id,name):
         query = "INSERT INTO playlists(id, name,description, userId, songs) VALUES (%s, %s, %s, %s,%s)"
 

@@ -17,7 +17,8 @@ const FetchSongs = ({token}) =>{
             user_playlists:[playlists,setPlaylists],
             liked_songs:[likedSongs,setLikedSongs],
             fav_artists:[favArtists,setFavArtists],
-            settings:[settings,setSettings] } = useContext(UserContext);
+            settings:[settings,setSettings],
+            user_artist_id:[userArtistId,setUserArtistId] } = useContext(UserContext);
 
     const fetchData = () =>{
         fetch("/api",{
@@ -43,6 +44,7 @@ const FetchSongs = ({token}) =>{
                 setLikedSongs(data.user_data.liked_songs.likedSongs)
                 setFavArtists(data.user_data.fav_artists.favArtists)
                 setSettings(data.user_data.settings)
+                setUserArtistId(data.user_data.artistId)
                 setLoading(false)
                 console.log(data)
         }).catch((error) =>
@@ -401,6 +403,50 @@ async function changePlaylistImage({token,id,image}){
         }
     });
 }
+
+
+async function createArtist({token,data,setUserArtistId}){
+    return await fetch(`/create_artist`, {
+        headers:{
+            'Authorization': 'Bearer ' + token
+        },
+        body: data
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    }).then(async (data)=>{
+        // setUserArtistId(data)
+        console.log(data)
+    });
+}
+
+async function addSong({token,data}){
+    return await fetch("/add_song", {
+        method: "POST",
+        headers:{
+            'Authorization': 'Bearer ' + token
+        },
+        body: data
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+
+
 export { FetchSongs,
         FetchImages,
         FetchImage,
@@ -415,4 +461,6 @@ export { FetchSongs,
         deletePlaylist,
         updatePlaylist,
         addPlaylistSongs,
-        changePlaylistImage };
+        changePlaylistImage,
+        createArtist,
+        addSong };

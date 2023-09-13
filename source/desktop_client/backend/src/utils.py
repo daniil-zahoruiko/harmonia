@@ -124,6 +124,11 @@ def read_cache(filename):
     new_path = os.path.join(os.getcwd(),"cache",filename)
     return helpers.read_file(new_path)
 
+def create_artist(db,name,image,user_id):
+    id = db.create_artist(name,image,user_id)
+    print(id)
+    return id
+
 def delete_cache(filename):
     new_path = os.path.join(os.getcwd(),"cache",filename)
     return helpers.delete_file(new_path)

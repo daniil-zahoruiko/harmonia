@@ -310,6 +310,49 @@ def update_streams():
         return jsonify({"msg": "Server Error"}), 401
     return jsonify({"msg": "Success"}), 200
 
+@app.route("/create_artist")
+@cross_origin()
+@jwt_required()
+def create_artist():
+    user_id = get_jwt_identity()
+
+    name = request.form.get("name")
+    data = request.files.get("image")
+
+    image_bytes = helpers.read_file_bytes(data)
+
+    try:
+        ans = utils.create_artist(connection,name,image_bytes,user_id)
+        return jsonify(ans)
+    except:
+        return jsonify("PENIS")
+
+
+@app.route("/add_song",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def add_song():
+    # user_id = get_jwt_identity()
+
+    # data = request.files["file"]
+    title = request.form.get("title")
+    genre = request.form.get("genre")
+
+    image = request.files.get("image")
+    audio = request.files.get("audio")
+
+    print(title,genre,image,audio)
+
+    # image_bytes = helpers.read_file_bytes(data)
+
+    # try:
+    #     utils.create_artist(connection,name,image_bytes)
+    # except:
+    #     return jsonify({"msg": "Server Error"}), 401
+    return jsonify({"msg": "Success"}), 200
+
+
+
 # Running app
 if __name__ == '__main__':
     app.run(debug=True)

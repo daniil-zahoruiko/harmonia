@@ -17,6 +17,7 @@ import { Library } from "./components/home/Library";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./styles/mainWindow.css"
 import { FollowedArtists } from "./components/utils/FollowedArtists";
+import { Settings } from "./components/home/Settings";
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
                             <Route path="/artist" element={<ArtistView/>}/>
                             <Route path="/favorites" element={<FollowedArtists/>}/>
                             <Route path="/library" element={<Library/>}/>
+                            <Route path="/settings" element={<Settings/>}/>
                         </Routes>
                     </div>
                     <Audio/>
