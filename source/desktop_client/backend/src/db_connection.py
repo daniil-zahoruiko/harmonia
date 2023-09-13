@@ -78,6 +78,9 @@ class DBConnection:
 
     def update_single_field_by_id(self, field, value, table, id):
         self.execute_query(query=f"UPDATE {table} SET {field}=%s WHERE id=%s", args=(value, id), commit=True)
+    
+    def delete_single_row_by_id(self,table,id):
+        self.execute_query(query=f"DELETE FROM {table} WHERE id={id}",commit=True)
 
     #endregion
         
@@ -229,6 +232,13 @@ class DBConnection:
         args = (self.get_last_id("playlists") + 1,name,"",id,json.dumps({}))
 
         self.execute_query(query=query, args=args,commit=True)
+
+    #endregion
+
+    #region Delete data
+
+    def remove_playlist(self,id):
+        self.delete_single_row_by_id("playlists",id)
 
     #endregion
 

@@ -310,6 +310,28 @@ async function createPlaylist({token,name,setPlaylists,setShowedPlaylist,usernam
     });
 }
 
+async function deletePlaylist({token,id,setPlaylists}){
+    return await fetch(`/delete_playlist/${id}`, {
+        headers:{
+            'Authorization': 'Bearer ' + token
+        }
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }else{
+            return jsonResponse
+        }
+    }).then(async (data)=>{
+        setPlaylists(data)
+    });
+}
+
 async function updatePlaylist({token,id,name,description,data}){
     return await fetch("/api/update_playlist", {
         method: "POST",
@@ -390,6 +412,7 @@ export { FetchSongs,
         AddStreams,
         updateData,
         createPlaylist,
+        deletePlaylist,
         updatePlaylist,
         addPlaylistSongs,
         changePlaylistImage };

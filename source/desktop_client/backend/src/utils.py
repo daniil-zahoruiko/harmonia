@@ -127,3 +127,6 @@ def read_cache(filename):
 def delete_cache(filename):
     new_path = os.path.join(os.getcwd(),"cache",filename)
     return helpers.delete_file(new_path)
+
+def delete_playlist(db,id):
+    db.remove_playlist(id)

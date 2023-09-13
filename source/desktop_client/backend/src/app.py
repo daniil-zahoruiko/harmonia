@@ -169,6 +169,18 @@ def add_playlist():
         return jsonify({"msg": "Server error"}), 401
     return jsonify(playlists)
 
+@app.route("/delete_playlist/<id>")
+@cross_origin()
+@jwt_required()
+def delete_playlist(id):
+    user_id = get_jwt_identity()
+    try:
+        utils.delete_playlist(connection,id)
+        playlists = utils.get_user_playlists(connection, user_id)
+    except:
+        return jsonify({"msg":"Server error"}),401
+    return jsonify(playlists)
+
 
 @app.route("/api/update_playlist",methods=["POST"])
 @cross_origin()
