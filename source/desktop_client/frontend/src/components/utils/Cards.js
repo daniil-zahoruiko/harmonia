@@ -4,6 +4,9 @@ import { LoadedImage } from "./LoadedImage"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { SongsContext } from "../../SongsData";
 import { Link } from "react-router-dom";
+import { getValues } from "../helpers";
+import { UserContext } from "../../UserContext";
+import {MdAudiotrack} from "react-icons/md"
 
 
 export const AlbumCard = ({album}) =>{
@@ -26,6 +29,30 @@ export const AlbumCard = ({album}) =>{
         <Link to="/playlist" onClick={albumToggle} className="SongCard">
             <LoadedImage className={"songcard_img"} alt={album.name} src={albumImages[album.id]}/>
             <h1 className="song_card_title">{album.name}</h1>
+        </Link>
+    )
+}
+
+export const PlaylistCard = ({playlist}) =>{
+    const { db:[songs],
+            page:[,setCurrentPage],
+            playlistRender:[,setShowedPlaylist],
+            cachedPlaylistImages:[playlistImages,] } = useContext(SongsContext)
+
+    const {
+        access_token: [token,,removeToken],
+        error: [,setUserError],
+        username:[username]
+    } = useContext(UserContext);
+
+    const playlistsToggle = ()=>{
+        setShowedPlaylist({owner:username,name:playlist.name,description:"",songs:getValues(playlist.songs),id:playlist.id})
+    }
+
+    return(
+        <Link to="/playlist" onClick={playlistsToggle} className="SongCard">
+            <LoadedImage className={"songcard_img"} alt={playlist.name} src={playlistImages[playlist.id]}/>
+            <h1 className="song_card_title">{playlist.name}</h1>
         </Link>
     )
 }

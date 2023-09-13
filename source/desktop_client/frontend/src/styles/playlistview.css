@@ -88,7 +88,6 @@
     grid-template-columns: repeat(5,20%);
     margin-top: 1%;
     padding-top: 3%;
-    border-top: 2px solid #44489F ;
 }
 .playlist_song_like{
     color:#44489F;
@@ -221,6 +220,17 @@ tbody tr:hover{
     width: 2vw;
     height:auto;
     color:#44489F;
+}
+
+.no_content_playlist{
+    width:10vw;
+    height:10vw;
+    margin: auto;
+    position: relative;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    color:white;
 }
 
 

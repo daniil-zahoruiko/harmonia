@@ -3,7 +3,7 @@ import { SongsContext } from "../../SongsData"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
 import "../../styles/playlistview.css"
-import { FetchImages } from '../../api';
+import { FetchImages, deletePlaylist } from '../../api';
 import { UserContext } from '../../UserContext';
 import { SongRow } from './SongRow';
 import { SongCard } from './Cards';
@@ -12,6 +12,7 @@ import { ContextMenu } from './ContextMenu';
 import { PlaylistSearchBar } from '../searchbar/SearchBar';
 import {SlOptions} from "react-icons/sl"
 import { ChangePlaylistData } from '../home/ChangeData';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -35,7 +36,8 @@ export const PlaylistView = () =>{
 
     const {
         access_token: [token,,removeToken],
-        error: [,setUserError]
+        error: [,setUserError],
+        user_playlists:[playlists,setPlaylists]
     } = useContext(UserContext);
 
     const data = {owner:showedPlaylist.owner,
@@ -52,6 +54,7 @@ export const PlaylistView = () =>{
     const [input,setInput] = useState("")
     const [change,setChange] = useState(false)
     const firstRender = useRef(true)
+    const navigate = useNavigate()
 
     const isEmpty = data.songs.length === 0
 
@@ -117,6 +120,7 @@ export const PlaylistView = () =>{
     },[showedPlaylist])
 
     const [activated,setActivated] = useState(false)
+    const [activateModify,setActivateModify] = useState(false)
     const [top,setTop] = useState(0)
     const [left,setLeft] = useState(0)
     const [contextId,setContextId] = useState(0)
@@ -129,6 +133,21 @@ export const PlaylistView = () =>{
         setActivated(true)
         setContextId(value)
     }
+
+    const handleModify = (e,value) => {
+        console.log(value)
+        console.log('Left click');
+        setTop(e.pageY)
+        setLeft(e.pageX)
+        setActivateModify(true)
+        // setContextId(value)
+    }
+
+    const removePlaylist = async () =>{
+        await deletePlaylist({token:token,id:showedPlaylist.id,setPlaylists:setPlaylists})
+        navigate("/")
+    }
+
 
     return(
         <div>
@@ -153,7 +172,7 @@ export const PlaylistView = () =>{
                         :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                     </div>
                     {!isNaN(data.id)
-                    ?<SlOptions onClick={()=>setChange(true)} className='playlist_options'/>
+                    ?<SlOptions onClick={handleModify} className='playlist_options'/>
                     :""}
                 </div>
                 <div className='playlist_utils_section utils_right'>
@@ -207,6 +226,7 @@ export const PlaylistView = () =>{
             {change
             ?<ChangePlaylistData setChange={setChange}/>
             :""}
+            <ContextMenu song={data.songs[0]} activated={activateModify} setActivated={setActivateModify} top={top} left={left} type={"modify"} modify={()=>{setChange(true)}} remove={removePlaylist}/>
             <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left} type={isNaN(data.id)?"":"playlist"}/>
         </div>
     )

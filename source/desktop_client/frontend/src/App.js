@@ -16,7 +16,7 @@ import { ArtistView } from "./components/utils/ArtistView";
 import { Library } from "./components/home/Library";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./styles/mainWindow.css"
-import { FavArtists } from "./components/utils/Sections";
+import { FollowedArtists } from "./components/utils/FollowedArtists";
 
 
 function App() {
@@ -48,7 +48,7 @@ function App() {
                             <Route path="/playlist" element={<PlaylistView/>}/>
                             <Route path="/change" element={<ChangeUserData/>}/>
                             <Route path="/artist" element={<ArtistView/>}/>
-                            <Route path="/favorites" element={<FavArtists/>}/>
+                            <Route path="/favorites" element={<FollowedArtists/>}/>
                             <Route path="/library" element={<Library/>}/>
                         </Routes>
                     </div>

@@ -36,14 +36,14 @@ export const PlaylistLB = ({lbState}) => {
     return(
         <div className="left_bar_playlists_wrapper">
             <div className="left_bar_topic_wrapper playlist_left_bar">
-                <div className="left_bar_playlists_text_header">
+                <Link to="/library" className="left_bar_playlists_text_header">
                     <div>
                         <MdOutlineLibraryMusic className="lb_svg"/>
                     </div>
                     <div className={"left_bar_topic_text lb_"+lbState}>
                         <p className="left_bar_playlist_text">Playlist</p>
                     </div>
-                </div>
+                </Link>
                 <div className={"lb_playlist_actions lb_"+lbState}>
                     <p onClick={()=>{setActivate(true)}}>+</p>
                     <div onClick={togglePlaylist} className={`playlist_arrow ${style}`}></div>
