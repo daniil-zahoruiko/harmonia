@@ -9,8 +9,6 @@ export const Library = () =>{
 
     return(
         <div>
-            <button onClick={()=>setActivate(true)}>Create playlist</button>
-            <CreatePlaylistPopUp activated={activate} />
         </div>
     )
 }

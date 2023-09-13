@@ -53,7 +53,6 @@ export const PlaylistView = () =>{
     const [change,setChange] = useState(false)
     const firstRender = useRef(true)
 
-    const isChangeable = data.id !== "liked_songs" && data.id !=="recent_songs" && !["hip-hop","rock","rap","trap","classical","workout","jazz","indie","country"].includes(data.id)
     const isEmpty = data.songs.length === 0
 
 
@@ -153,7 +152,7 @@ export const PlaylistView = () =>{
                         {isPlaying && currentPlaylist.id === data.id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                         :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                     </div>
-                    {isChangeable
+                    {!isNaN(data.id)
                     ?<SlOptions onClick={()=>setChange(true)} className='playlist_options'/>
                     :""}
                 </div>

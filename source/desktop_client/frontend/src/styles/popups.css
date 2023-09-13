@@ -1,0 +1,67 @@
+.create_playlist_inner{
+    position: relative;
+    width:20vw;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    background-color: black;
+    padding: 2%;
+    border-radius: 16px;
+    z-index: 99;
+}
+
+.create_playlist_popup{
+    position: absolute;
+    left:0%;
+    top:0%;
+    width:100%;
+    height:100%;
+    background-color: #44499f79;
+}
+
+.create_playlist_inner h1{
+    text-align: center;
+    font-size: 2vw;
+}
+
+
+.create_playlist_inner form{
+    display: flex;
+    flex-direction:column;
+    width:80%;
+    margin: auto;
+    text-align: left;
+}
+
+.playlist_form_row{
+    width:100%;
+}
+
+.playlist_form_row input{
+    width:100%;
+    border-radius: 16px;
+    padding: 3%;
+    border: none;
+    margin-top: 2%;
+}
+.playlist_form_row input:focus{
+    outline: 3px solid #44499f;
+}
+
+.create_playlist_inner #submit{
+    background-color: #44499f;
+    color:white;
+    padding: 2% 4%;
+    font-size: 1.5vw;
+    margin: auto;
+    margin-top: 7%;
+}
+
+.create_playlist_exit{
+    position: absolute;
+    left:90%;
+    top:5%;
+    width:2vw;
+    height:auto;
+    color:grey;
+}

@@ -5,11 +5,12 @@ import { SongsContext } from "../../SongsData"
 import { useNavigate } from "react-router-dom";
 import {MdCancel} from "react-icons/md"
 import {BiError} from "react-icons/bi"
+import "../../styles/popups.css"
 
 
 
 
-export const CreatePlaylistPopUp = ({activated}) =>{
+export const CreatePlaylistPopUp = ({setActivate}) =>{
 
     const [name,setName] = useState("")
     const navigate = useNavigate();
@@ -19,18 +20,42 @@ export const CreatePlaylistPopUp = ({activated}) =>{
         user_playlists:[playlists,setPlaylists],
     username:[username,]} = useContext(UserContext)
 
+    const [error,setError] = useState("")
+
     const submit = async (e) =>{
         e.preventDefault()
+        console.log(name)
+        if(!name){
+            setError("Name cannot be empty")
+            return
+        }
         await createPlaylist({token:token,name:name,setPlaylists:setPlaylists,setShowedPlaylist:setShowedPlaylist,username:username})
+        setActivate(false)
         navigate("/playlist");
     }
 
+    const validator = (e) =>{
+        setName(e.target.value)
+        if(e.target.value){
+            setError("")
+        }
+    }
+
     return(
-        <form onSubmit={submit} style={{display:`${activated?"block":"none"}`}}>
-            <label htmlFor="Name"></label>
-            <input onChange={(e)=>setName(e.target.value)} value={name} id="Name" placeholder="Name" />
-            <input id="Name" type="submit" placeholder="Name" />
-        </form>
+        <div className="create_playlist_popup">
+            <div className="create_playlist_inner">
+                <MdCancel onClick={()=>setActivate(false)} className="create_playlist_exit"/>
+                <form onSubmit={submit}>
+                    <h1>¡Create playlist!</h1>
+                    <label htmlFor="Name">Name</label>
+                    <div className="playlist_form_row">
+                        <input className={`${error?"invalid":""}`} onChange={(e)=>validator(e)} value={name} id="Name" placeholder="Name" />
+                        <p className="form_error">{error}</p>
+                    </div>
+                    <input className="create_submit_button" id="submit" type="submit"/>
+                </form>
+            </div>
+        </div>
     )
 }
 

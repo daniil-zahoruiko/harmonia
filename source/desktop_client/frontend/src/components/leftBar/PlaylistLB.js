@@ -4,6 +4,7 @@ import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
 import { getValues } from "../helpers";
 import { Link } from "react-router-dom";
+import { CreatePlaylistPopUp } from "../utils/PopUps";
 
 
 export const PlaylistLB = ({lbState}) => {
@@ -12,8 +13,9 @@ export const PlaylistLB = ({lbState}) => {
 
     const {page:[currentPage,setCurrentPage],
         playlistRender:[showedPlaylist,setShowedPlaylist]} = useContext(SongsContext)
-    const [style, setStyle] = useState("closed")
 
+    const [style, setStyle] = useState("closed")
+    const [activate,setActivate] = useState(false)
 
     const togglePlaylist = () => {
         if(style === "closed"){
@@ -43,7 +45,7 @@ export const PlaylistLB = ({lbState}) => {
                     </div>
                 </div>
                 <div className={"lb_playlist_actions lb_"+lbState}>
-                    <p>+</p>
+                    <p onClick={()=>{setActivate(true)}}>+</p>
                     <div onClick={togglePlaylist} className={`playlist_arrow ${style}`}></div>
                 </div>
             </div>
@@ -55,6 +57,9 @@ export const PlaylistLB = ({lbState}) => {
                         )
                     })}
             </div>
+            {activate
+            ?<CreatePlaylistPopUp setActivate={setActivate}/>
+            :""}
         </div>
     )
 }
