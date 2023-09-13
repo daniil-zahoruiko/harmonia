@@ -53,8 +53,8 @@ class DBConnection:
             cursor.close()
             return res
 
-    def get_table_length(self, table):
-        return self.execute_query(query=f"SELECT COUNT(*) FROM {table}", fetch_func="fetchone")[0]
+    def get_last_id(self, table):
+        return self.execute_query(query=f"SELECT * FROM {table} ORDER BY id DESC LIMIT 1;", fetch_func="fetchone")[0]
 
     # fields should be a comma-separated string of fields to be selected from the table
     def select_by_unique_field(self, fields, table, criteria_field, criteria_value):
@@ -202,7 +202,7 @@ class DBConnection:
 
         salt = bcrypt.gensalt()
 
-        args = (self.get_table_length("users") + 1,
+        args = (self.get_last_id("users")+1,
                 username,
                 email,
                 bcrypt.hashpw(password.encode('utf-8'), salt),
@@ -214,7 +214,7 @@ class DBConnection:
         self.execute_query(query=query, args=args, commit=True)
 
     def create_song(self, name, genre, data, artist_id, album_id):
-        id = self.get_table_length("songs") + 1
+        id = self.get_last_id("songs") + 1
         query = "INSERT INTO songs(id, name, genre, data, artistId, albumId, length) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
         args = (id, name, genre, data, artist_id, album_id, helpers.get_mp3_length(data))  # if the song is not mp3, will this work?
@@ -224,7 +224,9 @@ class DBConnection:
     def create_playlist(self,id,name):
         query = "INSERT INTO playlists(id, name,description, userId, songs) VALUES (%s, %s, %s, %s,%s)"
 
-        args = (self.get_table_length("playlists") + 1,name,"",id,json.dumps({}))
+        print(self.get_last_id("playlists")+1 )
+
+        args = (self.get_last_id("playlists") + 1,name,"",id,json.dumps({}))
 
         self.execute_query(query=query, args=args,commit=True)
 
