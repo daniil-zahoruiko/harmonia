@@ -54,7 +54,10 @@ class DBConnection:
             return res
 
     def get_last_id(self, table):
-        return self.execute_query(query=f"SELECT * FROM {table} ORDER BY id DESC LIMIT 1;", fetch_func="fetchone")[0]
+        query_res = self.execute_query(query=f"SELECT id FROM {table} ORDER BY id DESC LIMIT 1;", fetch_func="fetchone")
+        if query_res:
+            return query_res[0]
+        return 0
 
     # fields should be a comma-separated string of fields to be selected from the table
     def select_by_unique_field(self, fields, table, criteria_field, criteria_value):
@@ -236,8 +239,6 @@ class DBConnection:
 
     def create_playlist(self,id,name):
         query = "INSERT INTO playlists(id, name,description, userId, songs) VALUES (%s, %s, %s, %s,%s)"
-
-        print(self.get_last_id("playlists")+1 )
 
         args = (self.get_last_id("playlists") + 1,name,"",id,json.dumps({}))
 
