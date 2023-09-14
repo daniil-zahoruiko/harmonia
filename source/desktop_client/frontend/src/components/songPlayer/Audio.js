@@ -42,7 +42,7 @@ export const Audio = () =>{
         .then((data) => {
             setSongUrl(URL.createObjectURL(data));
         })
-      }, [currentSongData,token,currentPlaylist])
+      }, [currentSongData, currentPlaylist])
 
     // on time update after using range scroll
     const onPlaying = () => {

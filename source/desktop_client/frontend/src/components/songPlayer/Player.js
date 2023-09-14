@@ -87,8 +87,15 @@ export const Player = ({audioElem, currentSong})=> {
       index = songs.length;
     }
 
-    setCurrentSongData(songs[index - 1]);
-    setSongLoaded(false)
+    if(currentSongData.id !== songs[index - 1].id)
+    {
+      setCurrentSongData(songs[index - 1]);
+      setSongLoaded(false)
+    }
+    else
+    {
+      audioElem.current.currentTime = 0;
+    }
   }
 
   // skip to next music
@@ -97,7 +104,7 @@ export const Player = ({audioElem, currentSong})=> {
 
     if(!isPlaying) setIsPlaying(true)
 
-    var index = songs.findIndex(x=>x.id === currentSongData.id) + 1;
+    var index = songs.findIndex(x => x.id === currentSongData.id) + 1;
 
     if (index === songs.length)
     {
@@ -113,8 +120,16 @@ export const Player = ({audioElem, currentSong})=> {
       delete temp_dict[currentSongData.id]
     }
     setRecentlyPlayed({...cur_dict,...temp_dict})
-    setCurrentSongData(songs[index]);
-    setSongLoaded(false)
+
+    if(currentSongData.id !== songs[index].id)
+    {
+      setCurrentSongData(songs[index]);
+      setSongLoaded(false);
+    }
+    else
+    {
+      audioElem.current.currentTime = 0;
+    }
   }
 
   // change slider position(without changing the actual song position)
