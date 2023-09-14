@@ -25,9 +25,10 @@ export const PlaylistView = () =>{
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
             cachedSongImages:[images,setImages],
-            cachedAlbumImages: [albumImages,],
+            cachedAlbumImages:[albumImages,setAlbumImages],
             cachedPlaylistImages:[playlistImages,setPlaylistImages],
-            playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
+            playlistRender:[showedPlaylist,setShowedPlaylist],
+            db:[,,albums], } = useContext(SongsContext)
 
 
     if(showedPlaylist.id===""){
@@ -59,6 +60,17 @@ export const PlaylistView = () =>{
     const isEmpty = data.songs.length === 0
 
 
+    const albumIdsSet = new Set(data.songs.map((song)=>{
+        return song.albumId
+    }))
+
+    // console.log(Array.from(albumIdsSet))
+
+    const albumsToFetch = albums.filter((album,key)=>{
+        return albumIdsSet.has(album.id)
+    })
+
+
     // const images = FetchImages({songs, token});
     const fetch = async (data, url,images,setImages,last) =>{
         await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages})
@@ -70,7 +82,8 @@ export const PlaylistView = () =>{
         }
         else{
             setAllLoaded(false)
-            fetch(data.songs, '/api/song/cover',images,setImages)
+            // fetch(data.songs, '/api/song/cover',images,setImages)
+            fetch(albumsToFetch, '/api/album/cover',albumImages,setAlbumImages)
             fetch([data], '/api/playlist/cover', playlistImages, setPlaylistImages,true)
         }
     },[data.id])
@@ -156,7 +169,7 @@ export const PlaylistView = () =>{
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
                 :data.id==="recent_songs"?<div className="playlist_image liked_playlist_image"><AiOutlineClockCircle/></div>
                 :<LoadedImage className="playlist_image" src={
-                    isEmpty?"none":data.type==="album"?albumImages[data.id.slice(0,-6)]:playlistImages[data.id] !== "No Content" ?playlistImages[data.id]:images[data.songs[0].id]
+                    isEmpty?"none":data.type==="album"?albumImages[data.id.slice(0,-6)]:playlistImages[data.id] !== "No Content" ?playlistImages[data.id]:albumImages[data.songs[0].albumId]
                 } />}
                 <div className="playlist_data">
                     <p className='playlist_type'>{data.type} playlist</p>
@@ -210,7 +223,7 @@ export const PlaylistView = () =>{
                     <tbody>
                         {result.map((song,key)=>{
                             return(
-                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={data.songs} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={data.songs} song={song} songToggle={songToggle} id={key} imageUrl={albumImages[song.albumId]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
@@ -218,7 +231,7 @@ export const PlaylistView = () =>{
                 :<div className='songs_cards'>
                     {result.map((song,key)=>{
                         return(
-                            <SongCard onContextMenu={(e) =>handleClick(e,key)} key={key} song={song} songToggle={songToggle} id={key} imageUrl={images[song.id]} playlistId={data.id}/>
+                            <SongCard onContextMenu={(e) =>handleClick(e,key)} key={key} song={song} songToggle={songToggle} id={key} imageUrl={albumImages[song.albumId]} playlistId={data.id}/>
                         )
                     })}
                 </div>

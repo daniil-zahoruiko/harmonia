@@ -128,7 +128,28 @@ def read_cache(filename):
 def create_artist(db,name,image,user_id):
     image_bytes = helpers.read_file_bytes(image)
     id = db.create_artist(name,image_bytes,user_id)
-    print(id)
+    return id
+
+def create_song(db,title,genre,audio,image,artist_id,album_id):
+    audio_bytes = helpers.read_file_bytes(audio)
+    image_bytes = helpers.read_file_bytes(image)
+
+    song = db.create_user_song(title,genre,audio_bytes,image_bytes,artist_id,album_id)
+    return {"id":str(song.get_id()),
+            "title":song.get_name(),
+            "genre": song.get_genre(),
+            "file":f"{song.get_id()}.mp3",
+            "cover":f"{song.get_id()}.webp",
+            "artist":db.get_artist_by_id(song.get_artist_id()).get_name(),
+            "album":db.get_album_by_id(song.get_album_id()).get_name(),
+            "artistId":str(song.get_artist_id()),
+            "albumId":str(song.get_album_id()),
+            "length":song.get_length(),
+            "streams":song.get_streams()}
+
+def create_album(db,name,artist_id,image):
+    image_bytes = helpers.read_file_bytes(image)
+    id = db.create_album(name,artist_id,image_bytes)
     return id
 
 def delete_cache(filename):

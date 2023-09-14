@@ -327,23 +327,26 @@ def create_artist():
 @cross_origin()
 @jwt_required()
 def add_song():
-    # user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
 
     # data = request.files["file"]
     title = request.form.get("title")
     genre = request.form.get("genre")
+    artist_id = request.form.get("artist_id")
+    album_id = request.form.get("album_id")
 
     audio = request.files.get("audio")
     image = request.files.get("image")
 
-    print(title,genre,image,audio)
+    print(title,genre,audio,album_id)
 
-    # image_bytes = helpers.read_file_bytes(data)
-
-    # try:
-    #     utils.create_artist(connection,name,image_bytes)
-    # except:
-    #     return jsonify({"msg": "Server Error"}), 401
+    if(not int(album_id)):
+        print("I worked")
+        album_id = utils.create_album(connection,title,artist_id,image)
+        ans = utils.create_song(connection,title,genre,audio,image,artist_id,album_id)
+    else:
+        ans = utils.create_song(connection,title,genre,audio,image,artist_id,album_id)
+    print(ans)
     return jsonify({"msg": "Success"}), 200
 
 

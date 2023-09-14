@@ -58,13 +58,25 @@
     border-radius: 16px;
 }
 
-.change_playlist_inputs input[type="file"] {
+.add_song_wrapper{
+    position: relative;
+    width:40vw;
+    left:50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    background-color: black;
+    padding: 2% 4%;
+    border-radius: 16px;
+}
+
+#file-upload {
     display: none;
 }
 
-.change_playlist_inputs{
+.add_song_inputs{
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
 }
 
 .playlist_change_image{
@@ -73,16 +85,21 @@
     margin: auto;
 }
 
-.playlist_image_label_wrapper{
+.song_image_label_wrapper{
     position: relative;
     width:15vw;
     height:15vw;
     margin: auto;
 }
 
-.change_playlist_inputs > div{
-    margin-top: 5%;
+.add_song_data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:100%;
 }
+
+
 
 .playlist_image_upload_svg{
     position: absolute;
@@ -94,11 +111,11 @@
     opacity: 0;
 }
 
-.playlist_image_label_wrapper:hover .playlist_change_image{
+.song_image_label_wrapper:hover .playlist_change_image{
     opacity: 0.5;
 }
 
-.playlist_image_label_wrapper:hover .playlist_image_upload_svg{
+.song_image_label_wrapper:hover .playlist_image_upload_svg{
     opacity: 1;
 }
 
@@ -131,4 +148,24 @@
     text-align: left;
     font-size: 1.5vw;
     margin: 2% 0%;
+}
+
+
+.song_audio_label_wrapper{
+    display: flex;
+    flex-direction: row;
+    background-color: #44489F;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 16px;
+}
+.song_audio_upload_name{
+    font-size:0.8vw;
+}
+.song_audio_upload_svg{
+    width:2vw;
+    height:auto
+}
+#audio-upload{
+    display: none;
 }

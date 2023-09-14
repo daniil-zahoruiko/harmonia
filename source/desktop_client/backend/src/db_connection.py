@@ -221,11 +221,37 @@ class DBConnection:
 
     def create_song(self, name, genre, data, artist_id, album_id):
         id = self.get_last_id("songs") + 1
+        length = helpers.get_mp3_length(data)
         query = "INSERT INTO songs(id, name, genre, data, artistId, albumId, length) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
-        args = (id, name, genre, data, artist_id, album_id, helpers.get_mp3_length(data))  # if the song is not mp3, will this work?
+        args = (id, name, genre, data, artist_id, album_id, length)  # if the song is not mp3, will this work?
+
+        print(args)
 
         self.execute_query(query=query, args=args, commit=True)
+
+        return Song(id, name, genre, artist_id, album_id, length,0)
+    
+    def create_user_song(self, name, genre, audio, image, artist_id, album_id):
+        id = self.get_last_id("songs") + 1
+        length = helpers.get_mp3_length(audio)
+        query = "INSERT INTO songs(id, name, genre, data, image, artistId, albumId, length) VALUES (%s, %s, %s,%s, %s, %s, %s, %s)"
+
+        args = (id, name, genre, audio, image, artist_id, album_id, length)  # if the song is not mp3, will this work
+
+        self.execute_query(query=query, args=args, commit=True)
+
+        return Song(id, name, genre, artist_id, album_id, length,0)
+    
+    def create_album(self,name,artist_id,image):
+        id = self.get_last_id("albums") + 1
+        query = "INSERT INTO albums(id, name, artistId, image) VALUES (%s, %s, %s,%s)"
+
+        args = (id,name,artist_id,image)
+
+        self.execute_query(query=query, args=args,commit=True)
+
+        return id
 
     def create_artist(self, name, image,user_id):
         id = self.get_last_id("artists") + 1

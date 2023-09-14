@@ -15,12 +15,23 @@ export const TopPicks = ({songs}) =>
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
-            cachedSongImages:[images,setImages] } = useContext(SongsContext)
+            cachedAlbumImages:[images,setImages],
+            db:[,,albums], } = useContext(SongsContext)
 
     const {access_token: [token,,removeToken],
     error: [,setUserError]} = useContext(UserContext);
 
     const firstRender = useRef(true)
+
+    const albumIdsSet = new Set(songs.map((song)=>{
+        return song.albumId
+    }))
+
+    // console.log(Array.from(albumIdsSet))
+
+    const albumsToFetch = albums.filter((album)=>{
+        return albumIdsSet.has(album.id)
+    })
 
     const fetch = async (data, url) =>{
         await FetchImages({data:data, url: url, token,removeToken,setUserError,setAllLoaded,images,setImages});
@@ -32,7 +43,7 @@ export const TopPicks = ({songs}) =>
         }
         else{
             setAllLoaded(false)
-            fetch(songs, '/api/song/cover')
+            fetch(albumsToFetch, '/api/album/cover')
         }
     },[])
 
@@ -70,7 +81,7 @@ export const TopPicks = ({songs}) =>
     return(
     <>
     {songs.map((song,key) =>
-        (<SongCard onContextMenu={(e) =>handleClick(e,key)} key={key} song={song} imageUrl={images[song.id]} songToggle={songToggle} id={key} playlistId={data.id}/>))}
+        (<SongCard onContextMenu={(e) =>handleClick(e,key)} key={key} song={song} imageUrl={images[song.albumId]} songToggle={songToggle} id={key} playlistId={data.id}/>))}
         <ContextMenu song={data.songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
     </>)
 }

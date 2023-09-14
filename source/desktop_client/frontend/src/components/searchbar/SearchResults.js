@@ -11,7 +11,8 @@ export const SearchResults = ({results}) => {
     const { displayLoad:[,setAllLoaded],
             cachedSongImages:[songImages,setSongImages],
             cachedArtistImages:[artistImages, setArtistImages],
-            cachedAlbumImages: [albumImages, setAlbumImages] } = useContext(SongsContext)
+            cachedAlbumImages: [albumImages, setAlbumImages],
+            db:[,,albums] } = useContext(SongsContext)
 
     const { access_token: [token,,removeToken],
         error: [,setUserError]  } = useContext(UserContext);
@@ -24,6 +25,23 @@ export const SearchResults = ({results}) => {
     const [left,setLeft] = useState(0)
     const [contextId,setContextId] = useState(0)
 
+
+    const albumIdsSet = new Set(results["songs"].map((song)=>{
+        return song.albumId
+    }))
+
+    results["albums"].forEach(album => {
+        albumIdsSet.add(album.id)
+    });
+
+    // console.log(Array.from(albumIdsSet))
+
+    const albumsToFetch = albums.filter((album,key)=>{
+        return albumIdsSet.has(album.id)
+    })
+
+
+
     const fetch = async (data, url, images, setImages) =>{
         await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages});
         setAllLoaded(true);
@@ -33,9 +51,9 @@ export const SearchResults = ({results}) => {
             firstRender.current = false
         }else{
             setAllLoaded(false)
-            fetch(results["songs"], '/api/song/cover', songImages, setSongImages)
+            // fetch(results["songs"], '/api/song/cover', songImages, setSongImages)
             fetch(results["artists"], '/api/artist/cover', artistImages, setArtistImages)
-            fetch(results["albums"], '/api/album/cover', albumImages, setAlbumImages)
+            fetch(albumsToFetch, '/api/album/cover', albumImages, setAlbumImages)
         }
     },[])
 

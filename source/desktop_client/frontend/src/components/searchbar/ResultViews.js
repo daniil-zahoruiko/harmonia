@@ -12,7 +12,7 @@ export const SongResult = ({result,count,onClick}) =>{
         song:[songLoaded, setSongLoaded],
         toggles:[PlayPause],
         displayLoad:[,setAllLoaded],
-        cachedSongImages:[images,setImages] } = useContext(SongsContext)
+        cachedAlbumImages:[images,setImages] } = useContext(SongsContext)
 
     const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
 
@@ -49,7 +49,7 @@ export const SongResult = ({result,count,onClick}) =>{
     return(
         <div className="result_div">
             <div className="search_result_image_wrapper">
-                <LoadedImage className="result_image" alt={result.id} src={images[result.id]} />
+                <LoadedImage className="result_image" alt={result.id} src={images[result.albumId]} />
                 {isPlaying && result.id === currentSongData.id?<BsPauseFill className='search_play' onClick={()=>songToggle(count)}/>
                 :<BsPlayFill className='search_play' onClick={()=>songToggle(count)}/>}
             </div>

@@ -52,11 +52,40 @@ export const ArtistView = () =>{
 
     const data = {owner:name,type:"",name:name,description:"",songs:artist_songs,id:id}
 
+
+    const albumIdsSet = new Set(artist_songs.map((song)=>{
+        return song.albumId
+    }))
+
+    artist_albums.forEach(album => {
+        albumIdsSet.add(album.id)
+    });
+
+    // console.log(Array.from(albumIdsSet))
+
+    const albumsToFetch = albums.filter((album,key)=>{
+        return albumIdsSet.has(album.id)
+    })
+
     // const images = FetchImages({songs, token});
-    const fetch = async (data, url, images, setImages) =>{
+    const fetch = async (data, url, images, setImages,last) =>{
         await FetchImages({data:data,url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
-        setAllLoaded(true)
+        if(last){
+            setAllLoaded(true)
+        }
     }
+
+    useEffect(()=>{
+        if(firstRender.current){
+            firstRender.current = false
+        }else{
+            setAllLoaded(false)
+            // fetch(artist_songs,"/api/song/cover", songImages, setSongImages);
+            fetch([showedArtist], "/api/artist/cover", artistImages, setArtistImages);
+            fetch(albumsToFetch, "/api/album/cover", albumImages, setAlbumImages,true);
+
+        }
+    },[])
 
 
     const likeArtist = () =>{
@@ -72,18 +101,6 @@ export const ArtistView = () =>{
         }
         UpdateFavArtists({token:token,username:username,favArtists:temp_dict})
     }
-
-    useEffect(()=>{
-        if(firstRender.current){
-            firstRender.current = false
-        }else{
-            setAllLoaded(false)
-            fetch(artist_songs,"/api/song/cover", songImages, setSongImages);
-            fetch([showedArtist], "/api/artist/cover", artistImages, setArtistImages);
-            fetch(artist_albums, "/api/album/cover", albumImages, setAlbumImages);
-
-        }
-    },[])
 
 
 
@@ -192,7 +209,7 @@ export const ArtistView = () =>{
                                 song={song}
                                 songToggle={songToggle}
                                 id={key}
-                                imageUrl={songImages[song.id]}
+                                imageUrl={albumImages[song.albumId]}
                                 playlistId={data.id}
                             />
                             )

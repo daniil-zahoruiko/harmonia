@@ -74,6 +74,7 @@ async function FetchImages({data,url,images,setImages, token,removeToken, setUse
 {
     let response
     let temp_dict = {}
+    console.log(data)
     for(let i = 0; i < data.length; i++)
         {
             const id = data[i].id
