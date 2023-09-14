@@ -5,7 +5,6 @@ from datetime import datetime, timedelta, timezone
 import json
 import utils
 import populate_db
-import helpers
 
 # Initializing flask app
 app = Flask(__name__)
@@ -226,10 +225,8 @@ def update_playlist_songs():
 def change_playlist_image(id):
     data = request.files["file"]
 
-    image_bytes = helpers.read_file_bytes(data)
-
     try:
-        utils.upload_playlist_image(connection,id,image_bytes)
+        utils.upload_playlist_image(connection,id,data)
     except:
         return jsonify({"msg": "Server Error"}), 500
     return jsonify({"msg": "Success"}), 200
@@ -319,10 +316,8 @@ def create_artist():
     name = request.form.get("name")
     data = request.files.get("image")
 
-    image_bytes = helpers.read_file_bytes(data)
-
     try:
-        ans = utils.create_artist(connection,name,image_bytes,user_id)
+        ans = utils.create_artist(connection,name,data,user_id)
         return jsonify({"artist_id": ans})
     except:
         return jsonify({"msg": "Could not create an artist"}), 500
@@ -338,8 +333,8 @@ def add_song():
     title = request.form.get("title")
     genre = request.form.get("genre")
 
-    image = request.files.get("image")
     audio = request.files.get("audio")
+    image = request.files.get("image")
 
     print(title,genre,image,audio)
 

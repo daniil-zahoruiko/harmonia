@@ -78,7 +78,8 @@ def update_playlist_description(db, id, description):
     db.update_playlist_description(id,description)
 
 def upload_playlist_image(db,id,image):
-    db.update_playlist_image(id,image)
+    image_bytes = helpers.read_file_bytes(image)
+    db.update_playlist_image(id,image_bytes)
 
 def add_playlist(db,user_id,name):
     db.create_playlist(user_id,name)
@@ -125,7 +126,8 @@ def read_cache(filename):
     return helpers.read_file(new_path)
 
 def create_artist(db,name,image,user_id):
-    id = db.create_artist(name,image,user_id)
+    image_bytes = helpers.read_file_bytes(image)
+    id = db.create_artist(name,image_bytes,user_id)
     print(id)
     return id
 

@@ -137,7 +137,7 @@ export const AddSong = ({setChange}) =>{
         }
         console.log("bam")
         const newData = new FormData()
-        newData.append('file',audio)
+        newData.append('audio',audio)
         newData.append('title',data.title)
         newData.append('genre',data.genre)
         // await changePlaylistImage({token:token,id:showedPlaylist.id,image:newData})
