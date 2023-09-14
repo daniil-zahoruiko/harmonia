@@ -169,3 +169,11 @@
 #audio-upload{
     display: none;
 }
+
+.add_song_media{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width:100%;
+    align-items: center;
+}

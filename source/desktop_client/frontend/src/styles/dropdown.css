@@ -1,0 +1,46 @@
+.dd-wrapper{
+    position: relative;
+}
+.dd-list{
+    position: absolute;
+    /* top:3rem; */
+    top: 100%;
+    left:0%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    align-items:center;
+    padding: 3%;
+}
+
+.dd-header-title{
+    background-color: #44489F;
+    padding: 3%;
+    border-radius: 16px;
+    width: 100%;
+    /* height: 80%; */
+    margin: auto;
+}
+.dd-header-title p{
+    margin: 0;
+    font-size: 1vw;
+}
+.dd-wrapper{
+    width:30%
+}
+
+.dd-list-item{
+    background-color: white;
+    padding: 3%;
+    border-radius: 16px;
+    color:black;
+    width:100%;
+    border: none;
+    margin-bottom: 3%;
+}
+
+.dd-list-item p{
+    margin: 0;
+    font-size: 1vw;
+}

@@ -10,6 +10,7 @@ import { SongsContext } from "../../SongsData";
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
 import { getValues } from "../helpers";
 import {BsFillCloudUploadFill} from "react-icons/bs"
+import { DropDown } from "./DropDown";
 
 
 export const CreateArtist = ({setChange}) =>{
@@ -114,7 +115,13 @@ export const AddSong = ({setChange}) =>{
     const [audio,setAudio] = useState()
     const [imageUrl,setImageUrl] = useState()
     const [image,setImage] = useState()
+    const [albumId,setAlbumId] = useState(0)
+    const [chooseAlbums,setChooseAlbums] = useState(false)
+    const [createAlbum,setCreateAlbum] = useState(false)
+    const [top,setTop] = useState(0)
+    const [left,setLeft] = useState(0)
     const formRef = useRef(null)
+    const albumMenuRef = useRef(null)
 
     const user_albums = albums.filter(album=>{
         return album.artistId == userArtistId
@@ -131,13 +138,13 @@ export const AddSong = ({setChange}) =>{
     })
 
 
-    const closeMenu = (e) =>{
-        if(formRef.current && !formRef.current.contains(e.target)){
-            setChange(false)
-        }
-    }
+    // const closeMenu = (e) =>{
+    //     if(formRef.current && !formRef.current.contains(e.target)){
+    //         setChange(false)
+    //     }
+    // }
 
-    document.addEventListener('mousedown',closeMenu)
+    // document.addEventListener('mousedown',closeMenu)
 
     async function onSubmit(data)
     {
@@ -145,34 +152,51 @@ export const AddSong = ({setChange}) =>{
             console.log("no audio selected")
             return
         }
-        console.log("bam")
         const newData = new FormData()
         newData.append('audio',audio)
         newData.append('image',image)
         newData.append('title',data.title)
         newData.append('genre',data.genre)
         newData.append("artist_id",userArtistId)
-        newData.append("album_id",0)
-        // await changePlaylistImage({token:token,id:showedPlaylist.id,image:newData})
-        // let temp_dict = {...playlistImages}
-        // temp_dict[showedPlaylist.id] = imageUrl
-        // setPlaylistImages(temp_dict)
+        newData.append("album_id",albumId)
         await addSong({token:token,data:newData})
-        // .then(() => {
-        //     setError(null);
-        //     var arr = []
-        //     for(let i=0;i<playlists.length;i++){
-        //         if(playlists[i].id === showedPlaylist.id){
-        //             arr.push({...playlists[i],name : data.name,description:data.description})
-        //             setShowedPlaylist({...showedPlaylist,name : data.name,description:data.description})
-        //         }else{
-        //             arr.push(playlists[i])
-        //     }}
-        //     setPlaylists(arr)
-        // })
         .catch((error) => setError(error.message));
         setChange(false)
 
+    }
+
+    const handleAlbumMenuPick = () =>{
+        setChooseAlbums(!chooseAlbums)
+        let element = albumMenuRef.current
+        let offsetTop = 0
+        let offsetLeft = 0
+        let count = 0
+        while(element){
+            offsetTop += element.offsetTop
+            offsetLeft += element.offsetLeft
+            element = element.offsetParent
+            count+=1
+            console.log(element)
+        }
+        setTop(offsetTop-formRef.current.offsetHeight)
+        setLeft(offsetLeft)
+    }
+
+    const handleAlbumCreation = () =>{
+        setCreateAlbum(!createAlbum)
+        let element = albumMenuRef.current
+        let offsetTop = 0
+        let offsetLeft = 0
+        let count = 0
+        while(element){
+            offsetTop += element.offsetTop
+            offsetLeft += element.offsetLeft
+            element = element.offsetParent
+            count+=1
+            console.log(element)
+        }
+        setTop(offsetTop-formRef.current.offsetHeight)
+        setLeft(offsetLeft)
     }
 
     console.log(audio)
@@ -183,7 +207,7 @@ export const AddSong = ({setChange}) =>{
             <div ref={formRef} className="add_song_wrapper">
                 <MdCancel onClick={()=>setChange(false)} className="change_exit"/>
                 <h1>¡Add your song here!</h1>
-                <form className="add_song_inputs">
+                <form onSubmit={handleSubmit(onSubmit)} className="add_song_inputs">
                     <div className="add_song_data">
                         <div>
                             <label htmlFor="file-upload">
@@ -199,20 +223,8 @@ export const AddSong = ({setChange}) =>{
                                 type="file"
                                 id="file-upload"
                             />
-                            <label htmlFor="audio-upload">
-                                <div className="song_audio_label_wrapper">
-                                    <MdOutlineAudioFile className="song_audio_upload_svg"/>
-                                    <p className="song_audio_upload_name">{audio?audio.name:"Choose music..."}</p>
-                                </div>
-                            </label>
-                            <input onChange={(e)=>{
-                                setAudio(e.target.files[0])
-                                }}
-                                type="file"
-                                id="audio-upload"
-                            />
                         </div>
-                        <div className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="change_pl_data_form">
                             <div className="form_row_song">
                                 <p className="song_data_label" htmlFor="username">
                                     Title:
@@ -234,9 +246,59 @@ export const AddSong = ({setChange}) =>{
                             {error != null ? <p className="login_error">{error}</p> : null}
                         </div>
                     </div>
+                    <div className="add_song_media">
+                        <label htmlFor="audio-upload">
+                                <div className="song_audio_label_wrapper">
+                                    <MdOutlineAudioFile className="song_audio_upload_svg"/>
+                                    <p className="song_audio_upload_name">{audio?audio.name:"Choose music..."}</p>
+                                </div>
+                            </label>
+                        <input onChange={(e)=>{
+                            setAudio(e.target.files[0])
+                            }}
+                            type="file"
+                            id="audio-upload"
+                        />
+                        <div className="dd-wrapper">
+                            <div ref={albumMenuRef} className="dd-header-title">
+                                <p>Choose Album...</p>
+                            </div>
+                            <div className="dd-list">
+                                <div onClick={handleAlbumCreation} className="dd-list-item">
+                                    <p>Create an album</p>
+                                </div>
+                                <div onClick={handleAlbumMenuPick} className="dd-list-item">
+                                    <p>Choose an album</p>
+                                </div>
+                                <div className="dd-list-item">
+                                    <p onClick={(()=>{setAlbumId(0)})}>Single</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <input id="submit_song" type="submit" value="Upload"/>
                 </form>
             </div>
+            {chooseAlbums
+            ?<div style={{
+                position:"absolute",
+                left:`${left}px`,
+                top:`${top}px`,
+            }} className="album_choice">
+                {user_albums.map((album)=>{
+                    return <p onClick={()=>setAlbumId(album.id)}>{album.name}</p>
+                })}
+            </div>
+            :createAlbum
+            ?<form style={{
+                position:"absolute",
+                left:`${left}px`,
+                top:`${top}px`,
+            }} className="album_choice">
+                <input/>
+            </form>
+            :""}
+
         </div>
 
     );
