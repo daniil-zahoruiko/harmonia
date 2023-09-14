@@ -166,7 +166,7 @@ def add_playlist():
         utils.add_playlist(connection,user_id,name)
         playlists = utils.get_user_playlists(connection, user_id)
     except:
-        return jsonify({"msg": "Server error"}), 401
+        return jsonify({"msg": "Server error"}), 500
     return jsonify(playlists)
 
 @app.route("/delete_playlist/<id>")
@@ -178,7 +178,7 @@ def delete_playlist(id):
         utils.delete_playlist(connection,id)
         playlists = utils.get_user_playlists(connection, user_id)
     except:
-        return jsonify({"msg":"Server error"}),401
+        return jsonify({"msg":"Server error"}),500
     return jsonify(playlists)
 
 
@@ -200,7 +200,7 @@ def update_playlist():
         if description != data["description"]:
             utils.update_playlist_description(connection,id,data["description"])
     except:
-        return jsonify({"msg": "Server Error"}), 401
+        return jsonify({"msg": "Server Error"}), 500
 
     return jsonify({"msg": "Success"}), 200
 
@@ -216,7 +216,7 @@ def update_playlist_songs():
     try:
         utils.update_playlist_songs(connection,id,songs)
     except:
-        return jsonify({"msg": "Server Error"}), 401
+        return jsonify({"msg": "Server Error"}), 500
     return jsonify({"msg": "Success"}), 200
 
 
@@ -231,7 +231,7 @@ def change_playlist_image(id):
     try:
         utils.upload_playlist_image(connection,id,image_bytes)
     except:
-        return jsonify({"msg": "Server Error"}), 401
+        return jsonify({"msg": "Server Error"}), 500
     return jsonify({"msg": "Success"}), 200
 
 
@@ -281,13 +281,13 @@ def change_data():
     if isTaken is None:
         utils.change_username(connection,user_id,input["username"])
     elif username != input["username"]:
-        return jsonify({"msg": "Mate. User with such username already exists"}), 401
+        return jsonify({"msg": "Mate. User with such username already exists"}), 409
 
     isTaken = utils.try_get_user_by_email(connection,input["email"])
     if isTaken is None:
         utils.change_email(connection,user_id,input["email"])
     elif email != input["email"]:
-        return jsonify({"msg": "Buddy. This email is already taken"}), 401
+        return jsonify({"msg": "Buddy. This email is already taken"}), 409
 
     if input["password"] != "":
         utils.change_password(connection,user_id,input["password"])
@@ -307,10 +307,10 @@ def update_streams():
     try:
         utils.add_streams(connection,id)
     except:
-        return jsonify({"msg": "Server Error"}), 401
+        return jsonify({"msg": "Server Error"}), 500
     return jsonify({"msg": "Success"}), 200
 
-@app.route("/create_artist")
+@app.route("/create_artist", methods=["POST"])
 @cross_origin()
 @jwt_required()
 def create_artist():
@@ -323,9 +323,9 @@ def create_artist():
 
     try:
         ans = utils.create_artist(connection,name,image_bytes,user_id)
-        return jsonify(ans)
+        return jsonify({"artist_id": ans})
     except:
-        return jsonify("PENIS")
+        return jsonify({"msg": "Could not create an artist"}), 500
 
 
 @app.route("/add_song",methods=["POST"])

@@ -407,6 +407,7 @@ async function changePlaylistImage({token,id,image}){
 
 async function createArtist({token,data,setUserArtistId}){
     return await fetch(`/create_artist`, {
+        method: "POST",
         headers:{
             'Authorization': 'Bearer ' + token
         },
@@ -420,9 +421,9 @@ async function createArtist({token,data,setUserArtistId}){
             else
                 throw new Error('Unknown error ' + response.status);
         }
+        return jsonResponse;
     }).then(async (data)=>{
-        // setUserArtistId(data)
-        console.log(data)
+        setUserArtistId(data.artist_id)
     });
 }
 
