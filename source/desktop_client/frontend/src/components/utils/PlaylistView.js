@@ -190,7 +190,9 @@ export const PlaylistView = () =>{
                 </div>
                 <div className='playlist_utils_section utils_right'>
                     <PlaylistSearchBar input={input} setInput={setInput} songs={data.songs} setResult={setResult} />
-                    <button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>
+                    {showedPlaylist.type==="album"
+                    ?""
+                    :<button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>}
                 </div>
             </div>
             {
@@ -211,9 +213,16 @@ export const PlaylistView = () =>{
                             <th>
                                 <p>Title</p>
                             </th>
-                            <th>
+                            {showedPlaylist.type!=="album"
+                            ?<th>
                                 <p>Album</p>
                             </th>
+                            :<th/>}
+                            {showedPlaylist.type==="album"
+                            ?<th>
+                                <p>Streams</p>
+                            </th>
+                            :<th/>}
                             <th/>
                             <th>
                                 <p>Length</p>

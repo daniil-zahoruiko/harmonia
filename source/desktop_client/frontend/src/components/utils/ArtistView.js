@@ -194,6 +194,7 @@ export const ArtistView = () =>{
                             <th>
                                 Streams
                             </th>
+                            <th/>
                             <th>
                                 <p>Length</p>
                             </th>

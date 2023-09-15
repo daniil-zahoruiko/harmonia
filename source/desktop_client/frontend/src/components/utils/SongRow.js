@@ -78,18 +78,21 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextM
                     </div>
                 </div>
             </td>
-            <td>
+            {type==="album"
+            ?<td/>
+            :<td>
                 <div className='song_row_album'>
                     <p>{song.album}</p>
                 </div>
-            </td>
-            {type==="artist"
+            </td>}
+
+            {type==="artist" || type === "album"
             ?<td>
                 <div className='song_row_streams'>
                     <p>{song.streams}</p>
                 </div>
             </td>
-            :""}
+            :<td/>}
             <td>
                 {likedSongs[song.id]
                 ?<AiFillHeart className='playlist_song_like' onClick={likeSong}/>
