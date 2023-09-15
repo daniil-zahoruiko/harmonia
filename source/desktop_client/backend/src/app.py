@@ -334,15 +334,19 @@ def add_song():
     genre = request.form.get("genre")
     artist_id = request.form.get("artist_id")
     album_id = request.form.get("album_id")
+    album_name = request.form.get("album_name")
 
     audio = request.files.get("audio")
     image = request.files.get("image")
 
-    print(title,genre,audio,album_id)
+    print(album_name)
 
     if(not int(album_id)):
         print("I worked")
-        album_id = utils.create_album(connection,title,artist_id,image)
+        if(album_name != "undefined"):
+            album_id = utils.create_album(connection,album_name,artist_id,image)
+        else:
+            album_id = utils.create_album(connection,title,artist_id,image)
         ans = utils.create_song(connection,title,genre,audio,image,artist_id,album_id)
     else:
         ans = utils.create_song(connection,title,genre,audio,image,artist_id,album_id)

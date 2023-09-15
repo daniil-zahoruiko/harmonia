@@ -210,6 +210,7 @@ export const ChangePlaylistData = ({setChange}) =>{
                             }}
                             type="file"
                             id="file-upload"
+                            accept="image/webp,image/png,image/jpg,image/jpeg"
                         />
                     </div>
                     <form className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
