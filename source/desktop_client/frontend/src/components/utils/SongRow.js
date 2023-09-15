@@ -69,7 +69,9 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextM
             </td>
             <td>
                 <div className='song_row_data'>
-                    <LoadedImage className='song_row_image' src={imageUrl} />
+                    {type==="album"
+                    ?""
+                    :<LoadedImage className='song_row_image' src={imageUrl} />}
                     <div className='song_row_text'>
                         <p style={toInteract?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
                         <p onClick={artistLink} className='song_row_data_artist'>{song.artist}</p>

@@ -223,7 +223,7 @@ export const PlaylistView = () =>{
                     <tbody>
                         {result.map((song,key)=>{
                             return(
-                            <SongRow onContextMenu={(e) =>handleClick(e,key)} key={key} songs={data.songs} song={song} songToggle={songToggle} id={key} imageUrl={albumImages[song.albumId]} playlistId={data.id}/>
+                            <SongRow type={showedPlaylist.type} onContextMenu={(e) =>handleClick(e,key)} key={key} songs={data.songs} song={song} songToggle={songToggle} id={key} imageUrl={albumImages[song.albumId]} playlistId={data.id}/>
                             )
                         })}
                     </tbody>
