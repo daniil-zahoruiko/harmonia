@@ -103,16 +103,19 @@ def get_image_file(db, id, table):
     return db.read_image_file(id, table)
 
 def change_username(db,user_id,username):
-    return db.change_username(user_id,username)
+    return db.update_username(user_id,username)
 
 def change_email(db,user_id,email):
-    return db.change_email(user_id,email)
+    return db.update_email(user_id,email)
 
 def change_password(db,user_id,password):
-    return db.change_password(user_id,password)
+    return db.update_password(user_id,password)
+
+def change_settings(db,user_id,settings):
+    db.update_settings(user_id,json.dumps(settings))
 
 def change_full_name(db,user_id,full_name):
-    return db.change_full_name(user_id,full_name)
+    return db.update_full_name(user_id,full_name)
 
 def create_cache(data,filename):
     dir_path = os.path.join(os.getcwd(),"cache")
