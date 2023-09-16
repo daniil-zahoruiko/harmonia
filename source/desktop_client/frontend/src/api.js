@@ -285,6 +285,29 @@ async function updateData({token,username,email,fullName,input}){
     });
 }
 
+async function updateSettings({token,settings}){
+    return await fetch("/change_settings", {
+        method: "POST",
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            "settings":settings
+        })
+    }).then(async (response) => {
+        const jsonResponse = await response.json();
+        
+        if(!response.ok)
+        {
+            if(response.status === 401)
+                throw new Error(jsonResponse.msg);
+            else
+                throw new Error('Unknown error ' + response.status);
+        }
+    });
+}
+
 async function createPlaylist({token,name,setPlaylists,setShowedPlaylist,username}){
     return await fetch("/api/add_playlist", {
         method: "POST",
@@ -459,6 +482,7 @@ export { FetchSongs,
         UpdateFavArtists,
         AddStreams,
         updateData,
+        updateSettings,
         createPlaylist,
         deletePlaylist,
         updatePlaylist,
