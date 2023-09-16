@@ -186,19 +186,21 @@ class DBConnection:
         self.update_single_field_by_id("streams",streams,"songs",song_id)
 
     # user data update
-    def change_username(self,user_id,username):
+    def update_username(self,user_id,username):
         self.update_single_field_by_id("username", username, "users", user_id)
 
-    def change_email(self,user_id,email):
+    def update_email(self,user_id,email):
         self.update_single_field_by_id("email", email, "users", user_id)
 
-    def change_password(self,user_id,password):
+    def update_password(self,user_id,password):
         salt = bcrypt.gensalt()
         self.update_single_field_by_id("password", bcrypt.hashpw(password.encode('utf-8'), salt), "users", user_id)
 
-    def change_full_name(self,user_id,full_name):
+    def update_full_name(self,user_id,full_name):
         self.update_single_field_by_id("fullName", full_name, "users", user_id)
 
+    def update_settings(self,user_id,settings):
+        self.update_single_field_by_id("settings",settings,"users",user_id)
     #endregion
     
     #region Creating data

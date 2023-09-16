@@ -7,6 +7,7 @@ import { AddStreams, FetchImage } from '../../api';
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 import { UpdateLikedSongs } from "../../api";
 import { ContextMenu } from '../utils/ContextMenu';
+import { Link } from 'react-router-dom';
 
 export const Player = ({audioElem, currentSong})=> {
 
@@ -51,7 +52,7 @@ export const Player = ({audioElem, currentSong})=> {
       return artist.id === currentSongData.artistId
     })
     setShowedArtist(song_artist[0])
-    setCurrentPage("artist-view")
+    // setCurrentPage("artist-view")
   }
 
   // set current time while using range scroller(when unclicked/submitted cur time)
@@ -156,14 +157,13 @@ export const Player = ({audioElem, currentSong})=> {
 
   useEffect(() =>
   {
-    FetchImage({url:`/api/song/cover/${currentSongData.id}`, token: token, removeToken: removeToken, refreshToken: refreshToken, setUserError: setUserError}).then((res) => setImageUrl(res));
+    FetchImage({url:`/api/album/cover/${currentSongData.albumId}`, token: token, removeToken: removeToken, refreshToken: refreshToken, setUserError: setUserError}).then((res) => setImageUrl(res));
   }, [currentSongData,songLoaded])
 
 
   const [activated,setActivated] = useState(false)
   const [top,setTop] = useState(0)
   const [left,setLeft] = useState(0)
-  const [contextId,setContextId] = useState(0)
 
   const handleClick = (e) => {
       console.log('Right click');
@@ -177,10 +177,10 @@ export const Player = ({audioElem, currentSong})=> {
       <div className='navigation_wrapper'>
         <div className='player_song_data' onContextMenu={(e) =>handleClick(e)}>
           <img className='player_cover' alt={currentSongData.title} src={imageUrl} />
-          <div onClick={artistLink} className='player_song_text'>
+          <Link to="/artist" onClick={artistLink} className='player_song_text'>
             <p className='player_title'>{currentSongData.title}</p>
             <p className='player_artist'>{currentSongData.artist}</p>
-          </div>
+          </Link>
             {likedSongs[currentSongData.id]?<AiFillHeart className='player_like' onClick={likeSong}/>:<AiOutlineHeart className='player_like' onClick={likeSong}/>}
             <ContextMenu song={currentSongData} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>

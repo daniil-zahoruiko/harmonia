@@ -10,6 +10,8 @@ import { SongsContext } from "../../SongsData";
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
 import { getValues } from "../helpers";
 import {BsFillCloudUploadFill} from "react-icons/bs"
+import {IoArrowBackCircleOutline} from "react-icons/io5"
+import { Link } from "react-router-dom";
 
 export const ChangeUserData = () =>
 {
@@ -58,6 +60,7 @@ export const ChangeUserData = () =>
 
     return(
         <div className="change_data_wrapper">
+            <Link to="/profile" className="back_wrapper back_change_data"><IoArrowBackCircleOutline className="back_wrapper_svg"/></Link>
             <form className="change_data_form" onSubmit={handleSubmit(onSubmit)}>
                 <h1>¡Change your data!</h1>
                 <div className="form_row">

@@ -189,10 +189,10 @@ export const AddSong = ({setChange}) =>{
         newData.append("album_id",albumId)
         newData.append("album_name",albumNameSubmit)
         console.log(albumNameSubmit,albumId)
-        await addSong({token:token,data:newData})
+        await addSong({token:token,data:newData,albums:albums,songs:songs})
         .catch((error) => setError(error.message));
         setChange(false)
-
+        window.location.reload(false)
     }
 
     const handleAlbumMenuPick = () =>{

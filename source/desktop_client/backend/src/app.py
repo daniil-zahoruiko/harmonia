@@ -304,6 +304,19 @@ def change_data():
 
     return jsonify({"msg": "Success"}), 200
 
+@app.route("/change_settings",methods=["POST"])
+@cross_origin()
+@jwt_required()
+def change_settings():
+    settings = request.json["settings"]
+    user_id = get_jwt_identity()
+
+    try:
+        utils.change_settings(connection,user_id,settings)
+    except:
+        return jsonify({"msg": "Server error"}), 401
+    return jsonify({"msg": "Success"}), 200
+
 @app.route("/api/add_streams",methods=["POST"])
 @cross_origin()
 @jwt_required()

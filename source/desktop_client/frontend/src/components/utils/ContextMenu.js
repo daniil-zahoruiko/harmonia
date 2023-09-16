@@ -184,24 +184,6 @@ export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,re
                         <div className={`context_playlist_arrow ${style}`}></div>
                     </div>
                 </>}
-                {/* {likedSongs[song.id]
-                ?<div onClick={likeSong} className="context_menu_like">
-                    <p>Remove from liked songs</p>
-                    <AiFillHeart />
-                </div>
-                :<div onClick={likeSong} className="context_menu_like">
-                    <p>Add to liked songs</p>
-                    <AiOutlineHeart />
-                </div>}
-                {type === "playlist"
-                ?<div onClick={removeSong} className="context_menu_like">
-                    <p>Remove from this playlist</p>
-                </div>:""}
-                <div onClick={togglePLList} className="context_menu_like">
-                    <p>Add to playlist</p>
-                    <div className={`context_playlist_arrow ${style}`}></div>
-                </div> */}
-
             </div>
             <>
                 <div ref={listRef} style={{
