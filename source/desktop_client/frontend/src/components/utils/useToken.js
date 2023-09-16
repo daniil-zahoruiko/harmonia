@@ -22,7 +22,6 @@ function useToken()
             return null;
         }
 
-        console.log(refreshToken);
         const response = await fetch("/refresh_token", {
             method: "POST",
             headers: {
@@ -38,8 +37,6 @@ function useToken()
         });
 
         const jsonResponse = await response.json();
-
-        console.log(jsonResponse);
 
         return jsonResponse.access_token;
     }
