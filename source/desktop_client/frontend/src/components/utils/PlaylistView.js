@@ -36,7 +36,7 @@ export const PlaylistView = () =>{
     }
 
     const {
-        access_token: [token,,removeToken],
+        access_token: [token,,refreshToken,removeToken],
         error: [,setUserError],
         user_playlists:[playlists,setPlaylists]
     } = useContext(UserContext);
@@ -73,7 +73,7 @@ export const PlaylistView = () =>{
 
     // const images = FetchImages({songs, token});
     const fetch = async (data, url,images,setImages,last) =>{
-        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages})
+        await FetchImages({data:data, url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images:images,setImages:setImages})
         if (last) setAllLoaded(true);
     }
     useEffect(()=>{

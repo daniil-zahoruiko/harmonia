@@ -5,7 +5,7 @@ const UserContext = createContext(null);
 
 const GetUserValue = () => 
 {
-    const {setToken, token, removeToken} = useToken();
+    const {setToken, token, refreshToken, removeToken} = useToken();
     const [userError, setUserError] = useState(null);
     const [username,setUsername] = useState()
     const [email,setEmail] = useState()
@@ -18,7 +18,7 @@ const GetUserValue = () =>
     const [userArtistId,setUserArtistId] = useState()
 
     const user = {
-        access_token: [token, setToken, removeToken],
+        access_token: [token, setToken, refreshToken, removeToken],
         error: [userError, setUserError],
         username:[username,setUsername],
         email:[email,setEmail],

@@ -20,7 +20,7 @@ export const Player = ({audioElem, currentSong})=> {
           page:[,setCurrentPage],
           recentlyPlayed:[recentlyPlayed,setRecentlyPlayed] } = useContext(SongsContext)
 
-  const { access_token: [token, , removeToken],
+  const { access_token: [token,, refreshToken, removeToken],
           error: [, setUserError],
           username:[username,],
           liked_songs:[likedSongs,setLikedSongs] } = useContext(UserContext);
@@ -156,7 +156,7 @@ export const Player = ({audioElem, currentSong})=> {
 
   useEffect(() =>
   {
-    FetchImage({url:`/api/song/cover/${currentSongData.id}`, token: token, removeToken: removeToken, setUserError: setUserError}).then((res) => setImageUrl(res));
+    FetchImage({url:`/api/song/cover/${currentSongData.id}`, token: token, removeToken: removeToken, refreshToken: refreshToken, setUserError: setUserError}).then((res) => setImageUrl(res));
   }, [currentSongData,songLoaded])
 
 

@@ -18,7 +18,7 @@ export const TopPicks = ({songs}) =>
             cachedAlbumImages:[images,setImages],
             db:[,,albums], } = useContext(SongsContext)
 
-    const {access_token: [token,,removeToken],
+    const {access_token: [token,,refreshToken,removeToken],
     error: [,setUserError]} = useContext(UserContext);
 
     const firstRender = useRef(true)
@@ -34,7 +34,7 @@ export const TopPicks = ({songs}) =>
     })
 
     const fetch = async (data, url) =>{
-        await FetchImages({data:data, url: url, token,removeToken,setUserError,setAllLoaded,images,setImages});
+        await FetchImages({data:data, url: url, token,removeToken, refreshToken, setUserError,setAllLoaded,images,setImages});
         setAllLoaded(true);
     }
     useEffect(()=>{
@@ -89,7 +89,7 @@ export const TopPicks = ({songs}) =>
 
 export const FavArtists = () =>{
     const {
-        access_token: [token,,removeToken],
+        access_token: [token,,refreshToken,removeToken],
         error: [,setUserError],
         username:[username,],
         fav_artists:[favArtists,]
@@ -105,7 +105,7 @@ export const FavArtists = () =>{
     const firstRender = useRef(true);
 
     const fetch = async (data, url) =>{
-        await FetchImages({data:data,url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
+        await FetchImages({data:data,url:url, token,removeToken, refreshToken, setUserError,setAllLoaded,images,setImages})
         setAllLoaded(true)
         console.log(favArtists);
     }
@@ -145,7 +145,7 @@ export const LibraryPlaylists = () =>{
         playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
 
         const {
-            access_token: [token,,removeToken],
+            access_token: [token,,refreshToken,removeToken],
             error: [,setUserError],
             user_playlists:[playlists,setPlaylists],
         } = useContext(UserContext);
@@ -155,7 +155,7 @@ export const LibraryPlaylists = () =>{
     const [activate,setActivate] = useState(false)
 
     const fetch = async (data, url,images,setImages,last) =>{
-        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages})
+        await FetchImages({data:data, url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images:images,setImages:setImages})
         if (last) setAllLoaded(true);
     }
     useEffect(()=>{

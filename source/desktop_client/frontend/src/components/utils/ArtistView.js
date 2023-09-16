@@ -27,7 +27,7 @@ export const ArtistView = () =>{
             artistRender:[showedArtist,setShowedArtist]} = useContext(SongsContext)
 
     const {
-        access_token: [token,,removeToken],
+        access_token: [token,,refreshToken,removeToken],
         error: [,setUserError],
         username:[username,setUsername],
         fav_artists:[favArtists,setFavArtists]
@@ -69,7 +69,7 @@ export const ArtistView = () =>{
 
     // const images = FetchImages({songs, token});
     const fetch = async (data, url, images, setImages,last) =>{
-        await FetchImages({data:data,url:url, token,removeToken,setUserError,setAllLoaded,images,setImages})
+        await FetchImages({data:data,url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images,setImages})
         if(last){
             setAllLoaded(true)
         }

@@ -1,5 +1,6 @@
 import { useEffect, useState,useRef, useContext } from "react"
 import { UserContext } from "./UserContext"
+import { json } from "react-router-dom"
 
 
 const FetchSongs = ({token}) =>{
@@ -8,7 +9,7 @@ const FetchSongs = ({token}) =>{
     const [albums,setAlbums] = useState([])
     const [loading,setLoading] = useState(true)
     const dataFetchedRef = useRef(false);
-    const { access_token: [,,removeToken],
+    const { access_token: [,,refreshToken, removeToken],
             error: [, setUserError],
             username:[username,setUsername],
             email:[email,setEmail],
@@ -21,6 +22,7 @@ const FetchSongs = ({token}) =>{
             user_artist_id:[userArtistId,setUserArtistId] } = useContext(UserContext);
 
     const fetchData = () =>{
+        refreshToken();
         fetch("/api",{
             method: "GET",
             headers: {
@@ -70,7 +72,7 @@ const FetchSongs = ({token}) =>{
     return {songs,artists,albums,loading}
 }
 
-async function FetchImages({data,url,images,setImages, token,removeToken, setUserError})
+async function FetchImages({data,url,images,setImages, token, removeToken, refreshToken, setUserError})
 {
     let response
     let temp_dict = {}
@@ -80,7 +82,7 @@ async function FetchImages({data,url,images,setImages, token,removeToken, setUse
             const id = data[i].id
 
             if(!images[data[i].id]){
-                response = await FetchImage({url: url + '/' + id, token:token, removeToken: removeToken, setUserError: setUserError})
+                response = await FetchImage({url: url + '/' + id, token:token, removeToken: removeToken, refreshToken: refreshToken, setUserError: setUserError})
                 temp_dict[id] = response
             }
             if(i===data.length-1){
@@ -89,10 +91,11 @@ async function FetchImages({data,url,images,setImages, token,removeToken, setUse
         }
 }
 
-const FetchImage = async ({url, token, removeToken, setUserError}) =>
+const FetchImage = async ({url, token, removeToken, refreshToken, setUserError}) =>
 {
     try
     {
+        refreshToken();
         const response = await fetch(url, {
             method: "GET",
             headers: {
@@ -126,7 +129,6 @@ const FetchImage = async ({url, token, removeToken, setUserError}) =>
 
 async function LogMeIn({setToken, setError, username, password})
 {
-    // TODO: obtain all user data
     return await fetch('/token', {
         method: "POST",
         headers:{
@@ -140,8 +142,7 @@ async function LogMeIn({setToken, setError, username, password})
         const jsonResponse = await response.json();
 
         if(response.ok){
-            setToken(jsonResponse.token);
-            console.log(jsonResponse.user_data)
+            setToken({accessToken: jsonResponse.access_token, refreshToken: jsonResponse.refresh_token});
         }
         else if(response.status === 401)
             throw new Error(jsonResponse.msg);

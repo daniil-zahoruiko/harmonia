@@ -14,7 +14,7 @@ export const SearchResults = ({results}) => {
             cachedAlbumImages: [albumImages, setAlbumImages],
             db:[,,albums] } = useContext(SongsContext)
 
-    const { access_token: [token,,removeToken],
+    const { access_token: [token,,refreshToken,removeToken],
         error: [,setUserError]  } = useContext(UserContext);
 
     const firstRender = useRef(true)
@@ -43,7 +43,7 @@ export const SearchResults = ({results}) => {
 
 
     const fetch = async (data, url, images, setImages) =>{
-        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages});
+        await FetchImages({data:data, url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images:images,setImages:setImages});
         setAllLoaded(true);
     }
     useEffect(()=>{

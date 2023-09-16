@@ -1,30 +1,68 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function useToken()
 {
-    function getToken()
+    const [token, setToken] = useState("");
+    useEffect(() =>{
+        getRefreshedToken().then((data) => { if(data) setToken(data) });
+    }, [])
+
+    function saveToken({accessToken, refreshToken})
     {
-        const currentToken = localStorage.getItem("token");
-        return currentToken ?? "";
+        localStorage.setItem("refreshToken", refreshToken);
+        setToken(accessToken);
     }
 
-    const [token, setToken] = useState(getToken());
-
-    function saveToken(currentToken)
+    async function getRefreshedToken()
     {
-        localStorage.setItem("token", currentToken);
-        setToken(currentToken);
+        const refreshToken = localStorage.getItem("refreshToken");
+
+        if(refreshToken === null || refreshToken === "")
+        {
+            return null;
+        }
+
+        console.log(refreshToken);
+        const response = await fetch("/refresh_token", {
+            method: "POST",
+            headers: {
+                'Authorization': 'Bearer ' + refreshToken,
+            }
+        }).then((response) => {
+            if(!response.ok)
+                throw new Error(response.status);
+            return response;
+        }).catch((error) => {
+            console.log("Error " + error.message + " occured while refreshing token");
+            setToken("");
+        });
+
+        const jsonResponse = await response.json();
+
+        console.log(jsonResponse);
+
+        return jsonResponse.access_token;
     }
+
+    async function refreshToken()
+    {
+        const newToken = await getRefreshedToken(refreshToken);
+
+        setToken(newToken);
+
+        return token;
+    }   
 
     function removeToken()
     {
-        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         setToken(null);
     }
 
     return {
         setToken: saveToken,
         token,
+        refreshToken,
         removeToken
     }
 }

@@ -80,14 +80,15 @@ export const ArtistCard = ({artist}) =>{
 }
 
 
-export const SongCard = ({song, imageUrl,songToggle,id,playlistId,onContextMenu}) => {
+export const SongCard = ({song, songToggle,id,playlistId,onContextMenu}) => {
 
     const { db:[,artists,],
         songData:[currentSongData,],
         playlist:[currentPlaylist,],
         playing:[isPlaying,],
         artistRender:[,setShowedArtist],
-        page:[,setCurrentPage] } = useContext(SongsContext)
+        page:[,setCurrentPage],
+        cachedAlbumImages:[albumImages,] } = useContext(SongsContext)
 
 
     const [hover,setHover] = useState({bool:false,key:""})
@@ -101,7 +102,7 @@ export const SongCard = ({song, imageUrl,songToggle,id,playlistId,onContextMenu}
 
     return(
         <div onContextMenu={onContextMenu} onMouseEnter={()=>setHover({bool:true,key:song.id})} onMouseLeave={()=>setHover({key:song.id,bool:false})} className="SongCard">
-            <LoadedImage className={"songcard_img"} alt={song.title} src={imageUrl}/>
+            <LoadedImage className={"songcard_img"} alt={song.title} src={albumImages[song.albumId]}/>
             <h1 className="song_card_title">{song.title}</h1>
             <Link to="/artist" onClick={artistLink} className="song_card_artist">{song.artist}</Link>
             {hover.bool && hover.key === song.id

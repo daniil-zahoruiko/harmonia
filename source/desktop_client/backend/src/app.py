@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt, get_jwt_identity, unset_jwt_cookies
+from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token, jwt_required, get_jwt, get_jwt_identity, unset_jwt_cookies
 from flask_cors import CORS, cross_origin
 from datetime import datetime, timedelta, timezone
 import json
@@ -20,6 +20,7 @@ connection = utils.establish_db_connection(app)
 
 app.config['JWT_SECRET_KEY'] = "some-secret key" # remember to change the key
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
 jwt = JWTManager(app)
 
 @app.route('/token', methods=['POST'])
@@ -40,8 +41,16 @@ def create_token():
         return jsonify({"msg": error_msg}), 401
 
     access_token = create_access_token(identity=user_id)
+    refresh_token = create_refresh_token(identity=user_id)
 
-    return jsonify({"token":access_token})
+    return jsonify({"access_token": access_token, "refresh_token": refresh_token})
+
+@app.route('/refresh_token', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh_token():
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity)
+    return jsonify({"access_token": access_token})
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
