@@ -5,7 +5,9 @@ import { SongsContext } from "../../SongsData";
 import {useForm} from "react-hook-form"
 import {MdCancel,MdOutlineAudioFile} from "react-icons/md"
 import {BsFillCloudUploadFill,BsPlusCircle} from "react-icons/bs"
+import { LoadedImage } from "./LoadedImage";
 import "../../styles/changedata.css"
+import "../../styles/dropdown.css"
 
 
 
@@ -54,6 +56,7 @@ export const CreateArtist = ({setChange}) =>{
 
     }
 
+    console.log(imageUrl)
 
     return(
         <div className="change_playlist_outer">
@@ -63,9 +66,10 @@ export const CreateArtist = ({setChange}) =>{
                 <div className="change_playlist_inputs">
                     <div>
                         <label htmlFor="file-upload">
-                            <div className="album_image_label_wrapper">
-                                <img className="playlist_change_image" alt="artist" src={imageUrl} />
-                                {imageUrl?"":<BsFillCloudUploadFill className="album_image_upload_svg"/>}
+                            <div className={imageUrl?"playlist_image_label_wrapper":"album_image_label_wrapper"}>
+                                <LoadedImage className="playlist_change_image" alt="artist" src={imageUrl?imageUrl:"none"} />
+                                {/* {imageUrl?"":<BsFillCloudUploadFill className="album_image_upload_svg"/>} */}
+                                <BsFillCloudUploadFill className={imageUrl?"playlist_image_upload_svg":"album_image_upload_svg"}/>
                             </div>
                         </label>
                         <input onChange={(e)=>{
@@ -166,14 +170,18 @@ export const AddSong = ({setChange}) =>{
     {
         if(!audio){
             setError("No audio selected")
+            return
         }
         if(!image){
             setError("No image selected")
+            return
         }
         if(albumNameShow === "Choose Album..."){
             setError("No album selected")
+            return
         }
-        if(!audio || !image || albumNameShow === "Choose Album..."){
+        if(data.title === ""){
+            setError("Title required")
             return
         }
         const newData = new FormData()
@@ -228,7 +236,7 @@ export const AddSong = ({setChange}) =>{
                         <div>
                             <label htmlFor="file-upload">
                                 <div className={imageUrl?"playlist_image_label_wrapper":"album_image_label_wrapper"}>
-                                    <img className="playlist_change_image" alt="song" src={imageUrl} />
+                                    <LoadedImage className="playlist_change_image" alt="song" src={imageUrl?imageUrl:"none"} />
                                     <BsFillCloudUploadFill className={imageUrl?"playlist_image_upload_svg":"album_image_upload_svg"}/>
                                 </div>
                             </label>
