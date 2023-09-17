@@ -158,7 +158,7 @@ def playlist_image(id):
         return jsonify({"msg": "Playlist contains no image"}), 204
     return file
 
-@app.route("/api/add_playlist",methods=["POST"])
+@app.route("/add_playlist",methods=["POST"])
 @cross_origin()
 @jwt_required()
 def add_playlist():

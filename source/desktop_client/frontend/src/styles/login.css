@@ -59,7 +59,7 @@
 @media (orientation:portrait) {
     .log_in_wrapper{
         padding-top: 30%;
-        height:40vh;
+        height:60vh;
     }
     .log_in_wrapper h1{
         font-size: 7vw;
@@ -72,6 +72,7 @@
     .log_in_wrapper label{
         font-size: 6vw;
         margin-bottom: 2%;
+        height: auto;
     }
     .login_input{
         font-size:4vw;
@@ -79,5 +80,8 @@
     .login_form_input_wrapper{
         height:6vw;
         width:50vw;
+    }
+    #submit{
+        font-size: 6vw;
     }
 }

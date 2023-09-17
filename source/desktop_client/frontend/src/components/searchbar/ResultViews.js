@@ -19,7 +19,7 @@ export const SongResult = ({result,results,count,onClick}) =>{
         if(currentPlaylist.id !== data.id){
             setCurrentPlaylist(data)
         }
-        if(currentSongData === results[index]){
+        if(currentSongData === results[index] && currentPlaylist.id === data.id){
             PlayPause()
         }
         else{
@@ -33,7 +33,7 @@ export const SongResult = ({result,results,count,onClick}) =>{
         <div className="result_div">
             <div className="search_result_image_wrapper">
                 <LoadedImage className="result_image" alt={result.id} src={images[result.albumId]} />
-                {isPlaying && result.id === currentSongData.id?<BsPauseFill className='search_play' onClick={()=>songToggle(count)}/>
+                {isPlaying && result.id === currentSongData.id && currentPlaylist.id === "search"?<BsPauseFill className='search_play' onClick={()=>songToggle(count)}/>
                 :<BsPlayFill className='search_play' onClick={()=>songToggle(count)}/>}
             </div>
             <div onContextMenu={onClick} className="result_data">

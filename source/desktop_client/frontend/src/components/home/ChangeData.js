@@ -11,6 +11,7 @@ import {BsFillCloudUploadFill} from "react-icons/bs"
 import {IoArrowBackCircleOutline} from "react-icons/io5"
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/changedata.css"
+import { LoadedImage } from "../utils/LoadedImage";
 
 
 export const ChangeUserData = () =>
@@ -201,7 +202,10 @@ export const ChangePlaylistData = ({setChange}) =>{
                     <div>
                         <label htmlFor="file-upload">
                             <div className="playlist_image_label_wrapper">
-                                <img className="playlist_change_image" alt="song" src={imageUrl==="No Content" && showedPlaylist.songs[0]?albumImages[showedPlaylist.songs[0].albumId]:imageUrl} />
+                                <LoadedImage className="playlist_change_image" alt="song" src={imageUrl==="No Content"
+                                ?!showedPlaylist.songs[0]?"none"
+                                :albumImages[showedPlaylist.songs[0].albumId]
+                                :imageUrl} />
                                 <BsFillCloudUploadFill className="playlist_image_upload_svg"/>
                             </div>
                         </label>
