@@ -11,7 +11,7 @@ import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
 import { getValues } from "../helpers";
 import {BsFillCloudUploadFill} from "react-icons/bs"
 import {IoArrowBackCircleOutline} from "react-icons/io5"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const ChangeUserData = () =>
 {
@@ -22,6 +22,8 @@ export const ChangeUserData = () =>
         full_name:[fullName,setFullName],
         password:[password,setPassword],
         settings:[settings,setSettings] } = useContext(UserContext);
+
+    const navigate = useNavigate()
 
 
     const [passwordVisibility, setPasswordVisibility] = useState(false)
@@ -50,7 +52,7 @@ export const ChangeUserData = () =>
         setUsername(data.username)
         setEmail(data.email)
         setFullName(data.fullName)
-        window.location.href = "/profile"
+        navigate("/profile")
     }
 
     const passwordToggle = () =>{
@@ -139,7 +141,8 @@ export const ChangePlaylistData = ({setChange}) =>{
 
 
     const {playlistRender:[showedPlaylist,setShowedPlaylist],
-        cachedPlaylistImages:[playlistImages,setPlaylistImages] } = useContext(SongsContext)
+        cachedPlaylistImages:[playlistImages,setPlaylistImages],
+        cachedAlbumImages:[albumImages,setAlbumImages] } = useContext(SongsContext)
 
     const [error, setError] = useState(null);
     const [imageUrl,setImageUrl] = useState(playlistImages[showedPlaylist.id])
@@ -183,7 +186,6 @@ export const ChangePlaylistData = ({setChange}) =>{
         .catch((error) => setError(error.message));
         setChange(false)
         if(image){
-            console.log("bam")
             const newData = new FormData()
             newData.append('file',image)
             await changePlaylistImage({token:token,id:showedPlaylist.id,image:newData})
@@ -203,13 +205,13 @@ export const ChangePlaylistData = ({setChange}) =>{
                     <div>
                         <label htmlFor="file-upload">
                             <div className="playlist_image_label_wrapper">
-                                <img className="playlist_change_image" src={imageUrl} />
+                                <img className="playlist_change_image" src={imageUrl==="No Content" && showedPlaylist.songs[0]?albumImages[showedPlaylist.songs[0].albumId]:imageUrl} />
                                 <BsFillCloudUploadFill className="playlist_image_upload_svg"/>
                             </div>
                         </label>
                         <input onChange={(e)=>{
-                            setImageUrl(URL.createObjectURL(e.target.files[0]));
-                            setImage(e.target.files[0])
+                            setImageUrl((prev)=>{return(e.target.files[0]?URL.createObjectURL(e.target.files[0]):prev)});
+                            setImage((prev)=>{return(e.target.files[0]?e.target.files[0]:prev)})
                             }}
                             type="file"
                             id="file-upload"

@@ -64,14 +64,10 @@ export const PlaylistView = () =>{
         return song.albumId
     }))
 
-    // console.log(Array.from(albumIdsSet))
-
     const albumsToFetch = albums.filter((album,key)=>{
         return albumIdsSet.has(album.id)
     })
 
-
-    // const images = FetchImages({songs, token});
     const fetch = async (data, url,images,setImages,last) =>{
         await FetchImages({data:data, url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images:images,setImages:setImages})
         if (last) setAllLoaded(true);
@@ -82,7 +78,6 @@ export const PlaylistView = () =>{
         }
         else{
             setAllLoaded(false)
-            // fetch(data.songs, '/api/song/cover',images,setImages)
             fetch(albumsToFetch, '/api/album/cover',albumImages,setAlbumImages)
             fetch([data], '/api/playlist/cover', playlistImages, setPlaylistImages,true)
         }
@@ -139,8 +134,6 @@ export const PlaylistView = () =>{
     const [contextId,setContextId] = useState(0)
 
     const handleClick = (e,value) => {
-        console.log(value)
-        console.log('Right click');
         setTop(e.pageY)
         setLeft(e.pageX)
         setActivated(true)
@@ -148,12 +141,9 @@ export const PlaylistView = () =>{
     }
 
     const handleModify = (e,value) => {
-        console.log(value)
-        console.log('Left click');
         setTop(e.pageY)
         setLeft(e.pageX)
         setActivateModify(true)
-        // setContextId(value)
     }
 
     const removePlaylist = async () =>{
@@ -169,7 +159,13 @@ export const PlaylistView = () =>{
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
                 :data.id==="recent_songs"?<div className="playlist_image liked_playlist_image"><AiOutlineClockCircle/></div>
                 :<LoadedImage className="playlist_image" src={
-                    isEmpty?"none":data.type==="album"?albumImages[data.id.slice(0,-6)]:playlistImages[data.id] !== "No Content" ?playlistImages[data.id]:albumImages[data.songs[0].albumId]
+                    data.type==="album"
+                    ?albumImages[data.id.slice(0,-6)]
+                    :playlistImages[data.id] !== "No Content"
+                    ?playlistImages[data.id]
+                    :isEmpty
+                    ?"none"
+                    :albumImages[data.songs[0].albumId]
                 } />}
                 <div className="playlist_data">
                     <p className='playlist_type'>{data.type} playlist</p>
@@ -196,7 +192,7 @@ export const PlaylistView = () =>{
                 </div>
             </div>
             {
-                playlistView==="row"?
+                playlistView==="row" || showedPlaylist.type==="album"?
                 <table className='songs_list'>
                     <colgroup>
                         <col className='n_col'/>

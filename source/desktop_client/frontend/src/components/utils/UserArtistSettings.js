@@ -1,29 +1,20 @@
 import { useState, useContext, useRef } from "react"
-import { LogMeIn, addSong, changePlaylistImage, createArtist, updateData, updatePlaylist } from "../../api";
+import { addSong, createArtist } from "../../api";
 import { UserContext } from "../../UserContext";
-import {useForm} from "react-hook-form"
-import { yupResolver } from '@hookform/resolvers/yup';
-import { changeUserDataSchema,changePlaylistDataSchema } from "./ValidationSchemas";
-import {MdCancel,MdOutlineAudioFile} from "react-icons/md"
-import "../../styles/changedata.css"
 import { SongsContext } from "../../SongsData";
-import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
-import { getValues } from "../helpers";
+import {useForm} from "react-hook-form"
+import {MdCancel,MdOutlineAudioFile} from "react-icons/md"
 import {BsFillCloudUploadFill,BsPlusCircle} from "react-icons/bs"
-import { DropDown } from "./DropDown";
+import "../../styles/changedata.css"
+
 
 
 export const CreateArtist = ({setChange}) =>{
-    const { access_token: [token,setToken,removeToken],
-        user_playlists:[playlists,setPlaylists],
-        user_artist_id:[userArtistId,setUserArtistId] } = useContext(UserContext);
-
-
-    const {playlistRender:[showedPlaylist,setShowedPlaylist],
-        cachedPlaylistImages:[playlistImages,setPlaylistImages] } = useContext(SongsContext)
+    const { access_token: [token],
+        user_artist_id:[,setUserArtistId] } = useContext(UserContext);
 
     const [error, setError] = useState(null);
-    const [imageUrl,setImageUrl] = useState(playlistImages[showedPlaylist.id])
+    const [imageUrl,setImageUrl] = useState()
     const [image,setImage] = useState()
     const formRef = useRef(null)
 
@@ -47,7 +38,11 @@ export const CreateArtist = ({setChange}) =>{
     async function onSubmit(data)
     {
         if(!image){
-            console.log("no image selected")
+            setError("No image selected")
+            return
+        }
+        if(data.name == ""){
+            setError("Name required")
             return
         }
         const newData = new FormData()
@@ -68,31 +63,31 @@ export const CreateArtist = ({setChange}) =>{
                 <div className="change_playlist_inputs">
                     <div>
                         <label htmlFor="file-upload">
-                            <div className="song_image_label_wrapper">
+                            <div className="album_image_label_wrapper">
                                 <img className="playlist_change_image" src={imageUrl} />
-                                <BsFillCloudUploadFill className="playlist_image_upload_svg"/>
+                                {imageUrl?"":<BsFillCloudUploadFill className="album_image_upload_svg"/>}
                             </div>
                         </label>
                         <input onChange={(e)=>{
-                            setImageUrl(URL.createObjectURL(e.target.files[0]));
-                            setImage(e.target.files[0])
+                            setImageUrl((prev)=>{return(e.target.files[0]?URL.createObjectURL(e.target.files[0]):prev)});
+                            setImage((prev)=>{return(e.target.files[0]?e.target.files[0]:prev)})
                             }}
                             type="file"
                             id="file-upload"
+                            accept="image/webp,image/png,image/jpg,image/jpeg"
                         />
                     </div>
-                    <form className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="form_row_playlist">
-                            <p className="playlist_change_label" htmlFor="username">
+                    <form className="become_artist_form" onSubmit={handleSubmit(onSubmit)}>
+                        <div className="form_row_artist">
+                            <p className="become_artist_label" htmlFor="username">
                                 Name:
                             </p>
-                            <div className="form_input_wrapper_playlist">
-                                <input className={`signing_input_playlist ${errors.name?"invalid":""}`} id="name" {...register("name")} />
+                            <div className="form_input_wrapper_artist">
+                                <input className={`signing_input_artist ${errors.name?"invalid":""}`} placeholder="Name..." id="name" {...register("name")} />
                             </div>
-                            {/* <p className="form_error">{errors.name?.message}</p> */}
                         </div>
                         {error != null ? <p className="login_error">{error}</p> : null}
-                        <input id="submit_change" type="submit" value="Save"/>
+                        <input id="submit_change" type="submit" value="Submit"/>
                     </form>
                 </div>
             </div>
@@ -102,9 +97,8 @@ export const CreateArtist = ({setChange}) =>{
 }
 
 export const AddSong = ({setChange}) =>{
-    const { access_token: [token,setToken,removeToken],
-        user_playlists:[playlists,setPlaylists],
-        user_artist_id:[userArtistId,setUserArtistId],} = useContext(UserContext);
+    const { access_token: [token],
+        user_artist_id:[userArtistId],} = useContext(UserContext);
 
 
     const {playlistRender:[showedPlaylist,setShowedPlaylist],
@@ -123,6 +117,7 @@ export const AddSong = ({setChange}) =>{
     const formRef = useRef(null)
     const albumMenuRef = useRef(null)
     const popUpRef = useRef(null)
+    const ddRef = useRef(null)
 
     // Create/Choose Album variables
 
@@ -135,9 +130,6 @@ export const AddSong = ({setChange}) =>{
     const user_albums = albums.filter(album=>{
         return album.artistId == userArtistId
     })
-
-    console.log(user_albums)
-
 
     const {register, handleSubmit, formState: {errors}} = useForm({
         defaultValues:{
@@ -154,6 +146,13 @@ export const AddSong = ({setChange}) =>{
     }
     const closePopUp = (e) =>{
         if(popUpRef.current && !popUpRef.current.contains(e.target)){
+            setChooseAlbums(false)
+            setCreateAlbum(false)
+        }
+    }
+
+    const closeDropDown = (e) =>{
+        if(ddRef.current && !ddRef.current.contains(e.target)  && (popUpRef.current && !popUpRef.current.contains(e.target))){
             setAlbumDD(false)
             setChooseAlbums(false)
             setCreateAlbum(false)
@@ -162,19 +161,18 @@ export const AddSong = ({setChange}) =>{
 
     document.addEventListener('mousedown',closePopUp)
     document.addEventListener('mousedown',closeMenu)
+    document.addEventListener('mousedown',closeDropDown)
+
 
     async function onSubmit(data)
     {
         if(!audio){
-            console.log("no audio selected")
             setError("No audio selected")
         }
         if(!image){
-            console.log("no audio selected")
             setError("No image selected")
         }
         if(albumNameShow === "Choose Album..."){
-            console.log("no audio selected")
             setError("No album selected")
         }
         if(!audio || !image || albumNameShow === "Choose Album..."){
@@ -188,7 +186,6 @@ export const AddSong = ({setChange}) =>{
         newData.append("artist_id",userArtistId)
         newData.append("album_id",albumId)
         newData.append("album_name",albumNameSubmit)
-        console.log(albumNameSubmit,albumId)
         await addSong({token:token,data:newData,albums:albums,songs:songs})
         .catch((error) => setError(error.message));
         setChange(false)
@@ -222,8 +219,6 @@ export const AddSong = ({setChange}) =>{
         setAlbumDD(false)
     }
 
-    console.log(audio)
-
 
     return(
         <div className="change_playlist_outer">
@@ -234,14 +229,14 @@ export const AddSong = ({setChange}) =>{
                     <div  className="add_song_data">
                         <div>
                             <label htmlFor="file-upload">
-                                <div className="album_image_label_wrapper">
+                                <div className={imageUrl?"playlist_image_label_wrapper":"album_image_label_wrapper"}>
                                     <img className="playlist_change_image" src={imageUrl} />
-                                    {imageUrl?"":<BsFillCloudUploadFill className="album_image_upload_svg"/>}
+                                    <BsFillCloudUploadFill className={imageUrl?"playlist_image_upload_svg":"album_image_upload_svg"}/>
                                 </div>
                             </label>
                             <input onChange={(e)=>{
-                                setImageUrl(URL.createObjectURL(e.target.files[0]));
-                                setImage(e.target.files[0])
+                                setImageUrl((prev)=>{return(e.target.files[0]?URL.createObjectURL(e.target.files[0]):prev)});
+                                setImage((prev)=>{return(e.target.files[0]?e.target.files[0]:prev)})
                                 }}
                                 type="file"
                                 id="file-upload"
@@ -256,7 +251,6 @@ export const AddSong = ({setChange}) =>{
                                 <div className="form_input_wrapper_song">
                                     <input className={`song_input ${errors.name?"invalid":""}`} placeholder="Title..." id="title" {...register("title")} />
                                 </div>
-                                {/* <p className="form_error">{errors.name?.message}</p> */}
                             </div>
                             <div className="form_row_song">
                                 <label htmlFor="genre">
@@ -265,7 +259,6 @@ export const AddSong = ({setChange}) =>{
                                 <div className="form_input_wrapper_song">
                                     <input className={`song_input ${errors.name?"invalid":""}`} placeholder="Genre..." id="genre" {...register("genre")} />
                                 </div>
-                                {/* <p className="form_error">{errors.name?.message}</p> */}
                             </div>
                         </div>
                     </div>
@@ -289,7 +282,7 @@ export const AddSong = ({setChange}) =>{
                                 <p>{albumNameShow}</p>
                             </div>
                             {albumDD
-                            ?<div ref={popUpRef} className="dd-list">
+                            ?<div ref={ddRef} className="dd-list">
                                 <div onClick={handleAlbumCreation} className="dd-list-item">
                                     <p>Create an album</p>
                                 </div>
