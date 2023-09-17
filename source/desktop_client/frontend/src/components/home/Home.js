@@ -1,8 +1,7 @@
-import "../../styles/home.css"
 import { useContext } from "react"
 import { SongsContext } from "../../SongsData";
 import { TopPicks } from "../utils/Sections";
-
+import "../../styles/home.css"
 
 
 export const Home = () => {

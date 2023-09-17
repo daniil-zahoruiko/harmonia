@@ -2,12 +2,11 @@ import { useContext, useEffect, useRef, useState } from "react"
 import { UserContext } from "../../UserContext"
 import { AddSong, CreateArtist } from "../utils/UserArtistSettings"
 import { SongsContext } from "../../SongsData"
-import { SongCard } from "../utils/Cards"
 import { SongRow } from "../utils/SongRow"
 import { LoadedImage } from "../utils/LoadedImage"
 import { FetchImages, updateSettings } from "../../api"
-import "../../styles/settings.css"
 import { ContextMenu } from "../utils/ContextMenu"
+import "../../styles/settings.css"
 
 
 

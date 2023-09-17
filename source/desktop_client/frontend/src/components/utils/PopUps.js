@@ -14,10 +14,9 @@ export const CreatePlaylistPopUp = ({setActivate}) =>{
 
     const [name,setName] = useState("")
     const navigate = useNavigate();
-    const{page:[currentPage,setCurrentPage],
-        playlistRender:[showedPlaylist,setShowedPlaylist],} = useContext(SongsContext)
+    const{playlistRender:[,setShowedPlaylist],} = useContext(SongsContext)
     const {access_token: [token, ,],
-        user_playlists:[playlists,setPlaylists],
+        user_playlists:[,setPlaylists],
     username:[username,]} = useContext(UserContext)
 
     const [error,setError] = useState("")

@@ -15,8 +15,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextM
         songData:[currentSongData,],
         playing:[isPlaying,],
         playlist:[currentPlaylist,],
-        artistRender:[,setShowedArtist],
-        page:[currentPage,setCurrentPage]
+        artistRender:[,setShowedArtist]
      } = useContext(SongsContext)
 
     const { access_token: [token, , ],

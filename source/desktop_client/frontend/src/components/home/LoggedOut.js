@@ -1,9 +1,10 @@
 import { useContext, useState } from "react"
 import { LogIn } from "../login/LogIn";
 import { SignUp } from "../login/SignUp";
-import "../../styles/loggedout.css"
 import { UserContext } from "../../UserContext";
 import { ErrorPopUp } from "../utils/PopUps";
+import "../../styles/loggedout.css"
+
 
 export const LoggedOut = () =>
 {

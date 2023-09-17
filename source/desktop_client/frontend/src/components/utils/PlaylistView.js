@@ -24,10 +24,9 @@ export const PlaylistView = () =>{
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
             playlistView:[playlistView,setPlaylistView],
-            cachedSongImages:[images,setImages],
             cachedAlbumImages:[albumImages,setAlbumImages],
             cachedPlaylistImages:[playlistImages,setPlaylistImages],
-            playlistRender:[showedPlaylist,setShowedPlaylist],
+            playlistRender:[showedPlaylist],
             db:[,,albums], } = useContext(SongsContext)
 
 
@@ -38,7 +37,7 @@ export const PlaylistView = () =>{
     const {
         access_token: [token,,refreshToken,removeToken],
         error: [,setUserError],
-        user_playlists:[playlists,setPlaylists]
+        user_playlists:[,setPlaylists]
     } = useContext(UserContext);
 
     const data = {owner:showedPlaylist.owner,

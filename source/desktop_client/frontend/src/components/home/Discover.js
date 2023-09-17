@@ -9,8 +9,7 @@ const categories = ["hip-hop","rock","rap","trap","classical","workout","jazz","
 
 export const Discover = () =>{
     const { db:[songs,],
-            playlistRender:[,setShowedPlaylist],
-            page:[,setCurrentPage]   } = useContext(SongsContext)
+            playlistRender:[,setShowedPlaylist]  } = useContext(SongsContext)
 
     const [result,setResult] = useState([])
     const [input,setInput] = useState("")

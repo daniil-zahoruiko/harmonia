@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
-import "../../styles/songcard.css"
 import { LoadedImage } from "./LoadedImage"
 import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { SongsContext } from "../../SongsData";
 import { Link } from "react-router-dom";
 import { getValues } from "../helpers";
 import { UserContext } from "../../UserContext";
-import {MdAudiotrack} from "react-icons/md"
+import "../../styles/songcard.css"
 
 
 export const AlbumCard = ({album}) =>{
@@ -33,9 +32,7 @@ export const AlbumCard = ({album}) =>{
 }
 
 export const PlaylistCard = ({playlist}) =>{
-    const { db:[songs],
-            page:[,setCurrentPage],
-            playlistRender:[,setShowedPlaylist],
+    const { playlistRender:[,setShowedPlaylist],
             cachedPlaylistImages:[playlistImages,] } = useContext(SongsContext)
 
     const {

@@ -10,9 +10,8 @@ import { Link } from "react-router-dom";
 
 export const LeftBar = () => {
     const [lbState, setLbState] = useState("full")
-    const { page:[,setCurrentPage],
-        playlistRender:[,setShowedPlaylist],
-        recentlyPlayed:[recentlyPlayed,setRecentlyPlayed]
+    const { playlistRender:[,setShowedPlaylist],
+        recentlyPlayed:[recentlyPlayed]
     } = useContext(SongsContext)
 
     const { username:[username,],

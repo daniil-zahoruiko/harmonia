@@ -9,10 +9,9 @@ import { CreatePlaylistPopUp } from "../utils/PopUps";
 
 export const PlaylistLB = ({lbState}) => {
     const {username:[username,],
-        user_playlists:[playlists,setPlaylists]} = useContext(UserContext)
+        user_playlists:[playlists]} = useContext(UserContext)
 
-    const {page:[currentPage,setCurrentPage],
-        playlistRender:[showedPlaylist,setShowedPlaylist]} = useContext(SongsContext)
+    const {playlistRender:[,setShowedPlaylist]} = useContext(SongsContext)
 
     const [style, setStyle] = useState("closed")
     const [activate,setActivate] = useState(false)

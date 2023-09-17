@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import "../../styles/searchresults.css"
 import { SongsContext } from "../../SongsData"
 import { FetchImages } from "../../api"
 import { UserContext } from "../../UserContext"
 import { SongResult, ArtistResult, AlbumResult } from "./ResultViews"
-import { AlbumCard } from "../utils/Cards"
 import { ContextMenu } from "../utils/ContextMenu"
 
 export const SearchResults = ({results}) => {

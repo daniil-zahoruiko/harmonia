@@ -41,7 +41,7 @@ export const CreateArtist = ({setChange}) =>{
             setError("No image selected")
             return
         }
-        if(data.name == ""){
+        if(data.name === ""){
             setError("Name required")
             return
         }
@@ -64,7 +64,7 @@ export const CreateArtist = ({setChange}) =>{
                     <div>
                         <label htmlFor="file-upload">
                             <div className="album_image_label_wrapper">
-                                <img className="playlist_change_image" src={imageUrl} />
+                                <img className="playlist_change_image" alt="artist" src={imageUrl} />
                                 {imageUrl?"":<BsFillCloudUploadFill className="album_image_upload_svg"/>}
                             </div>
                         </label>
@@ -101,9 +101,7 @@ export const AddSong = ({setChange}) =>{
         user_artist_id:[userArtistId],} = useContext(UserContext);
 
 
-    const {playlistRender:[showedPlaylist,setShowedPlaylist],
-        cachedPlaylistImages:[playlistImages,setPlaylistImages],
-        db:[songs,artists,albums], } = useContext(SongsContext)
+    const {db:[songs,,albums], } = useContext(SongsContext)
 
     const [error, setError] = useState(null);
     const [audio,setAudio] = useState()
@@ -230,7 +228,7 @@ export const AddSong = ({setChange}) =>{
                         <div>
                             <label htmlFor="file-upload">
                                 <div className={imageUrl?"playlist_image_label_wrapper":"album_image_label_wrapper"}>
-                                    <img className="playlist_change_image" src={imageUrl} />
+                                    <img className="playlist_change_image" alt="song" src={imageUrl} />
                                     <BsFillCloudUploadFill className={imageUrl?"playlist_image_upload_svg":"album_image_upload_svg"}/>
                                 </div>
                             </label>

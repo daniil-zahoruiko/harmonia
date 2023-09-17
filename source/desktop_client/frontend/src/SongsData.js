@@ -13,7 +13,6 @@ export default ({children}) =>{
     const {songs,artists,albums,loading} = FetchSongs({token: token});
 
     const [isPlaying, setIsPlaying] = useState(false);
-    const [currentPage,setCurrentPage] = useState("home")
     const [currentSongData,setCurrentSongData] = useState()
     const [currentPlaylist,setCurrentPlaylist] = useState({songs:[]})
     const [showedPlaylist,setShowedPlaylist] = useState({owner:"",type:"",name:"",description:"",songs:[],id:""})
@@ -46,7 +45,6 @@ export default ({children}) =>{
     const songsData = {
         playing:[isPlaying,setIsPlaying],
         songData:[currentSongData,setCurrentSongData],
-        page:[currentPage,setCurrentPage],
         db:[songs,artists,albums],
         playlist:[currentPlaylist,setCurrentPlaylist],
         playlistRender:[showedPlaylist,setShowedPlaylist],

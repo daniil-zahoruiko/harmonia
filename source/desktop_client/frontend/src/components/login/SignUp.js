@@ -18,7 +18,7 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
         access_token: [token, setToken,]
     } = useContext(UserContext)
 
-    const {register, handleSubmit, watch, formState: {errors}} = useForm({
+    const {register, handleSubmit, formState: {errors}} = useForm({
         defaultValues:{
             username: "",
             password: "",

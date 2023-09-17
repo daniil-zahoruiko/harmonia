@@ -1,24 +1,18 @@
 import { useContext } from "react"
 import { UserContext } from "../../UserContext"
 import { LogMeOut } from "../../api";
-import { SongsContext } from "../../SongsData";
 import {AiOutlineUser} from "react-icons/ai"
-import "../../styles/profile.css"
 import { Link } from "react-router-dom";
+import "../../styles/profile.css"
 
 
 
-export default () => {
+export const Profile = () => {
     const { access_token: [,,,removeToken],
-        error: [, setUserError],
-        username:[username,setUsername],
-        email:[email,setEmail],
-        full_name:[fullName,setFullName],
-        password:[password,setPassword],
-        settings:[settings,setSettings] } = useContext(UserContext);
+        username:[username],
+        email:[email],
+        full_name:[fullName]} = useContext(UserContext);
 
-
-    const { page:[currentPage,setCurrentPage]} = useContext(SongsContext)
 
     function handleLogOut()
     {
@@ -35,7 +29,7 @@ export default () => {
                     <h1 className="profile_name">{fullName}</h1>
                     <p className="profile_username">#{username}</p>
                     <p className="profile_email">{email}</p>
-                    <Link to="/change" className="profile_button" onClick={()=>setCurrentPage("change-data")}>Change data</Link>
+                    <Link to="/change" className="profile_button">Change data</Link>
                 </div>
             </div>
             <button className="profile_button profile_log_out" onClick={handleLogOut}>Log Out</button>

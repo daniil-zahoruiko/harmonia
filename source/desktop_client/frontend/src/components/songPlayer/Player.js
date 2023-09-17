@@ -18,7 +18,6 @@ export const Player = ({audioElem, currentSong})=> {
           song:[songLoaded, setSongLoaded],
           toggles:[PlayPause],
           artistRender:[,setShowedArtist],
-          page:[,setCurrentPage],
           recentlyPlayed:[recentlyPlayed,setRecentlyPlayed] } = useContext(SongsContext)
 
   const { access_token: [token,, refreshToken, removeToken],

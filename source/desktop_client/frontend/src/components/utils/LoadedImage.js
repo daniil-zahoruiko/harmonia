@@ -1,4 +1,4 @@
-import {useContext, useState} from "react"
+import {useContext} from "react"
 import { ImageSkeleton } from "./Skeleton"
 import { SongsContext } from "../../SongsData"
 import {MdAudiotrack} from "react-icons/md"

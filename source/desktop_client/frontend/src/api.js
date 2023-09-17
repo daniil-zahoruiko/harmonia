@@ -1,6 +1,5 @@
 import { useEffect, useState,useRef, useContext } from "react"
 import { UserContext } from "./UserContext"
-import { json } from "react-router-dom"
 
 
 const FetchSongs = ({token}) =>{
@@ -11,15 +10,15 @@ const FetchSongs = ({token}) =>{
     const dataFetchedRef = useRef(false);
     const { access_token: [,,refreshToken, removeToken],
             error: [, setUserError],
-            username:[username,setUsername],
-            email:[email,setEmail],
-            full_name:[fullName,setFullName],
-            password:[password,setPassword],
-            user_playlists:[playlists,setPlaylists],
-            liked_songs:[likedSongs,setLikedSongs],
-            fav_artists:[favArtists,setFavArtists],
-            settings:[settings,setSettings],
-            user_artist_id:[userArtistId,setUserArtistId] } = useContext(UserContext);
+            username:[,setUsername],
+            email:[,setEmail],
+            full_name:[,setFullName],
+            password:[,setPassword],
+            user_playlists:[,setPlaylists],
+            liked_songs:[,setLikedSongs],
+            fav_artists:[,setFavArtists],
+            settings:[,setSettings],
+            user_artist_id:[,setUserArtistId] } = useContext(UserContext);
 
     const fetchData = () =>{
         refreshToken();

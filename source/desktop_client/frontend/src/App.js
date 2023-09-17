@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { useToken } from "./components/utils/useToken";
+import React, { useEffect, useRef } from "react";
 import { Audio } from "./components/songPlayer/Audio";
 import { Nav } from "./components/Nav";
 import { LeftBar } from "./components/leftBar/LeftBar";
@@ -8,7 +7,7 @@ import "./App.css";
 import SongsData from "./SongsData";
 import { UserContext, GetUserValue } from "./UserContext";
 import { Home } from "./components/home/Home";
-import Profile from "./components/home/Profile";
+import { Profile } from "./components/home/Profile";
 import { Discover } from "./components/home/Discover";
 import { PlaylistView } from "./components/utils/PlaylistView";
 import { ChangeUserData } from "./components/home/ChangeData";

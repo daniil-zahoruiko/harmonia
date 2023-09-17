@@ -1,27 +1,23 @@
 import { useState, useContext, useRef } from "react"
-import { LogMeIn, changePlaylistImage, updateData, updatePlaylist } from "../../api";
+import { changePlaylistImage, updateData, updatePlaylist } from "../../api";
 import { UserContext } from "../../UserContext";
 import {useForm} from "react-hook-form"
 import { yupResolver } from '@hookform/resolvers/yup';
 import { changeUserDataSchema,changePlaylistDataSchema } from "../utils/ValidationSchemas";
 import {MdCancel} from "react-icons/md"
-import "../../styles/changedata.css"
 import { SongsContext } from "../../SongsData";
 import {AiOutlineEye,AiOutlineEyeInvisible} from "react-icons/ai"
-import { getValues } from "../helpers";
 import {BsFillCloudUploadFill} from "react-icons/bs"
 import {IoArrowBackCircleOutline} from "react-icons/io5"
 import { Link, useNavigate } from "react-router-dom";
+import "../../styles/changedata.css"
+
 
 export const ChangeUserData = () =>
 {
-    const { access_token: [,,removeToken],
-        error: [, setUserError],
-        username:[username,setUsername],
-        email:[email,setEmail],
-        full_name:[fullName,setFullName],
-        password:[password,setPassword],
-        settings:[settings,setSettings] } = useContext(UserContext);
+    const { username:[username,setUsername],
+            email:[email,setEmail],
+            full_name:[fullName,setFullName] } = useContext(UserContext);
 
     const navigate = useNavigate()
 
@@ -30,7 +26,7 @@ export const ChangeUserData = () =>
     const [error, setError] = useState(null);
 
     const {
-        access_token: [token, setToken,]
+        access_token: [token, ,]
     } = useContext(UserContext)
 
     const {register, handleSubmit, reset, formState: {errors}} = useForm({
@@ -136,13 +132,13 @@ export const ChangeUserData = () =>
 
 
 export const ChangePlaylistData = ({setChange}) =>{
-    const { access_token: [token,setToken,removeToken],
+    const { access_token: [token],
         user_playlists:[playlists,setPlaylists] } = useContext(UserContext);
 
 
     const {playlistRender:[showedPlaylist,setShowedPlaylist],
         cachedPlaylistImages:[playlistImages,setPlaylistImages],
-        cachedAlbumImages:[albumImages,setAlbumImages] } = useContext(SongsContext)
+        cachedAlbumImages:[albumImages,] } = useContext(SongsContext)
 
     const [error, setError] = useState(null);
     const [imageUrl,setImageUrl] = useState(playlistImages[showedPlaylist.id])
@@ -205,7 +201,7 @@ export const ChangePlaylistData = ({setChange}) =>{
                     <div>
                         <label htmlFor="file-upload">
                             <div className="playlist_image_label_wrapper">
-                                <img className="playlist_change_image" src={imageUrl==="No Content" && showedPlaylist.songs[0]?albumImages[showedPlaylist.songs[0].albumId]:imageUrl} />
+                                <img className="playlist_change_image" alt="song" src={imageUrl==="No Content" && showedPlaylist.songs[0]?albumImages[showedPlaylist.songs[0].albumId]:imageUrl} />
                                 <BsFillCloudUploadFill className="playlist_image_upload_svg"/>
                             </div>
                         </label>

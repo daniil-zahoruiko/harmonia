@@ -1,11 +1,8 @@
-import { useContext } from "react"
 import {IoSettingsOutline} from "react-icons/io5"
-import { SongsContext } from "../SongsData"
 import "../styles/nav.css"
 import { Link } from "react-router-dom"
 
 export const Nav = () =>{
-    const {page:[,setCurrentPage]} = useContext(SongsContext)
 
     return(
         <nav className="desktop_nav">

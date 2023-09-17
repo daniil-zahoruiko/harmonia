@@ -87,8 +87,7 @@ export const FavArtists = () =>{
     const {
         access_token: [token,,refreshToken,removeToken],
         error: [,setUserError],
-        username:[username,],
-        fav_artists:[favArtists,]
+        fav_artists:[favArtists]
     } = useContext(UserContext);
 
     const {
