@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 
 export default () => {
-    const { access_token: [,,removeToken],
+    const { access_token: [,,,removeToken],
         error: [, setUserError],
         username:[username,setUsername],
         email:[email,setEmail],

@@ -86,7 +86,6 @@ def refresh_expiring_jwts(response):
 
 @app.route('/logout', methods=['POST'])
 def log_out():
-    utils.delete_cache("cache.txt")
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
     return response
