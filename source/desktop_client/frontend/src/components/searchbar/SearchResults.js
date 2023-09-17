@@ -47,7 +47,6 @@ export const SearchResults = ({results}) => {
             firstRender.current = false
         }else{
             setAllLoaded(false)
-            // fetch(results["songs"], '/api/song/cover', songImages, setSongImages)
             fetch(results["artists"], '/api/artist/cover', artistImages, setArtistImages)
             fetch(albumsToFetch, '/api/album/cover', albumImages, setAlbumImages)
         }
@@ -70,7 +69,7 @@ export const SearchResults = ({results}) => {
                 return <AlbumResult result={result} key={key}/>
             })}
             {results["songs"].map((result, key)=>{
-                return <SongResult onClick={(e) =>handleClick(e,key)} result={result} count={key} key={key}/>
+                return <SongResult onClick={(e) =>handleClick(e,key)} results={results["songs"]} result={result} count={key} key={key}/>
             })}
             <ContextMenu song={results["songs"][contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
         </div>

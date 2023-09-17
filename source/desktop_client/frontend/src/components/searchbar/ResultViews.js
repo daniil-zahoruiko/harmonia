@@ -5,7 +5,7 @@ import { LoadedImage } from "../utils/LoadedImage"
 import { ContextMenu } from "../utils/ContextMenu"
 import { Link } from "react-router-dom"
 
-export const SongResult = ({result,count,onClick}) =>{
+export const SongResult = ({result,results,count,onClick}) =>{
     const { db:[songs],
         playing:[isPlaying,setIsPlaying],
         playlist:[currentPlaylist,setCurrentPlaylist],
@@ -14,19 +14,19 @@ export const SongResult = ({result,count,onClick}) =>{
         toggles:[PlayPause],
         cachedAlbumImages:[images,] } = useContext(SongsContext)
 
-    const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
+    const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:results,id:"search"}
 
     const songToggle = (index) =>{
         if(!songLoaded) return
         if(currentPlaylist.id !== data.id){
             setCurrentPlaylist(data)
         }
-        if(currentSongData === songs[index]){
+        if(currentSongData === results[index]){
             PlayPause()
         }
         else{
             setSongLoaded(false)
-            setCurrentSongData(songs[index])
+            setCurrentSongData(results[index])
             if(!isPlaying) setIsPlaying(true)
         }
     }
@@ -85,16 +85,15 @@ export const AlbumResult = ({result}) =>{
         cachedAlbumImages: [images,]} = useContext(SongsContext)
 
     const toggleAlbum = ()=>{
-        setShowedPlaylist({ owner:"",
-                            type:"album",
-                            name:result.name,
-                            description:"",
-                            songs:songs.filter(song=>{
-                                return song.albumId === result.id
-                            }),
-                            id:result.id+"_album"})
-
-        setCurrentPage("playlist-view")
+        setShowedPlaylist(
+            {   owner:"",
+                type:"album",
+                name:result.name,
+                description:"",
+                songs:songs.filter(song=>{
+                    return song.albumId === result.id
+                }),
+                id:result.id+"_album"})
     }
 
     return(
@@ -102,12 +101,12 @@ export const AlbumResult = ({result}) =>{
             <div className="search_result_image_wrapper" onClick={()=>setCurrentPage("artist-view")}>
                 { <LoadedImage className="result_image" alt={result.id} src={images[result.id]} /> }
             </div>
-            <div className="result_data" onClick={toggleAlbum}>
+            <Link to="/playlist" className="result_data" onClick={toggleAlbum}>
                 <p className="result_title">{result.name}</p>
                 <div className="result_data_wrapper">
                     <p className="result_type">Album</p>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }
