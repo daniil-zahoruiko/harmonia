@@ -139,6 +139,7 @@ thead tr::after{
 .song_row_data_artist{
     color: rgba(255, 255, 255, 0.571);
     margin: 0;
+    text-decoration: none;
 }
 .song_row{
     margin: 5% 0;

@@ -52,7 +52,7 @@
 #language option{
     background-color: #44489F;
     padding: 6%;
-    font-size: 1.3vw;
+    font-size: 1vw;
     color:white
 }
 
@@ -64,15 +64,49 @@
     border-bottom: 2px solid #44489F;
     color:#44489F;
     font-size: 1vw;
+    margin-left: 5%;
 }
 
 #settings_submit{
-    background-color: #44489F;
+    background-color:transparent;
     border: none;
+    border-bottom: 3px solid #44489F;
+    border-top: 3px solid #44489F;
     border-radius: 16px;
     font-size: 1.5vw;
     padding: 1% 2%;
     color:white;
     margin: 3% 0;
+    transition: all ease-in-out 0.2s;
 }
 
+#settings_submit:hover{
+    background-color: #44489F;
+}
+
+#language:focus{
+    outline: 2px solid #44489F;
+}
+
+/* Become artist styling */
+
+.become_artist_form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    margin-left: 5%;
+}
+
+.become_artist_label{
+    font-size: 2vw;
+    margin-bottom: 0;
+}
+
+.signing_input_artist{
+    width:100%;
+    font-size: 1.2vw;
+    padding: 2% 4%;
+    border-radius: 16px;
+    margin-bottom: 10%;
+}

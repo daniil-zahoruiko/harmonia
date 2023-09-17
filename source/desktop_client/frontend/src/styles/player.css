@@ -31,6 +31,7 @@
     flex-direction: row;
     align-items: center;
     grid-area: 1/3/2/-1;
+    margin-left: 20%;
 }
 
 .playlist_volume_svg{
@@ -69,7 +70,7 @@
     width:100%;
     height:100%;
     display: grid;
-    grid-template-columns: 15% 70% 15%;
+    grid-template-columns: 25% 50% 25%;
     grid-template-rows: 50% 50%;
     align-items: center;
 }
@@ -80,27 +81,29 @@
     justify-content: space-evenly;
     color:white;
     text-decoration: none;
+    margin-left: 5%;
 }
 
 .player_title{
-    font-size: 1.8vw;
+    font-size: 1.2vw;
     margin: 0;
 }
 
 .player_artist{
-    font-size: 1vw;
+    font-size: 0.8vw;
     margin: 0;
+    color: rgba(255, 255, 255, 0.571);
 }
 
 .player_cover{
-    width:7vw;
-    height: auto;
+    width:5vw;
+    height: 5vw;
+    object-fit: cover;
 }
 
 .player_song_data{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     width:100%;
     grid-area: 1/1/-1/2;
     text-align: left;
@@ -110,9 +113,10 @@
 
 .player_like{
     color:#44489F;
-    width:2vw;
+    width:1.8vw;
     height:auto;
     margin:auto;
+    margin-left: 5%;
 }
 
 
@@ -157,7 +161,7 @@
 
 .volume_bar{
     -webkit-appearance: none;
-    width:60%;
+    width:40%;
     overflow: hidden;
     border-radius: 16px;
     appearance: none;
