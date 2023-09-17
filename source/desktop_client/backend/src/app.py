@@ -167,8 +167,6 @@ def add_playlist():
 
     user_id = get_jwt_identity()
 
-    print(name,user_id)
-
     try:
         utils.add_playlist(connection,user_id,name)
         playlists = utils.get_user_playlists(connection, user_id)
@@ -189,7 +187,7 @@ def delete_playlist(id):
     return jsonify(playlists)
 
 
-@app.route("/api/update_playlist",methods=["POST"])
+@app.route("/update_playlist",methods=["POST"])
 @cross_origin()
 @jwt_required()
 def update_playlist():
@@ -197,9 +195,6 @@ def update_playlist():
     name = request.json["name"]
     description = request.json["description"]
     data = request.json["data"]
-
-
-    print(id,name,description,data)
 
     try:
         if name != data["name"]:
@@ -217,8 +212,6 @@ def update_playlist():
 def update_playlist_songs():
     id = request.json["id"]
     songs = request.json["songs"]
-
-    print(songs)
 
     try:
         utils.update_playlist_songs(connection,id,songs)
@@ -241,7 +234,7 @@ def change_playlist_image(id):
 
 
 
-@app.route("/api/like_song",methods=["POST"])
+@app.route("/like_song",methods=["POST"])
 @cross_origin()
 @jwt_required()
 def update_liked_songs():
@@ -256,7 +249,7 @@ def update_liked_songs():
 
     return jsonify({"msg": "Success"}), 200
 
-@app.route("/api/fav_artist",methods=["POST"])
+@app.route("/fav_artist",methods=["POST"])
 @cross_origin()
 @jwt_required()
 def update_favorite_artists():
@@ -271,7 +264,7 @@ def update_favorite_artists():
 
     return jsonify({"msg": "Success"}), 200
 
-@app.route("/api/change_data",methods=["POST"])
+@app.route("/change_data",methods=["POST"])
 @cross_origin()
 @jwt_required()
 def change_data():
@@ -316,7 +309,7 @@ def change_settings():
         return jsonify({"msg": "Server error"}), 401
     return jsonify({"msg": "Success"}), 200
 
-@app.route("/api/add_streams",methods=["POST"])
+@app.route("/add_streams",methods=["POST"])
 @cross_origin()
 @jwt_required()
 def update_streams():
@@ -348,9 +341,6 @@ def create_artist():
 @cross_origin()
 @jwt_required()
 def add_song():
-    user_id = get_jwt_identity()
-
-    # data = request.files["file"]
     title = request.form.get("title")
     genre = request.form.get("genre")
     artist_id = request.form.get("artist_id")

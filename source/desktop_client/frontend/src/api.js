@@ -189,7 +189,7 @@ const LogMeOut = ({removeToken}) =>
 }
 
 async function UpdateLikedSongs({token,username,likedSongs}){
-    return await fetch("/api/like_song", {
+    return await fetch("/like_song", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ async function UpdateLikedSongs({token,username,likedSongs}){
 }
 
 async function UpdateFavArtists({token,username,favArtists}){
-    return await fetch("/api/fav_artist", {
+    return await fetch("/fav_artist", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ async function UpdateFavArtists({token,username,favArtists}){
 }
 
 async function AddStreams({token,streams,song_id}){
-    return await fetch("/api/add_streams", {
+    return await fetch("/add_streams", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -261,7 +261,7 @@ async function AddStreams({token,streams,song_id}){
 }
 
 async function updateData({token,username,email,fullName,input}){
-    return await fetch("/api/change_data", {
+    return await fetch("/change_data", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -310,7 +310,7 @@ async function updateSettings({token,settings}){
 }
 
 async function createPlaylist({token,name,setPlaylists,setShowedPlaylist,username}){
-    return await fetch("/api/add_playlist", {
+    return await fetch("/add_playlist", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
@@ -360,7 +360,7 @@ async function deletePlaylist({token,id,setPlaylists}){
 }
 
 async function updatePlaylist({token,id,name,description,data}){
-    return await fetch("/api/update_playlist", {
+    return await fetch("/update_playlist", {
         method: "POST",
         headers:{
             'Content-Type': 'application/json',
