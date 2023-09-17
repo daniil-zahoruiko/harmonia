@@ -7,7 +7,7 @@ import {MdOutlineLibraryAdd} from "react-icons/md"
 
 
 export const LoadedImage = ({src, className, alt}) =>{
-    const { displayLoad:[allLoaded,] } = useContext(SongsContext)
+    const { displayLoad:[allLoaded] } = useContext(SongsContext)
 
     return(
         <div className={className}>

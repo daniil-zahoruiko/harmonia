@@ -166,7 +166,6 @@ export const Player = ({audioElem, currentSong})=> {
   const [left,setLeft] = useState(0)
 
   const handleClick = (e) => {
-      console.log('Right click');
       setTop(e.pageY)
       setLeft(e.pageX)
       setActivated(true)

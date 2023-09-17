@@ -3,6 +3,7 @@ import { SongsContext } from "../../SongsData"
 import {BsPlayFill,BsPauseFill} from "react-icons/bs"
 import { LoadedImage } from "../utils/LoadedImage"
 import { ContextMenu } from "../utils/ContextMenu"
+import { Link } from "react-router-dom"
 
 export const SongResult = ({result,count,onClick}) =>{
     const { db:[songs],
@@ -11,14 +12,9 @@ export const SongResult = ({result,count,onClick}) =>{
         songData:[currentSongData,setCurrentSongData],
         song:[songLoaded, setSongLoaded],
         toggles:[PlayPause],
-        displayLoad:[,setAllLoaded],
-        cachedAlbumImages:[images,setImages] } = useContext(SongsContext)
+        cachedAlbumImages:[images,] } = useContext(SongsContext)
 
     const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
-
-    // const [activated,setActivated] = useState(false)
-    // const [top,setTop] = useState(0)
-    // const [left,setLeft] = useState(0)
 
     const songToggle = (index) =>{
         if(!songLoaded) return
@@ -34,17 +30,6 @@ export const SongResult = ({result,count,onClick}) =>{
             if(!isPlaying) setIsPlaying(true)
         }
     }
-
-    // const handleClick = (e) => {
-    //     if (e.type === 'click') {
-    //       console.log('Left click');
-    //     } else if (e.type === 'contextmenu') {
-    //       console.log('Right click');
-    //       setTop(e.pageY)
-    //       setLeft(e.pageX)
-    //       setActivated(true)
-    //     }
-    //   };
 
     return(
         <div className="result_div">
@@ -68,17 +53,14 @@ export const SongResult = ({result,count,onClick}) =>{
 // ----------------------------------------------------------------
 
 export const ArtistResult = ({result}) =>{
-    const { db:[songs],
-        page:[currentPage,setCurrentPage],
-        artistRender:[showedArtist,setShowedArtist],
-        playlistRender:[showedPlaylist,setShowedPlaylist],
-        cachedArtistImages: [images,]} = useContext(SongsContext)
+    const { page:[,setCurrentPage],
+            artistRender:[,setShowedArtist],
+            cachedArtistImages: [images,]} = useContext(SongsContext)
 
     const toggleArtist = () =>{
         setShowedArtist(result)
-        setCurrentPage("artist-view")
     }
-    
+
 
 
     return(
@@ -86,12 +68,12 @@ export const ArtistResult = ({result}) =>{
             <div className="search_result_image_wrapper" onClick={()=>setCurrentPage("artist-view")}>
                 { <LoadedImage className="result_image" alt={result.id} src={images[result.id]} /> }
             </div>
-            <div className="result_data" onClick={toggleArtist}>
+            <Link to="/artist" className="result_data" onClick={toggleArtist}>
                 <p className="result_title">{result.name}</p>
                 <div className="result_data_wrapper">
                     <p className="result_type">Artist</p>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

@@ -5,6 +5,7 @@ import { SongsContext } from "../../SongsData";
 import { UserContext } from "../../UserContext";
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 import { UpdateLikedSongs } from "../../api";
+import { Link } from "react-router-dom";
 
 
 
@@ -44,7 +45,6 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextM
           return artist.id === song.artistId
         })
         setShowedArtist(song_artist[0])
-        setCurrentPage("artist-view")
       }
 
     return(
@@ -74,7 +74,7 @@ export const SongRow = ({songs,song,songToggle,id,imageUrl,playlistId,onContextM
                     :<LoadedImage className='song_row_image' src={imageUrl} />}
                     <div className='song_row_text'>
                         <p style={toInteract?{color:"#44489F"}:{}} className='song_row_data_title'>{song.title}</p>
-                        <p onClick={artistLink} className='song_row_data_artist'>{song.artist}</p>
+                        <Link to="/artist" onClick={artistLink} className='song_row_data_artist'>{song.artist}</Link>
                     </div>
                 </div>
             </td>

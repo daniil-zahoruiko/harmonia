@@ -108,6 +108,15 @@
     width:100%;
 }
 
+.playlist_image_label_wrapper{
+    position: relative;
+}
+
+
+.change_playlist_inputs{
+    display: flex;
+    flex-direction: row;
+}
 
 
 .playlist_image_upload_svg{
@@ -119,6 +128,15 @@
     height:auto;
     opacity: 0;
 }
+
+.playlist_image_label_wrapper:hover .playlist_change_image{
+    opacity: 0.5;
+}
+
+.playlist_image_label_wrapper:hover .playlist_image_upload_svg{
+    opacity: 1;
+}
+
 
 .song_image_label_wrapper:hover .playlist_change_image{
     opacity: 0.5;
@@ -239,7 +257,7 @@
     opacity: 0.7;
 }
 
-.album_image_upload_svg:hover{
+.album_image_label_wrapper:hover .album_image_upload_svg{
     opacity: 1;
 }
 

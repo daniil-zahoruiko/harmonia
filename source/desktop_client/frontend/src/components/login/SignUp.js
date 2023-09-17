@@ -31,7 +31,6 @@ export const SignUp = ({ selectedAction, setSelectedAction}) =>
 
     async function onSubmit(data)
     {
-        console.log(data)
         await SignMeUp({username: data.username, password: data.password,email:data.email,full_name:data.fullName})
         .then(async () => {
             await LogMeIn({token: token, setToken: setToken, username: data.username, password: data.password})

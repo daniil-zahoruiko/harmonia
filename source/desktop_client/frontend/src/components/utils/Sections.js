@@ -27,8 +27,6 @@ export const TopPicks = ({songs}) =>
         return song.albumId
     }))
 
-    // console.log(Array.from(albumIdsSet))
-
     const albumsToFetch = albums.filter((album)=>{
         return albumIdsSet.has(album.id)
     })
@@ -70,8 +68,6 @@ export const TopPicks = ({songs}) =>
     const [contextId,setContextId] = useState(0)
 
     const handleClick = (e,value) => {
-        console.log(value)
-        console.log('Right click');
         setTop(e.pageY)
         setLeft(e.pageX)
         setActivated(true)
@@ -107,7 +103,6 @@ export const FavArtists = () =>{
     const fetch = async (data, url) =>{
         await FetchImages({data:data,url:url, token,removeToken, refreshToken, setUserError,setAllLoaded,images,setImages})
         setAllLoaded(true)
-        console.log(favArtists);
     }
 
     useEffect(()=>{
@@ -132,22 +127,13 @@ export const FavArtists = () =>{
 
 
 export const LibraryPlaylists = () =>{
-    const {   playing:[isPlaying,setIsPlaying],
-        playlist:[currentPlaylist,setCurrentPlaylist],
-        songData:[currentSongData,setCurrentSongData],
-        song:[songLoaded, setSongLoaded],
-        toggles:[PlayPause],
-        displayLoad:[,setAllLoaded],
-        playlistView:[playlistView,setPlaylistView],
-        cachedSongImages:[images,setImages],
-        cachedAlbumImages: [albumImages,],
-        cachedPlaylistImages:[playlistImages,setPlaylistImages],
-        playlistRender:[showedPlaylist,setShowedPlaylist] } = useContext(SongsContext)
+    const { displayLoad:[,setAllLoaded],
+        cachedPlaylistImages:[playlistImages,setPlaylistImages] } = useContext(SongsContext)
 
         const {
             access_token: [token,,refreshToken,removeToken],
             error: [,setUserError],
-            user_playlists:[playlists,setPlaylists],
+            user_playlists:[playlists],
         } = useContext(UserContext);
 
 
@@ -172,7 +158,6 @@ export const LibraryPlaylists = () =>{
     return(
             <div className='songs_cards'>
                 {playlists.map((playlist,key)=>{
-                    console.log(playlist)
                     return(
                         <PlaylistCard playlist={playlist} key={key}/>
                     )

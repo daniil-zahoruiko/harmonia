@@ -9,7 +9,6 @@ import { ContextMenu } from "../utils/ContextMenu"
 
 export const SearchResults = ({results}) => {
     const { displayLoad:[,setAllLoaded],
-            cachedSongImages:[songImages,setSongImages],
             cachedArtistImages:[artistImages, setArtistImages],
             cachedAlbumImages: [albumImages, setAlbumImages],
             db:[,,albums] } = useContext(SongsContext)
@@ -19,7 +18,6 @@ export const SearchResults = ({results}) => {
 
     const firstRender = useRef(true)
 
-    // const data = {owner:"Harmonia",type:"public",name:"Search",description:"",songs:songs,id:"search"}
     const [activated,setActivated] = useState(false)
     const [top,setTop] = useState(0)
     const [left,setLeft] = useState(0)
@@ -33,8 +31,6 @@ export const SearchResults = ({results}) => {
     results["albums"].forEach(album => {
         albumIdsSet.add(album.id)
     });
-
-    // console.log(Array.from(albumIdsSet))
 
     const albumsToFetch = albums.filter((album,key)=>{
         return albumIdsSet.has(album.id)
@@ -58,8 +54,6 @@ export const SearchResults = ({results}) => {
     },[])
 
     const handleClick = (e,value) => {
-        console.log(value)
-        console.log('Right click');
         setTop(e.pageY)
         setLeft(e.pageX)
         setActivated(true)

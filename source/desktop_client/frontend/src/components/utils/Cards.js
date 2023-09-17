@@ -11,7 +11,6 @@ import {MdAudiotrack} from "react-icons/md"
 
 export const AlbumCard = ({album}) =>{
     const { db:[songs],
-            page:[,setCurrentPage],
             playlistRender:[,setShowedPlaylist],
             cachedAlbumImages:[albumImages,] } = useContext(SongsContext)
 
@@ -40,8 +39,6 @@ export const PlaylistCard = ({playlist}) =>{
             cachedPlaylistImages:[playlistImages,] } = useContext(SongsContext)
 
     const {
-        access_token: [token,,removeToken],
-        error: [,setUserError],
         username:[username]
     } = useContext(UserContext);
 
@@ -61,8 +58,7 @@ export const PlaylistCard = ({playlist}) =>{
 
 export const ArtistCard = ({artist}) =>{
     const { artistRender:[,setShowedArtist],
-            page:[,setCurrentPage],
-            cachedArtistImages: [artistImages,] } = useContext(SongsContext)
+            cachedArtistImages: [artistImages] } = useContext(SongsContext)
 
 
 
@@ -70,7 +66,6 @@ export const ArtistCard = ({artist}) =>{
         setShowedArtist(artist)
     }
 
-    console.log(artistImages);
     return(
         <Link to="/artist" onClick={artistToggle} className="SongCard">
             <LoadedImage className={"songcard_img"} alt={artist.name} src={artistImages[artist.id]}/>
@@ -87,7 +82,6 @@ export const SongCard = ({song, songToggle,id,playlistId,onContextMenu}) => {
         playlist:[currentPlaylist,],
         playing:[isPlaying,],
         artistRender:[,setShowedArtist],
-        page:[,setCurrentPage],
         cachedAlbumImages:[albumImages,] } = useContext(SongsContext)
 
 

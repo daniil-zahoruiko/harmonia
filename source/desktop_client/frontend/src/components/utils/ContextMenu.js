@@ -12,9 +12,8 @@ import { getValues } from "../helpers";
 
 export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,remove}) =>{
 
-    const { access_token: [token, , removeToken],
-        error: [, setUserError],
-        username:[username,],
+    const { access_token: [token],
+        username:[username],
         liked_songs:[likedSongs,setLikedSongs],
         user_playlists:[playlists,setPlaylists], } = useContext(UserContext);
 
@@ -103,13 +102,10 @@ export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,re
     },[top])
 
     const addSong = (playlist) => {
-        console.log(playlist,song)
-        console.log(playlist)
         var keys = Object.keys(playlist.songs)
         let temp_dict = {...playlist}
         if(!keys.includes(song.id)){
             temp_dict.songs[song.id] = song
-            console.log(temp_dict)
             addPlaylistSongs({token:token,id:playlist.id,songs:playlist.songs})
             setSuccess({"bool":true,"playlist":playlist.name})
             setActivated(false)
@@ -117,7 +113,6 @@ export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,re
             setStyle("closed")
         }
         else{
-            console.log("current Song already exists in playlist")
             setExists({"bool":true,"playlist":playlist.name})
             setActivated(false)
             setActiv(false);

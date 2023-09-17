@@ -6,7 +6,7 @@ import {BsFillPlayCircleFill, BsFillPauseCircleFill} from 'react-icons/bs';
 import { LoadedImage } from './LoadedImage';
 import "../../styles/playlistview.css"
 import { SongRow } from './SongRow';
-import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
+import {AiFillHeart} from "react-icons/ai"
 import { AlbumCard } from "./Cards";
 import { ContextMenu } from "./ContextMenu";
 
@@ -20,16 +20,14 @@ export const ArtistView = () =>{
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
-            playlistView:[playlistView,setPlaylistView],
-            cachedSongImages:[songImages,setSongImages],
             cachedArtistImages:[artistImages, setArtistImages],
             cachedAlbumImages:[albumImages, setAlbumImages],
-            artistRender:[showedArtist,setShowedArtist]} = useContext(SongsContext)
+            artistRender:[showedArtist]} = useContext(SongsContext)
 
     const {
         access_token: [token,,refreshToken,removeToken],
         error: [,setUserError],
-        username:[username,setUsername],
+        username:[username],
         fav_artists:[favArtists,setFavArtists]
     } = useContext(UserContext);
 
@@ -40,7 +38,6 @@ export const ArtistView = () =>{
     const artist_albums = albums.filter(album=>{
         return album.artistId === showedArtist.id
     })
-    console.log(favArtists)
 
     const isEmpty = artist_songs.length === 0
 
@@ -61,13 +58,10 @@ export const ArtistView = () =>{
         albumIdsSet.add(album.id)
     });
 
-    // console.log(Array.from(albumIdsSet))
-
     const albumsToFetch = albums.filter((album,key)=>{
         return albumIdsSet.has(album.id)
     })
 
-    // const images = FetchImages({songs, token});
     const fetch = async (data, url, images, setImages,last) =>{
         await FetchImages({data:data,url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images,setImages})
         if(last){
@@ -80,7 +74,6 @@ export const ArtistView = () =>{
             firstRender.current = false
         }else{
             setAllLoaded(false)
-            // fetch(artist_songs,"/api/song/cover", songImages, setSongImages);
             fetch([showedArtist], "/api/artist/cover", artistImages, setArtistImages);
             fetch(albumsToFetch, "/api/album/cover", albumImages, setAlbumImages,true);
 
@@ -138,8 +131,6 @@ export const ArtistView = () =>{
     const [contextId,setContextId] = useState(0)
 
     const handleClick = (e,value) => {
-        console.log(value)
-        console.log('Right click');
         setTop(e.pageY)
         setLeft(e.pageX)
         setActivated(true)

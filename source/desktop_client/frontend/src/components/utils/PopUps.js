@@ -24,7 +24,6 @@ export const CreatePlaylistPopUp = ({setActivate}) =>{
 
     const submit = async (e) =>{
         e.preventDefault()
-        console.log(name)
         if(!name){
             setError("Name cannot be empty")
             return

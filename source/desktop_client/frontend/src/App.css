@@ -19,3 +19,8 @@ a{
   user-select: none;
   -webkit-user-drag: none;
 }
+
+input[type="submit"]:hover, .user_artist_trigger:hover{
+  opacity: 0.8;
+  transition: all ease-in-out 0.2s;
+}

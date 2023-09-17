@@ -13,17 +13,11 @@ import { ContextMenu } from "../utils/ContextMenu"
 
 export const Settings = () =>{
 
-    const {access_token: [token, setToken, removeToken],
-        error: [userError, setUserError],
-        username:[username,setUsername],
-        email:[email,setEmail],
-        full_name:[fullName,setFullName],
-        password:[password,setPassword],
-        liked_songs:[likedSongs,setLikedSongs],
-        fav_artists:[favArtists,setFavArtists],
-        user_playlists:[playlists,setPlaylists],
+    const {access_token: [token, ,refreshToken, removeToken],
+        error: [, setUserError],
+        username:[username],
         settings:[settings,setSettings],
-        user_artist_id:[userArtistId,setUserArtistId]} = useContext(UserContext)
+        user_artist_id:[userArtistId]} = useContext(UserContext)
 
         const {   playing:[isPlaying,setIsPlaying],
             playlist:[currentPlaylist,setCurrentPlaylist],
@@ -31,11 +25,7 @@ export const Settings = () =>{
             song:[songLoaded, setSongLoaded],
             toggles:[PlayPause],
             displayLoad:[,setAllLoaded],
-            playlistView:[playlistView,setPlaylistView],
-            cachedSongImages:[images,setImages],
             cachedAlbumImages:[albumImages,setAlbumImages],
-            cachedPlaylistImages:[playlistImages,setPlaylistImages],
-            playlistRender:[showedPlaylist,setShowedPlaylist],
             db:[songs,,albums], } = useContext(SongsContext)
 
 
@@ -44,12 +34,12 @@ export const Settings = () =>{
 
     const userAlbums = albums.filter((album)=>album.artistId == userArtistId)
     const userSongs = songs.filter((song)=>song.artistId == userArtistId)
-    
+
     const firstRender = useRef(true)
 
 
     const fetch = async (data, url,images,setImages,last) =>{
-        await FetchImages({data:data, url:url, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages})
+        await FetchImages({data:data, url:url,refreshToken:refreshToken, token,removeToken,setUserError,setAllLoaded,images:images,setImages:setImages})
         if (last) setAllLoaded(true);
     }
     useEffect(()=>{
@@ -63,7 +53,6 @@ export const Settings = () =>{
     },[])
 
     const [activated,setActivated] = useState(false)
-    const [activateModify,setActivateModify] = useState(false)
     const [top,setTop] = useState(0)
     const [left,setLeft] = useState(0)
     const [contextId,setContextId] = useState(0)
@@ -73,8 +62,6 @@ export const Settings = () =>{
     const [language,setLanguage] = useState(settings.language)
 
     const handleClick = (e,value) => {
-        console.log(value)
-        console.log('Right click');
         setTop(e.pageY)
         setLeft(e.pageX)
         setActivated(true)
@@ -107,11 +94,11 @@ export const Settings = () =>{
 
     const settingsSubmit = async (e) => {
         e.preventDefault()
-        console.log(settings)
         if(language === settings.language){
             return
         }
         await updateSettings({token:token,settings:{...settings,language:language}})
+        setSettings(prev=>{return {...prev,language:language}})
     }
 
 
