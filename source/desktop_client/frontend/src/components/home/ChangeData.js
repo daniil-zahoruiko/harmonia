@@ -26,7 +26,7 @@ export const ChangeUserData = () =>
 
     const [passwordVisibility, setPasswordVisibility] = useState(false)
     const [error, setError] = useState(null);
-    const [t,i18n] = useTranslation("profile")
+    const [t,] = useTranslation("profile")
 
     const {
         access_token: [token, ,]
@@ -171,6 +171,9 @@ export const ChangePlaylistData = ({setChange}) =>{
     const [error, setError] = useState(null);
     const [imageUrl,setImageUrl] = useState(playlistImages[showedPlaylist.id])
     const [image,setImage] = useState()
+
+    const [t,] = useTranslation("pop_up")
+
     const formRef = useRef(null)
 
 
@@ -224,7 +227,9 @@ export const ChangePlaylistData = ({setChange}) =>{
         <div className="change_playlist_outer">
             <div ref={formRef} className="change_pl_data_wrapper">
                 <MdCancel onClick={()=>setChange(false)} className="change_exit"/>
-                <h1>¡Edit details!</h1>
+                <h1>
+                    {t("edit_playlist.title")}
+                </h1>
                 <div className="change_playlist_inputs">
                     <div>
                         <label htmlFor="file-upload">
@@ -248,24 +253,33 @@ export const ChangePlaylistData = ({setChange}) =>{
                     <form className="change_pl_data_form" onSubmit={handleSubmit(onSubmit)}>
                         <div className="form_row_playlist">
                             <p className="playlist_change_label" htmlFor="username">
-                                Name:
+                                {t("edit_playlist.name")}:
                             </p>
                             <div className="form_input_wrapper_playlist">
-                                <input className={`signing_input_playlist ${errors.name?"invalid":""}`} id="name" {...register("name")} />
+                                <input
+                                    className={`signing_input_playlist ${errors.name?"invalid":""}`}
+                                    id="name"
+                                    placeholder={`${t("edit_playlist.name")}...`}
+                                    {...register("name")} />
                             </div>
                             <p className="form_error">{errors.name?.message}</p>
                         </div>
                         <div className="form_row_playlist">
                             <p className="playlist_change_label" htmlFor="password">
-                                Description:
+                                {t("edit_playlist.description")}:
                             </p>
                             <div className="form_input_wrapper_playlist">
-                                <textarea rows="5" className={`signing_input_playlist ${errors.description?"invalid":""}`} id="description" {...register("description")} />
+                                <textarea
+                                    rows="5"
+                                    className={`signing_input_playlist ${errors.description?"invalid":""}`}
+                                    id="description"
+                                    placeholder={`${t("edit_playlist.description")}...`}
+                                    {...register("description")} />
                             </div>
                             <p className="form_error">{errors.password?.message}</p>
                         </div>
                         {error != null ? <p className="login_error">{error}</p> : null}
-                        <input id="submit_change" type="submit" value="Save"/>
+                        <input id="submit_change" type="submit" value={`${t("edit_playlist.save")}`}/>
                     </form>
                 </div>
             </div>

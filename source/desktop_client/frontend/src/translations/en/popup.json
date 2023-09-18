@@ -1,0 +1,13 @@
+{
+    "edit_playlist":{
+        "title":"Edit playlist",
+        "name":"Name",
+        "description":"Description",
+        "save":"Save"
+    },
+    "new_playlist":{
+        "title":"Create playlist",
+        "name":"Name",
+        "submit":"Create"
+    }
+}

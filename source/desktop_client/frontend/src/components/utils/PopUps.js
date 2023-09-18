@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import {MdCancel} from "react-icons/md"
 import {BiError} from "react-icons/bi"
 import "../../styles/popups.css"
+import { useTranslation } from "react-i18next";
 
 
 
@@ -18,6 +19,8 @@ export const CreatePlaylistPopUp = ({setActivate}) =>{
     const {access_token: [token, ,],
         user_playlists:[,setPlaylists],
     username:[username,]} = useContext(UserContext)
+
+    const [t,] = useTranslation("pop_up")
 
     const [error,setError] = useState("")
 
@@ -44,13 +47,25 @@ export const CreatePlaylistPopUp = ({setActivate}) =>{
             <div className="create_playlist_inner">
                 <MdCancel onClick={()=>setActivate(false)} className="create_playlist_exit"/>
                 <form onSubmit={submit}>
-                    <h1>¡Create playlist!</h1>
-                    <label htmlFor="Name">Name</label>
+                    <h1>{t("new_playlist.title")}</h1>
+                    <label htmlFor="Name">
+                        {t("new_playlist.name")}
+                    </label>
                     <div className="playlist_form_row">
-                        <input className={`${error?"invalid":""}`} onChange={(e)=>validator(e)} value={name} id="Name" placeholder="Name" />
+                        <input
+                            className={`${error?"invalid":""}`}
+                            onChange={(e)=>validator(e)}
+                            value={name} id="Name"
+                            placeholder={`${t("new_playlist.name")}...`}
+                        />
                         <p className="form_error">{error}</p>
                     </div>
-                    <input className="create_submit_button" id="submit" type="submit"/>
+                    <input
+                        className="create_submit_button"
+                        id="submit"
+                        type="submit"
+                        value={`${t("new_playlist.submit")}`}
+                    />
                 </form>
             </div>
         </div>
