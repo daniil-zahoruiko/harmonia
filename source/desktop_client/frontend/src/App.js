@@ -17,20 +17,27 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import "./styles/mainWindow.css"
 import { FollowedArtists } from "./components/utils/FollowedArtists";
 import { Settings } from "./components/home/Settings";
+import { useTranslation } from "react-i18next";
 
 
 function App() {
     const user = GetUserValue();
-    const {access_token: [token, ,]} = user;
+    const {access_token: [token, ,]
+        ,settings:[settings,]} = user;
 
     const pageRef = useRef(null)
     const { pathname } = useLocation();
+    const [t,i18n] = useTranslation("settings")
 
     useEffect(()=>{
         if(pageRef.current){
             pageRef.current.scrollTo({ top: 0});
         }
     },[pathname])
+
+    useEffect(()=>{
+        if(settings) i18n.changeLanguage(settings.language)
+    },[settings])
 
     return (
         <UserContext.Provider value={user}>
