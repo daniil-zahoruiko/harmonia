@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { FavArtists } from "./Sections";
 import { UserContext } from "../../UserContext";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -12,6 +13,8 @@ export const FollowedArtists = () =>{
         username:[username,],
         fav_artists:[favArtists,]
     } = useContext(UserContext);
+
+    const [t,] = useTranslation("playlist")
 
     return(
         <div>
@@ -25,8 +28,8 @@ export const FollowedArtists = () =>{
                 </div>
                 <div className="playlist_data">
                     <p className='playlist_type'></p>
-                    <p className='playlist_name'>Favorite Artists</p>
-                    <p className='playlist_description'>List of your favorite artists</p>
+                    <p className='playlist_name'>{t("artists.name")}</p>
+                    <p className='playlist_description'>{t("artists.description")}</p>
                     <p className='playlist_owner'>#{username}</p>
                 </div>
             </div>

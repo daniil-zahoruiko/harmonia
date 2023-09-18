@@ -13,6 +13,7 @@ import { PlaylistSearchBar } from '../searchbar/SearchBar';
 import {SlOptions} from "react-icons/sl"
 import { ChangePlaylistData } from '../home/ChangeData';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -55,6 +56,7 @@ export const PlaylistView = () =>{
     const [change,setChange] = useState(false)
     const firstRender = useRef(true)
     const navigate = useNavigate()
+    const [t,] = useTranslation("playlist")
 
     const isEmpty = data.songs.length === 0
 
@@ -187,7 +189,7 @@ export const PlaylistView = () =>{
                     <PlaylistSearchBar input={input} setInput={setInput} songs={data.songs} setResult={setResult} />
                     {showedPlaylist.type==="album"
                     ?""
-                    :<button className='playlist_view_toggle' onClick={viewToggle}>Change view</button>}
+                    :<button className='playlist_view_toggle' onClick={viewToggle}>{t("change_view")}</button>}
                 </div>
             </div>
             {
@@ -206,21 +208,21 @@ export const PlaylistView = () =>{
                                 <p>#</p>
                             </th>
                             <th>
-                                <p>Title</p>
+                                <p>{t("title")}</p>
                             </th>
                             {showedPlaylist.type!=="album"
                             ?<th>
-                                <p>Album</p>
+                                <p>{t("album")}</p>
                             </th>
                             :<th/>}
                             {showedPlaylist.type==="album"
                             ?<th>
-                                <p>Streams</p>
+                                <p>{t("streams")}</p>
                             </th>
                             :<th/>}
                             <th/>
                             <th>
-                                <p>Length</p>
+                            <p>{t("length")}</p>
                             </th>
                         </tr>
                     </thead>

@@ -9,6 +9,7 @@ import { SongRow } from './SongRow';
 import {AiFillHeart} from "react-icons/ai"
 import { AlbumCard } from "./Cards";
 import { ContextMenu } from "./ContextMenu";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -30,6 +31,8 @@ export const ArtistView = () =>{
         username:[username],
         fav_artists:[favArtists,setFavArtists]
     } = useContext(UserContext);
+
+    const [t,] = useTranslation("playlist")
 
     const artist_songs = songs.filter(song=>{
         return song.artistId === showedArtist.id
@@ -151,9 +154,9 @@ export const ArtistView = () =>{
                 ?<div className="playlist_image liked_playlist_image"><AiFillHeart/></div>
                 :<LoadedImage className="playlist_image" src={isEmpty?"none":artistImages[showedArtist.id]} />}
                 <div className="playlist_data">
-                    <p className='playlist_type'>Artist</p>
+                    <p className='playlist_type'>{t("artist")}</p>
                     <p className='playlist_name'>{name}</p>
-                    <p className='playlist_description'>Totals streams: {total_streams}</p>
+                    <p className='playlist_description'>{t("total_streams")}: {total_streams}</p>
                 </div>
             </div>
             <div className="playlist_utils">
@@ -161,7 +164,12 @@ export const ArtistView = () =>{
                     {isPlaying && currentPlaylist.id === id?<BsFillPauseCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>
                     :<BsFillPlayCircleFill className='play_playlist' color="44489F" onClick={pauseButtonToggle}/>}
                 </div>
-                <button className="artist_follow_button" onClick={likeArtist}>{favArtists[showedArtist.id]?"Following":"Follow"}</button>
+                <button
+                    className="artist_follow_button"
+                    onClick={likeArtist}>{favArtists[showedArtist.id]
+                        ?t("following")
+                        :t("follow")}
+                </button>
             </div>
                 <table className='songs_list'>
                     <colgroup>
@@ -177,17 +185,17 @@ export const ArtistView = () =>{
                                 <p>#</p>
                             </th>
                             <th>
-                                <p>Title</p>
+                                <p>{t("title")}</p>
                             </th>
                             <th>
-                                <p>Album</p>
+                                <p>{t("album")}</p>
                             </th>
                             <th>
-                                Streams
+                                {t("streams")}
                             </th>
                             <th/>
                             <th>
-                                <p>Length</p>
+                                <p>{t("length")}</p>
                             </th>
                         </tr>
                     </thead>
@@ -209,7 +217,7 @@ export const ArtistView = () =>{
                     </tbody>
                 </table>
                 <ContextMenu song={artist_songs[contextId]} activated={activated} setActivated={setActivated} top={top} left={left}/>
-                <h1 className="artist_view_discography">Discography</h1>
+                <h1 className="artist_view_discography">{t("discography")}</h1>
                 <div className="songs_cards">
                     {artist_albums.map((album,key)=>{
                         return <AlbumCard album={album} key={key}/>

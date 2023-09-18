@@ -1,0 +1,25 @@
+{
+    "change_view":"Change view",
+    "title":"Title",
+    "album":"Album",
+    "streams":"Streams",
+    "length":"Length",
+    "total_streams":"Total streams",
+    "following":"Following",
+    "follow":"Follow",
+    "artist":"Artist",
+    "discography":"Discography",
+    "private":"private",
+    "liked":{
+        "name":"Liked Songs",
+        "description":"Listen to your favorite songs here..."
+    },
+    "recent":{
+        "name":"Recently Played",
+        "description":"History of your songs today right here..."
+    },
+    "artists":{
+        "name":"Favorite Artists",
+        "description":"List of your favorite artists"
+    }
+}

@@ -15,7 +15,8 @@ export const LeftBar = () => {
     } = useContext(SongsContext)
 
     const [lbState, setLbState] = useState("full")
-    const [t,i18n] = useTranslation("leftbar")
+    const [t,] = useTranslation("leftbar")
+    const [tp,] = useTranslation("playlist")
 
     const { username:[username,],
             liked_songs:[likedSongs,] } = useContext(UserContext);
@@ -39,12 +40,24 @@ export const LeftBar = () => {
 
     const triggerLikedSongs = () =>{
         const songs =getValues(likedSongs)
-        setShowedPlaylist({owner:"#"+username,type:"private",name:"Liked Songs",description:"Listen to your favorite songs here...",songs:songs,id:"liked_songs"})
+        setShowedPlaylist({
+            owner:"#"+username,
+            type:tp("private"),
+            name:tp("liked.name"),
+            description:tp("liked.description"),
+            songs:songs,
+            id:"liked_songs"})
     }
 
     const triggerRecentlyPlayed = () =>{
         const songs = getValues(recentlyPlayed)
-        setShowedPlaylist({owner:"HARMONIA",type:"private",name:"Recently Played",description:"History of your song today right here...",songs:songs,id:"recent_songs"})
+        setShowedPlaylist({
+            owner:"HARMONIA",
+            type:tp("private"),
+            name:tp("recent.name"),
+            description:tp("recent.description"),
+            songs:songs,
+            id:"recent_songs"})
     }
 
     return(

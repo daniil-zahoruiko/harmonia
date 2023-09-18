@@ -17,6 +17,8 @@ import library_en from "./translations/en/library.json"
 import library_ua from "./translations/ua/library.json"
 import context_menu_en from "./translations/en/contextmenu.json"
 import context_menu_ua from "./translations/ua/contextmenu.json"
+import playlist_en from "./translations/en/playlist.json"
+import playlist_ua from "./translations/ua/playlist.json"
 
 import i18next from "i18next"
 import {I18nextProvider} from "react-i18next"
@@ -31,7 +33,8 @@ i18next.init({
       navbar:navbar_en,
       profile:profile_en,
       library:library_en,
-      context_menu:context_menu_en
+      context_menu:context_menu_en,
+      playlist:playlist_en
     },
     ua:{
       settings:settings_ua,
@@ -39,7 +42,8 @@ i18next.init({
       navbar:navbar_ua,
       profile:profile_ua,
       library:library_ua,
-      context_menu:context_menu_ua
+      context_menu:context_menu_ua,
+      playlist:playlist_ua
     }
   }
 })
