@@ -7,6 +7,7 @@ import { LoadedImage } from "../utils/LoadedImage"
 import { FetchImages, updateSettings } from "../../api"
 import { ContextMenu } from "../utils/ContextMenu"
 import "../../styles/settings.css"
+import { useTranslation } from "react-i18next"
 
 
 
@@ -55,6 +56,8 @@ export const Settings = () =>{
     const [top,setTop] = useState(0)
     const [left,setLeft] = useState(0)
     const [contextId,setContextId] = useState(0)
+    const [t,i18n] = useTranslation("settings")
+
 
     //language state
 
@@ -96,33 +99,41 @@ export const Settings = () =>{
         if(language === settings.language){
             return
         }
+        i18n.changeLanguage(language)
         await updateSettings({token:token,settings:{...settings,language:language}})
         setSettings(prev=>{return {...prev,language:language}})
     }
 
 
+
     return(
         <div>
-            <h1 className="settings_header">¡Settings!</h1>
+            <h1 className="settings_header">{t("main.header")}</h1>
             <form className="settings_form" onSubmit={settingsSubmit}>
                 <div>
-                    <label htmlFor="language">Language: </label>
+                    <label htmlFor="language">{t("main.language_header")}</label>
                     <select
                         id="language"
                         value={language}
                         onChange={(e)=>setLanguage(e.target.value)}
                     >
-                        <option value="english">English</option>
-                        <option value="ukrainian">Ukrainian</option>
+                        <option value="en">{t("main.language_list.en")}</option>
+                        <option value="ua">{t("main.language_list.ua")}</option>
                     </select>
                 </div>
-                <input id="settings_submit" type="submit" />
+                <input id="settings_submit" type="submit" value={t("main.submit")}/>
             </form>
             {!userArtistId
-            ?<h1 className="user_artist_trigger" onClick={()=>setBecomeArtist(true)}>¡Become a creator!</h1>
+            ?<h1 className="user_artist_trigger" onClick={()=>setBecomeArtist(true)}>
+                {t("main.become_creator")}
+            </h1>
             :<>
-            <h1 className="user_artist_trigger" onClick={()=>setAddSong(true)}>Add song</h1>
-            <h2 className="user_songs_header">Your songs:</h2>
+            <h1 className="user_artist_trigger" onClick={()=>setAddSong(true)}>
+                {t("main.add_song")}
+            </h1>
+            <h2 className="user_songs_header">
+                {t("main.your_songs")}:
+            </h2>
             {userAlbums.map((album,key)=>{
                 return <div className="user_songs_wrapper" key={key}>
                         <div className="user_album">
@@ -144,15 +155,15 @@ export const Settings = () =>{
                                             <p>#</p>
                                         </th>
                                         <th>
-                                            <p>Title</p>
+                                            <p>{t("main.title")}</p>
                                         </th>
                                         <th/>
                                         <th>
-                                            <p>Streams</p>
+                                            <p>{t("main.streams")}</p>
                                         </th>
                                         <th/>
                                         <th>
-                                            <p>Length</p>
+                                            <p>{t("main.length")}</p>
                                         </th>
                                     </tr>
                                 </thead>

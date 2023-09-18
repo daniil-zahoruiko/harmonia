@@ -8,6 +8,7 @@ import {BsFillCloudUploadFill,BsPlusCircle} from "react-icons/bs"
 import { LoadedImage } from "./LoadedImage";
 import "../../styles/changedata.css"
 import "../../styles/dropdown.css"
+import { useTranslation } from "react-i18next";
 
 
 
@@ -120,12 +121,14 @@ export const AddSong = ({setChange}) =>{
     const albumMenuRef = useRef(null)
     const popUpRef = useRef(null)
     const ddRef = useRef(null)
+    const [t,i18n] = useTranslation("settings")
+
 
     // Create/Choose Album variables
 
     const [albumDD,setAlbumDD] = useState(false)
     const [albumName,setAlbumName] = useState()
-    const [albumNameShow,setAlbumNameShow] = useState("Choose Album...")
+    const [albumNameShow,setAlbumNameShow] = useState(`${t("add_song.choose_album")}...`)
     const [albumNameSubmit,setAlbumNameSubmit] = useState()
     const [albumNameError,setAlbumNameError] = useState("")
 
@@ -169,19 +172,19 @@ export const AddSong = ({setChange}) =>{
     async function onSubmit(data)
     {
         if(!audio){
-            setError("No audio selected")
+            setError(t("errors.no_audio"))
             return
         }
         if(!image){
-            setError("No image selected")
+            setError(t("errors.no_image"))
             return
         }
         if(albumNameShow === "Choose Album..."){
-            setError("No album selected")
+            setError(t("errors.no_album"))
             return
         }
         if(data.title === ""){
-            setError("Title required")
+            setError(t("errors.no_title"))
             return
         }
         const newData = new FormData()
@@ -214,8 +217,8 @@ export const AddSong = ({setChange}) =>{
 
     const AlbumCreationSubmit = (e) =>{
         e.preventDefault()
-        if(albumName.length<1){
-            setAlbumNameError("Required")
+        if(!albumName || albumName.length<1){
+            setAlbumNameError(t("errors.required"))
             return
         }
         setAlbumNameError("")
@@ -230,7 +233,7 @@ export const AddSong = ({setChange}) =>{
         <div className="change_playlist_outer">
             <div ref={formRef} className="add_song_wrapper">
                 <MdCancel onClick={()=>setChange(false)} className="change_exit"/>
-                <h1 className="create_song_header">¡Add your song here!</h1>
+                <h1 className="create_song_header">{t("add_song.header")}</h1>
                 <form ref={albumMenuRef} onSubmit={handleSubmit(onSubmit)} className="add_song_inputs">
                     <div  className="add_song_data">
                         <div>
@@ -252,18 +255,18 @@ export const AddSong = ({setChange}) =>{
                         <div className="add_song_data_form">
                             <div className="form_row_song">
                                 <label htmlFor="title">
-                                    <p className="song_data_label">Title:</p>
+                                    <p className="song_data_label">{t("add_song.title")}:</p>
                                 </label>
                                 <div className="form_input_wrapper_song">
-                                    <input className={`song_input ${errors.name?"invalid":""}`} placeholder="Title..." id="title" {...register("title")} />
+                                    <input className={`song_input ${errors.name?"invalid":""}`} placeholder={`${t("add_song.title")}...`} id="title" {...register("title")} />
                                 </div>
                             </div>
                             <div className="form_row_song">
                                 <label htmlFor="genre">
-                                    <p className="song_data_label">Genre:</p>
+                                    <p className="song_data_label">{t("add_song.genre")}:</p>
                                 </label>
                                 <div className="form_input_wrapper_song">
-                                    <input className={`song_input ${errors.name?"invalid":""}`} placeholder="Genre..." id="genre" {...register("genre")} />
+                                    <input className={`song_input ${errors.name?"invalid":""}`} placeholder={`${t("add_song.genre")}...`} id="genre" {...register("genre")} />
                                 </div>
                             </div>
                         </div>
@@ -272,7 +275,13 @@ export const AddSong = ({setChange}) =>{
                         <label htmlFor="audio-upload">
                                 <div className="song_audio_label_wrapper">
                                     <MdOutlineAudioFile className="song_audio_upload_svg"/>
-                                    <p className="song_audio_upload_name">{audio?audio.name.length>20?audio.name.slice(0,20)+"...":audio.name:"Choose music..."}</p>
+                                    <p className="song_audio_upload_name">
+                                        {audio
+                                        ?audio.name.length>20
+                                        ?audio.name.slice(0,20)+"..."
+                                        :audio.name
+                                        :t("add_song.choose_music")}
+                                    </p>
                                 </div>
                             </label>
                         <input onChange={(e)=>{
@@ -284,26 +293,28 @@ export const AddSong = ({setChange}) =>{
                         />
                         <div className="dd-wrapper">
                             <div onClick={()=>setAlbumDD(!albumDD)} className="dd-header-title">
-                                {albumNameShow !=="Choose Album..."?"":<BsPlusCircle className="song_album_upload_svg"/>}
+                                {albumNameShow !==`${t("add_song.choose_album")}...`?"":<BsPlusCircle className="song_album_upload_svg"/>}
                                 <p>{albumNameShow}</p>
                             </div>
                             {albumDD
                             ?<div ref={ddRef} className="dd-list">
                                 <div onClick={handleAlbumCreation} className="dd-list-item">
-                                    <p>Create an album</p>
+                                    <p>{t("add_song.create_album")}</p>
                                 </div>
                                 <div onClick={handleAlbumMenuPick} className="dd-list-item">
-                                    <p>Choose an album</p>
+                                    <p>{t("add_song.choose_album")}</p>
                                 </div>
                                 <div className="dd-list-item">
-                                    <p onClick={(()=>{setAlbumId(0);setAlbumDD(false);setAlbumNameShow("Single")})}>Single</p>
+                                    <p onClick={(()=>{setAlbumId(0);setAlbumDD(false);setAlbumNameShow(t("add_song.single"))})}>
+                                        {t("add_song.single")}
+                                    </p>
                                 </div>
                             </div>
                             :""}
 
                         </div>
                     </div>
-                    <input id="submit_song" type="submit" value="Upload"/>
+                    <input id="submit_song" type="submit" value={t("add_song.upload")}/>
                     {error != null ? <p className="login_error">{error}</p> : null}
                 </form>
                 {/* ----------- Album choice popups---------------- */}
@@ -329,22 +340,24 @@ export const AddSong = ({setChange}) =>{
                         top:`${top}px`,
                     }} className="album_choice"
                         onSubmit={(e)=>AlbumCreationSubmit(e)}>
-                        <h2 className="create_album_header">¡Create album!</h2>
+                        <h2 className="create_album_header">
+                            {t("add_song.create_album")}
+                        </h2>
                         <div className="form_row_song">
                             <label htmlFor="album_name">
                                 <p className="song_data_label" htmlFor="username">
-                                        Name:
+                                        {t("add_song.album_name")}:
                                 </p>
                             </label>
                             <div className="form_input_wrapper_song">
-                                <input placeholder="Name..." className={`song_input ${errors.name?"invalid":""}`}
+                                <input placeholder={`${t("add_song.album_name")}...`} className={`song_input ${errors.name?"invalid":""}`}
                                 id="album_name"
                                 value={albumName}
                                 onChange={(e)=>{setAlbumName(e.target.value)}}  />
                             </div>
                             <p className="form_error">{albumNameError}</p>
                         </div>
-                        <input id="submit_song" type="submit" value="Create album"/>
+                        <input id="submit_song" type="submit" value={t("add_song.upload")}/>
                     </form>
                     :""}
             </div>

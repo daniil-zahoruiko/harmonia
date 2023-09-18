@@ -1,0 +1,42 @@
+{
+    "main":{
+        "header":"Settings!",
+        "language_header":"Language:",
+        "language_list":{
+            "en":"English",
+            "ua":"Ukrainian"
+        },
+        "submit":"Submit",
+        "become_creator":"Become a Creator",
+        "add_song":"Add Song",
+        "your_songs":"Your songs",
+        "title":"Title",
+        "streams":"Streams",
+        "length":"Length"
+    },
+    "add_song":{
+        "header":"Add your song here",
+        "title":"Title",
+        "genre":"Genre",
+        "choose_music":"Choose music...",
+        "choose_album":"Choose album",
+        "create_album":"Create album",
+        "album_name":"Name",
+        "single":"Single",
+        "upload":"Upload"
+    },
+    "become_creator":{
+        "header":"Become a Creator",
+        "name":"Name",
+        "submit":"Submit"
+    },
+    "errors":{
+        "no_image":"No image selected",
+        "no_name":"Name is required",
+        "no_audio":"No audio selected",
+        "no_album":"No album selected",
+        "no_title":"Title is required",
+        "no_genre":"Genre is required",
+        "required":"Required"
+    }
+}
