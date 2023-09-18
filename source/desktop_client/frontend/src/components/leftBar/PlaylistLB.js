@@ -16,7 +16,7 @@ export const PlaylistLB = ({lbState}) => {
 
     const [style, setStyle] = useState("closed")
     const [activate,setActivate] = useState(false)
-    const [t,i18n] = useTranslation("leftbar")
+    const [t,] = useTranslation("leftbar")
 
     const togglePlaylist = () => {
         if(style === "closed"){

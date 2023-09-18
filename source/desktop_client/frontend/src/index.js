@@ -9,6 +9,9 @@ import settings_en from "./translations/en/settings.json"
 import settings_ua from "./translations/ua/settings.json"
 import leftbar_en from "./translations/en/leftbar.json"
 import leftbar_ua from "./translations/ua/leftbar.json"
+import navbar_en from "./translations/en/navbar.json"
+import navbar_ua from "./translations/ua/navbar.json"
+
 import i18next from "i18next"
 import {I18nextProvider} from "react-i18next"
 
@@ -18,11 +21,13 @@ i18next.init({
   resources:{
     en:{
       settings:settings_en,
-      leftbar:leftbar_en
+      leftbar:leftbar_en,
+      navbar:navbar_en
     },
     ua:{
       settings:settings_ua,
-      leftbar:leftbar_ua
+      leftbar:leftbar_ua,
+      navbar:navbar_ua
     }
   }
 })

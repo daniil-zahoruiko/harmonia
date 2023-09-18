@@ -1,8 +1,12 @@
 import {IoSettingsOutline} from "react-icons/io5"
 import "../styles/nav.css"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export const Nav = () =>{
+
+    const [t,] = useTranslation("navbar")
+
 
     return(
         <nav className="desktop_nav">
@@ -17,7 +21,7 @@ export const Nav = () =>{
                 <li className="nav_li nav_left">
                     <Link to="/library">
                         <p>
-                            Library
+                            {t("library")}
                         </p>
                     </Link>
                 </li>
@@ -33,7 +37,7 @@ export const Nav = () =>{
                 <li className="nav_li nav_right">
                     <Link to="/discover">
                         <p>
-                            Discover
+                            {t("discover")}
                         </p>
                     </Link>
                 </li>
