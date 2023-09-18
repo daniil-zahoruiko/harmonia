@@ -1,0 +1,16 @@
+{
+    "change_data":"Змінити данні",
+    "log_out":"Вийти",
+    "change_data_header":"Змінити ваші данні",
+    "username_label":"Новий юзернейм",
+    "username":"Юзернейм",
+    "password_label":"Новий пароль",
+    "password":"Пароль",
+    "confirm_password_label":"Підтвердити новий пароль",
+    "confirm_password":"Підтвердити пароль",
+    "email_label":"Нова пошта",
+    "email":"Пошта",
+    "full_name_label":"Нове повне ім'я",
+    "full_name":"Повне ім'я",
+    "cancel":"Повернути"
+}

@@ -11,6 +11,8 @@ import leftbar_en from "./translations/en/leftbar.json"
 import leftbar_ua from "./translations/ua/leftbar.json"
 import navbar_en from "./translations/en/navbar.json"
 import navbar_ua from "./translations/ua/navbar.json"
+import profile_en from "./translations/en/profile.json"
+import profile_ua from "./translations/ua/profile.json"
 
 import i18next from "i18next"
 import {I18nextProvider} from "react-i18next"
@@ -22,12 +24,14 @@ i18next.init({
     en:{
       settings:settings_en,
       leftbar:leftbar_en,
-      navbar:navbar_en
+      navbar:navbar_en,
+      profile:profile_en
     },
     ua:{
       settings:settings_ua,
       leftbar:leftbar_ua,
-      navbar:navbar_ua
+      navbar:navbar_ua,
+      profile:profile_ua
     }
   }
 })

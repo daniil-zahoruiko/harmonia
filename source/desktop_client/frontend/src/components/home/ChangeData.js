@@ -12,6 +12,7 @@ import {IoArrowBackCircleOutline} from "react-icons/io5"
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/changedata.css"
 import { LoadedImage } from "../utils/LoadedImage";
+import { useTranslation } from "react-i18next";
 
 
 export const ChangeUserData = () =>
@@ -25,6 +26,7 @@ export const ChangeUserData = () =>
 
     const [passwordVisibility, setPasswordVisibility] = useState(false)
     const [error, setError] = useState(null);
+    const [t,i18n] = useTranslation("profile")
 
     const {
         access_token: [token, ,]
@@ -61,50 +63,75 @@ export const ChangeUserData = () =>
         <div className="change_data_wrapper">
             <Link to="/profile" className="back_wrapper back_change_data"><IoArrowBackCircleOutline className="back_wrapper_svg"/></Link>
             <form className="change_data_form" onSubmit={handleSubmit(onSubmit)}>
-                <h1>¡Change your data!</h1>
+                <h1>{t("change_data_header")}</h1>
                 <div className="form_row">
                     <label htmlFor="username">
-                        New Username:
+                        {t("username_label")}
                     </label>
                     <div className="form_input_wrapper">
-                        <input className={`signing_input ${errors.username?"invalid":""}`} id="username"  placeholder="Username" {...register("username")} />
+                        <input
+                            className={`signing_input ${errors.username?"invalid":""}`}
+                            id="username"
+                            placeholder={t("username")}
+                            {...register("username")}
+                        />
                     </div>
                     <p className="form_error">{errors.username?.message}</p>
                 </div>
                 <div className="form_row">
                     <label htmlFor="password">
-                        Password:
+                        {t("password_label")}
                     </label>
                     <div className="form_input_wrapper">
-                        <input className={`signing_input ${errors.password?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="password"  placeholder="Password" {...register("password")} />
+                        <input
+                            className={`signing_input ${errors.password?"invalid":""} ${passwordVisibility?"":"hide_pass"}`}
+                            id="password"
+                            placeholder={t("password")}
+                            {...register("password")}
+                        />
                         {passwordVisibility?<AiOutlineEye onClick={passwordToggle} className="pass_visibility"/>:<AiOutlineEyeInvisible onClick={passwordToggle} className="pass_visibility"/>}
                     </div>
                     <p className="form_error">{errors.password?.message}</p>
                 </div>
                 <div className="form_row">
                     <label htmlFor="passwordConfirmation">
-                        Confirm password:
+                        {t("confirm_password_label")}
                     </label>
                     <div className="form_input_wrapper">
-                        <input className={`signing_input ${errors.passwordConfirmation?"invalid":""} ${passwordVisibility?"":"hide_pass"}`} id="passwordConfirmation"  placeholder="Confirm password" {...register("passwordConfirmation")}/>
+                        <input
+                            className={`signing_input ${errors.passwordConfirmation?"invalid":""} ${passwordVisibility?"":"hide_pass"}`}
+                            id="passwordConfirmation"
+                            placeholder={t("confirm_password")}
+                            {...register("passwordConfirmation")}
+                        />
                     </div>
                     <p className="form_error">{errors.passwordConfirmation?.message}</p>
                 </div>
                 <div className="form_row">
                     <label htmlFor="email">
-                        New Email:
+                        {t("email_label")}
                     </label>
                     <div className="form_input_wrapper">
-                        <input className={`signing_input ${errors.email?"invalid":""}`} id="email"  placeholder="Password" {...register("email")} />
+                        <input
+                            className={`signing_input ${errors.email?"invalid":""}`}
+                            id="email"
+                            placeholder={t("email")}
+                            {...register("email")}
+                        />
                     </div>
                     <p className="form_error">{errors.email?.message}</p>
                 </div>
                 <div className="form_row">
                     <label htmlFor="email">
-                        New Full Name:
+                        {t("full_name_label")}
                     </label>
                     <div className="form_input_wrapper">
-                        <input className={`signing_input ${errors.fullName?"invalid":""}`} id="email"  placeholder="Password" {...register("fullName")} />
+                        <input
+                            className={`signing_input ${errors.fullName?"invalid":""}`}
+                            id="email"
+                            placeholder={t("full_name")}
+                            {...register("fullName")}
+                        />
                     </div>
                     <p className="form_error">{errors.fullName?.message}</p>
                 </div>
@@ -122,9 +149,9 @@ export const ChangeUserData = () =>
                             }
                         )}
                         id="cancel_change"
-                        value="Cancel"
+                        value={t("cancel")}
                     />
-                    <input id="submit_change" type="submit" value="Change data"/>
+                    <input id="submit_change" type="submit" value={t("change_data")}/>
                 </div>
             </form>
         </div>

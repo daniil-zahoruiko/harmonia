@@ -1,0 +1,16 @@
+{
+    "change_data":"Change data",
+    "log_out":"Log out",
+    "change_data_header":"Change your data",
+    "username_label":"New username",
+    "username":"username",
+    "password_label":"New password",
+    "password":"Password",
+    "confirm_password_label":"Confirm new password",
+    "confirm_password":"Confirm password",
+    "email_label":"New Email",
+    "email":"Email",
+    "full_name_label":"New Full Name",
+    "full_name":"Full Name",
+    "cancel":"Cancel"
+}
