@@ -1,0 +1,26 @@
+{
+    "playlist":{
+        "remove":"Remove playlist",
+        "modify":"Modify playlist"
+    },
+    "song":{
+        "like":{
+            "remove":"Remove from liked songs",
+            "add":"Add to liked songs"
+        },
+        "playlist":{
+            "remove":"Remove from playlist",
+            "add":"Add to playlist"
+        }
+    },
+    "messages":{
+        "song":{
+            "exists":"This song already exists in",
+            "success":"Added in"
+        },
+        "playlist":{
+            "exists":"This song was already removed from",
+            "success":"Successfully removed from"
+        }
+    }
+}

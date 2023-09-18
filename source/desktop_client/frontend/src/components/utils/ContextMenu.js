@@ -6,6 +6,7 @@ import { UpdateLikedSongs, addPlaylistSongs } from "../../api";
 import {AiOutlineHeart,AiFillHeart} from "react-icons/ai"
 import { ContextPopUp } from "./PopUps";
 import { getValues } from "../helpers";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -21,6 +22,8 @@ export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,re
 
     const menuRef = useRef(null)
     const listRef = useRef(null)
+
+    const [t,] = useTranslation("context_menu")
 
     const closeMenu = (e) =>{
         if(menuRef.current && activated && !menuRef.current.contains(e.target) && listRef.current && activated && !listRef.current.contains(e.target)){
@@ -154,28 +157,28 @@ export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,re
                 {type==="modify"
                 ?<>
                     <div onClick={remove} className="context_menu_like">
-                        <p>Remove Playlist</p>
+                        <p>{t("playlist.remove")}</p>
                     </div>
                     <div onClick={modify} className="context_menu_like">
-                        <p>Modify playlist</p>
+                        <p>{t("playlist.modify")}</p>
                     </div>
                 </>
                 :<>
                     {likedSongs[song.id]
                     ?<div onClick={likeSong} className="context_menu_like">
-                        <p>Remove from liked songs</p>
+                        <p>{t("song.like.remove")}</p>
                         <AiFillHeart />
                     </div>
                     :<div onClick={likeSong} className="context_menu_like">
-                        <p>Add to liked songs</p>
+                        <p>{t("song.like.add")}</p>
                         <AiOutlineHeart />
                     </div>}
                     {type === "playlist"
                     ?<div onClick={removeSong} className="context_menu_like">
-                        <p>Remove from this playlist</p>
+                        <p>{t("song.playlist.remove")}</p>
                     </div>:""}
                     <div onClick={togglePLList} className="context_menu_like">
-                        <p>Add to playlist</p>
+                        <p>{t("song.playlist.add")}</p>
                         <div className={`context_playlist_arrow ${style}`}></div>
                     </div>
                 </>}
@@ -192,14 +195,14 @@ export const ContextMenu = ({song,top,left,activated,setActivated,type,modify,re
                     })}
                 </div>
                 {exists.bool
-                ?<ContextPopUp exit={()=>setExists({"bool":false,"playlist":{}})} message={`This song already exists in ${exists.playlist}`}/>
+                ?<ContextPopUp exit={()=>setExists({"bool":false,"playlist":{}})} message={`${t("messages.song.exists")} ${exists.playlist}`}/>
                 :""}
                 {success.bool
-                ?<ContextPopUp exit={()=>setSuccess({"bool":false,"playlist":{}})} message={`Added in ${success.playlist}`}/>
+                ?<ContextPopUp exit={()=>setSuccess({"bool":false,"playlist":{}})} message={`${t("messages.song.success")} ${success.playlist}`}/>
                 :""}
                 {removed===true
-                ?<ContextPopUp exit={()=>setRemoved("exit")} message={`Successfully removed from ${showedPlaylist.name}`}/>
-                :removed===false?<ContextPopUp exit={()=>setRemoved("exit")} message={`This song was already removed ${showedPlaylist.name}`}/>:""}
+                ?<ContextPopUp exit={()=>setRemoved("exit")} message={`${t("messages.playlist.success")} ${showedPlaylist.name}`}/>
+                :removed===false?<ContextPopUp exit={()=>setRemoved("exit")} message={`${t("messages.playlist.exists")} ${showedPlaylist.name}`}/>:""}
             </>
 
         </div>
