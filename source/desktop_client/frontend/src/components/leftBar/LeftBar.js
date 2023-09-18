@@ -6,13 +6,16 @@ import "../../styles/leftbar.css"
 import { UserContext } from "../../UserContext";
 import { getValues } from "../helpers";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 export const LeftBar = () => {
-    const [lbState, setLbState] = useState("full")
     const { playlistRender:[,setShowedPlaylist],
         recentlyPlayed:[recentlyPlayed]
     } = useContext(SongsContext)
+
+    const [lbState, setLbState] = useState("full")
+    const [t,i18n] = useTranslation("leftbar")
 
     const { username:[username,],
             liked_songs:[likedSongs,] } = useContext(UserContext);
@@ -58,7 +61,7 @@ export const LeftBar = () => {
                 </div>
                 <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
-                        Recently played
+                        {t("recently_played")}
                     </p>
                 </div>
             </Link>
@@ -71,7 +74,7 @@ export const LeftBar = () => {
                 </div>
                 <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
-                        Liked songs
+                        {t("liked_songs")}
                     </p>
                 </div>
             </Link>
@@ -85,7 +88,7 @@ export const LeftBar = () => {
                 </div>
                 <div className={"left_bar_topic_text lb_"+lbState}>
                     <p>
-                        Followed artists
+                        {t("followed_artists")}
                     </p>
                 </div>
             </Link>

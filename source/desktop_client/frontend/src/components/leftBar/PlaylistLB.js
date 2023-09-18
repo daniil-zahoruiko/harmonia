@@ -5,6 +5,7 @@ import { UserContext } from "../../UserContext";
 import { getValues } from "../helpers";
 import { Link } from "react-router-dom";
 import { CreatePlaylistPopUp } from "../utils/PopUps";
+import { useTranslation } from "react-i18next";
 
 
 export const PlaylistLB = ({lbState}) => {
@@ -15,6 +16,7 @@ export const PlaylistLB = ({lbState}) => {
 
     const [style, setStyle] = useState("closed")
     const [activate,setActivate] = useState(false)
+    const [t,i18n] = useTranslation("leftbar")
 
     const togglePlaylist = () => {
         if(style === "closed"){
@@ -40,7 +42,9 @@ export const PlaylistLB = ({lbState}) => {
                         <MdOutlineLibraryMusic className="lb_svg"/>
                     </div>
                     <div className={"left_bar_topic_text lb_"+lbState}>
-                        <p className="left_bar_playlist_text">Playlist</p>
+                        <p className="left_bar_playlist_text">
+                            {t("playlists")}
+                        </p>
                     </div>
                 </Link>
                 <div className={"lb_playlist_actions lb_"+lbState}>
