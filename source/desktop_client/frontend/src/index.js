@@ -21,6 +21,8 @@ import playlist_en from "./translations/en/playlist.json"
 import playlist_ua from "./translations/ua/playlist.json"
 import popup_en from "./translations/en/popup.json"
 import popup_ua from "./translations/ua/popup.json"
+import global_en from "./translations/en/global.json"
+import global_ua from "./translations/ua/global.json"
 
 import i18next from "i18next"
 import {I18nextProvider} from "react-i18next"
@@ -37,7 +39,8 @@ i18next.init({
       library:library_en,
       context_menu:context_menu_en,
       playlist:playlist_en,
-      pop_up:popup_en
+      pop_up:popup_en,
+      global:global_en
     },
     ua:{
       settings:settings_ua,
@@ -47,7 +50,8 @@ i18next.init({
       library:library_ua,
       context_menu:context_menu_ua,
       playlist:playlist_ua,
-      pop_up:popup_ua
+      pop_up:popup_ua,
+      global:global_ua
     }
   }
 })

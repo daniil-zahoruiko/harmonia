@@ -3,11 +3,14 @@ import {FaSearch} from "react-icons/fa"
 import {RxCross1} from "react-icons/rx"
 import { SongsContext } from "../../SongsData"
 import "../../styles/searchbar.css"
+import { useTranslation } from "react-i18next"
 
 
 
 export const SearchBar = ({setResult, input, setInput}) =>{
     const {db:[songs,artists,albums]} = useContext(SongsContext)
+
+    const [t,] = useTranslation("global")
 
     const handleChange = (value) =>{
         setInput(value)
@@ -47,7 +50,7 @@ export const SearchBar = ({setResult, input, setInput}) =>{
         <div className="input_wrapper">
         <input
             id="search_input"
-            placeholder="search..."
+            placeholder={t("search")}
             value={input}
             onChange={(e)=>handleChange(e.target.value)}
         />
@@ -62,7 +65,7 @@ export const SearchBar = ({setResult, input, setInput}) =>{
 
 export const PlaylistSearchBar = ({songs,input,setInput,setResult}) =>{
 
-
+    const [t,] = useTranslation("global")
 
     const handleChange = (value) =>{
         setInput(value)
@@ -90,7 +93,7 @@ export const PlaylistSearchBar = ({songs,input,setInput,setResult}) =>{
         <div className="input_wrapper playlist_input">
         <input
             id="search_input"
-            placeholder="search..."
+            placeholder={t("search")}
             value={input}
             onChange={(e)=>handleChange(e.target.value)}
         />
