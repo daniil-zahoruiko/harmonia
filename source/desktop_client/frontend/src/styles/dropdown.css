@@ -3,7 +3,6 @@
 }
 .dd-list{
     position: absolute;
-    /* top:3rem; */
     top: 110%;
     left:0%;
     align-items: center;
@@ -11,7 +10,6 @@
     flex-direction: column;
     width:120%;
     align-items:center;
-    /* padding: 3%; */
 }
 
 .dd-header-title{
@@ -19,7 +17,6 @@
     border-bottom: 2px solid #44489F;
     border-radius: 16px;
     width: 100%;
-    /* height: 80%; */
     margin: auto;
     display: flex;
     flex-direction: row;
@@ -27,9 +24,7 @@
     justify-content: center;
     text-align: center;
     justify-content: space-evenly;
-    /* padding: 0 6%;
-    width:106% */
-    width:120%;
+    width:130%;
     transition: all ease-in-out 0.1s;
 }
 
@@ -39,7 +34,6 @@
 }
 
 .dd-header-title p{
-    /* margin: 0; */
     font-size: 1vw;
     text-align: center;
 }
@@ -55,8 +49,6 @@
     width:100%;
     border: none;
     margin-bottom: 3%;
-    /* padding: 0 6%;
-    width:106% */
 }
 
 .dd-list-item p{
