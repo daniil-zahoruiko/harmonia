@@ -6,6 +6,7 @@ import { FetchImages } from "../../api";
 import { ContextMenu } from "./ContextMenu";
 import { LoadedImage } from "./LoadedImage";
 import { CreatePlaylistPopUp } from "./PopUps";
+import { useTranslation } from "react-i18next";
 
 export const TopPicks = ({songs}) =>
 {
@@ -138,6 +139,7 @@ export const LibraryPlaylists = () =>{
 
     const firstRender = useRef(true);
     const [activate,setActivate] = useState(false)
+    const [t,] = useTranslation("library")
 
     const fetch = async (data, url,images,setImages,last) =>{
         await FetchImages({data:data, url:url, token,removeToken,refreshToken,setUserError,setAllLoaded,images:images,setImages:setImages})
@@ -163,7 +165,7 @@ export const LibraryPlaylists = () =>{
                 })}
                 <div to="/playlist" onClick={()=>setActivate(true)} className="SongCard" style={{background:"#44444f"}}>
                     <LoadedImage className={"songcard_img"} alt={"add_new_playlist"} src={"add_new_playlist"}/>
-                    <h1 className="song_card_title">Add new playlist</h1>
+                    <h1 className="song_card_title">{t("add_new_playlist")}</h1>
                 </div>
                 {activate?<CreatePlaylistPopUp setActivate={setActivate}/>:""}
             </div>
