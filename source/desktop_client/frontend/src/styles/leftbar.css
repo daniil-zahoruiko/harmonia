@@ -87,6 +87,9 @@
     font-size: 1vw;
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
+    height:80%;
+    margin: 0% 5%;
 }
 
 
