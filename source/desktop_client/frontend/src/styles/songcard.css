@@ -16,7 +16,7 @@
 
 .song_card_title{
     background-color: transparent;
-    font-size: 1.5vw;
+    font-size:1.2em;
     width:100%;
     margin: 0;
     margin-top: 3%;
@@ -26,14 +26,15 @@
 
 .song_card_artist{
     background-color: transparent;
-    font-size: 1vw;
+    font-size: 1em;
     margin: 2% 0;
     color:white;
     text-decoration: none;
 }
 .songcard_img{
     height:13vw;
-    width:13vw
+    width:13vw;
+    object-fit: cover;
 }
 
 .SongCard img{

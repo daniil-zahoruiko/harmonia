@@ -358,9 +358,9 @@ def add_song():
             album_id = utils.create_album(connection,album_name,artist_id,image)
         else:
             album_id = utils.create_album(connection,title,artist_id,image)
-        ans = utils.create_song(connection,title,genre,audio,image,artist_id,album_id)
+        ans = utils.create_song(connection,title,genre,audio,artist_id,album_id)
     else:
-        ans = utils.create_song(connection,title,genre,audio,image,artist_id,album_id)
+        ans = utils.create_song(connection,title,genre,audio,artist_id,album_id)
     print(ans)
     return jsonify({"msg": "Success"}), 200
 

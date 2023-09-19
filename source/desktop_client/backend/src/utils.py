@@ -1,6 +1,5 @@
 from db_connection import DBConnection
 import helpers
-import os
 import json
 
 def establish_db_connection(app):
@@ -117,27 +116,15 @@ def change_settings(db,user_id,settings):
 def change_full_name(db,user_id,full_name):
     return db.update_full_name(user_id,full_name)
 
-def create_cache(data,filename):
-    dir_path = os.path.join(os.getcwd(),"cache")
-    new_path = os.path.join(dir_path,filename)
-    if not os.path.exists(dir_path):
-        os.mkdir(dir_path)
-    helpers.write_file(data,new_path)
-
-def read_cache(filename):
-    new_path = os.path.join(os.getcwd(),"cache",filename)
-    return helpers.read_file(new_path)
-
 def create_artist(db,name,image,user_id):
     image_bytes = helpers.read_file_bytes(image)
     id = db.create_artist(name,image_bytes,user_id)
     return id
 
-def create_song(db,title,genre,audio,image,artist_id,album_id):
+def create_song(db,title,genre,audio,artist_id,album_id):
     audio_bytes = helpers.read_file_bytes(audio)
-    image_bytes = helpers.read_file_bytes(image)
 
-    song = db.create_user_song(title,genre,audio_bytes,image_bytes,artist_id,album_id)
+    song = db.create_song(title,genre,audio_bytes,artist_id,album_id)
     return {"id":str(song.get_id()),
             "title":song.get_name(),
             "genre": song.get_genre(),
@@ -154,10 +141,6 @@ def create_album(db,name,artist_id,image):
     image_bytes = helpers.read_file_bytes(image)
     id = db.create_album(name,artist_id,image_bytes)
     return id
-
-def delete_cache(filename):
-    new_path = os.path.join(os.getcwd(),"cache",filename)
-    return helpers.delete_file(new_path)
 
 def delete_playlist(db,id):
     db.remove_playlist(id)

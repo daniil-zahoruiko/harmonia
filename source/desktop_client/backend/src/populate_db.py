@@ -17,27 +17,3 @@ def main(db_connection):
                 file_data = f.read()
 
             db_connection.create_song(file[:-4], random.choice(genres_samples), file_data, 1, 1)
-
-    path = input("Enter path to image files: ")
-
-    quit = ""
-
-    while quit != "quit":
-        id = int(input("Enter song id: "))
-        file = input("Enter image name: ")
-
-        dir = os.path.join(path, file)
-
-        ext = file[file.rfind('.') + 1:]
-
-        valid_ext = ["jpg", "jpeg", "webp", "png"]
-
-        if os.path.isfile(dir) and ext in valid_ext:
-            with open(dir, 'rb') as f:
-                file_data = f.read()
-
-            db_connection.update_image(id, file_data)
-        else:
-            print("Invalid file")
-
-        quit = input('To quit, enter "quit": ')

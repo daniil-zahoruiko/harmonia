@@ -10,7 +10,7 @@ def write_file(data, path):
 def read_file(filename):
     if file_exists(filename):
         with open(filename, 'r') as f:
-            data = f.read()        
+            data = f.read()
         return data
     print("The file does not exists")
     return None

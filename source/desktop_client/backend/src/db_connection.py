@@ -202,7 +202,7 @@ class DBConnection:
     def update_settings(self,user_id,settings):
         self.update_single_field_by_id("settings",settings,"users",user_id)
     #endregion
-    
+
     #region Creating data
 
     def create_user(self, username, password,email,full_name):
@@ -217,7 +217,7 @@ class DBConnection:
                 full_name,
                 json.dumps({"likedSongs":{}}),
                 json.dumps({"favArtists":{}}),
-                json.dumps({"language":"english"}))
+                json.dumps({"language":"en"}))
 
         self.execute_query(query=query, args=args, commit=True)
 
@@ -228,23 +228,10 @@ class DBConnection:
 
         args = (id, name, genre, data, artist_id, album_id, length)  # if the song is not mp3, will this work?
 
-        print(args)
-
         self.execute_query(query=query, args=args, commit=True)
 
         return Song(id, name, genre, artist_id, album_id, length,0)
-    
-    def create_user_song(self, name, genre, audio, image, artist_id, album_id):
-        id = self.get_last_id("songs") + 1
-        length = helpers.get_mp3_length(audio)
-        query = "INSERT INTO songs(id, name, genre, data, image, artistId, albumId, length) VALUES (%s, %s, %s,%s, %s, %s, %s, %s)"
 
-        args = (id, name, genre, audio, image, artist_id, album_id, length)  # if the song is not mp3, will this work
-
-        self.execute_query(query=query, args=args, commit=True)
-
-        return Song(id, name, genre, artist_id, album_id, length,0)
-    
     def create_album(self,name,artist_id,image):
         id = self.get_last_id("albums") + 1
         query = "INSERT INTO albums(id, name, artistId, image) VALUES (%s, %s, %s,%s)"

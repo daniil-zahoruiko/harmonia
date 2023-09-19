@@ -21,6 +21,8 @@ export const CreateArtist = ({setChange}) =>{
     const [image,setImage] = useState()
     const formRef = useRef(null)
 
+    const [t,] = useTranslation("settings")
+
 
     const {register, handleSubmit, formState: {errors}} = useForm({
         defaultValues:{
@@ -63,13 +65,12 @@ export const CreateArtist = ({setChange}) =>{
         <div className="change_playlist_outer">
             <div ref={formRef} className="change_pl_data_wrapper">
                 <MdCancel onClick={()=>setChange(false)} className="change_exit"/>
-                <h1>¡Become a Creator!</h1>
+                <h1>{t("become_creator.header")}</h1>
                 <div className="change_playlist_inputs">
                     <div>
                         <label htmlFor="file-upload">
                             <div className={imageUrl?"playlist_image_label_wrapper":"album_image_label_wrapper"}>
                                 <LoadedImage className="playlist_change_image" alt="artist" src={imageUrl?imageUrl:"none"} />
-                                {/* {imageUrl?"":<BsFillCloudUploadFill className="album_image_upload_svg"/>} */}
                                 <BsFillCloudUploadFill className={imageUrl?"playlist_image_upload_svg":"album_image_upload_svg"}/>
                             </div>
                         </label>
@@ -85,14 +86,14 @@ export const CreateArtist = ({setChange}) =>{
                     <form className="become_artist_form" onSubmit={handleSubmit(onSubmit)}>
                         <div className="form_row_artist">
                             <p className="become_artist_label" htmlFor="username">
-                                Name:
+                                {t("become_creator.name")}
                             </p>
                             <div className="form_input_wrapper_artist">
-                                <input className={`signing_input_artist ${errors.name?"invalid":""}`} placeholder="Name..." id="name" {...register("name")} />
+                                <input className={`signing_input_artist ${errors.name?"invalid":""}`} placeholder={`${t("become_creator.name")}...`} id="name" {...register("name")} />
                             </div>
                         </div>
                         {error != null ? <p className="login_error">{error}</p> : null}
-                        <input id="submit_change" type="submit" value="Submit"/>
+                        <input id="submit_change" type="submit" value={`${t("become_creator.submit")}`}/>
                     </form>
                 </div>
             </div>
@@ -121,7 +122,7 @@ export const AddSong = ({setChange}) =>{
     const albumMenuRef = useRef(null)
     const popUpRef = useRef(null)
     const ddRef = useRef(null)
-    const [t,i18n] = useTranslation("settings")
+    const [t,] = useTranslation("settings")
 
 
     // Create/Choose Album variables

@@ -6,6 +6,7 @@
 .playlist_image{
     width:15vw;
     height:15vw;
+    object-fit: cover;
 }
 .playlist_data{
     margin-left: 5%;
