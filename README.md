@@ -59,6 +59,6 @@ To get started with HARMONIA, follow these steps:
    yarn install
    yarn run dev
 
-## Creators
+## Contributors
 
 App was created by Daniil Zahoruiko, University of Alberta student, and Dmytro Avdieienko, University of Southampton student, where each contributed in all sections of development.
