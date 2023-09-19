@@ -36,7 +36,7 @@ To get started with HARMONIA, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/daniilzahoruiko/spotify_project.git
+   git clone https://github.com/daniil-zahoruiko/spotify_project.git
    cd spotify_project
 
 2. **Database Setup:**
