@@ -1,4 +1,4 @@
-# Harmonia (spotify-clone)
+# Harmonia (spotify clone)
 
  <br>
 
